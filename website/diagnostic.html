@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataSight AI - Diagnostic Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .test-card { background: white; padding: 20px; margin: 10px 0; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .success { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+        .test-btn { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .test-btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🔧 DataSight AI - Diagnostic Test</h1>
+    
+    <div class="test-card">
+        <h2>🧪 Page Loading Test</h2>
+        <p id="loadTest" class="error">❌ JavaScript not running</p>
+    </div>
+
+    <div class="test-card">
+        <h2>📧 Email Function Test</h2>
+        <button class="test-btn" onclick="testEmail()">Test Email</button>
+        <p id="emailTest">Waiting for test...</p>
+    </div>
+
+    <div class="test-card">
+        <h2>📁 File Upload Test</h2>
+        <input type="file" id="testFile" accept=".csv,.xlsx,.json" onchange="testFileUpload(this)">
+        <p id="fileTest">Upload a file to test...</p>
+    </div>
+
+    <div class="test-card">
+        <h2>🔗 CDN Resources Test</h2>
+        <p id="bootstrapTest">Testing Bootstrap...</p>
+        <p id="fontawesomeTest">Testing Font Awesome...</p>
+    </div>
+
+    <div class="test-card">
+        <h2>🚀 Quick Form Test</h2>
+        <form id="quickForm" onsubmit="return testForm(event)">
+            <input type="text" placeholder="Name" required style="margin: 5px; padding: 8px; width: 200px;">
+            <input type="email" placeholder="Email" required style="margin: 5px; padding: 8px; width: 200px;">
+            <button type="submit" class="test-btn">Test Submit</button>
+        </form>
+        <p id="formTest">Fill and submit to test...</p>
+    </div>
+
+    <div class="test-card">
+        <h2>🔗 Quick Links</h2>
+        <button class="test-btn" onclick="window.open('free-trial.html', '_blank')">Open Free Trial Page</button>
+        <button class="test-btn" onclick="window.open('platform.html', '_blank')">Open Platform Demo</button>
+        <button class="test-btn" onclick="window.open('leads.html', '_blank')">Open Leads Dashboard</button>
+    </div>
+
+    <script>
+        // Test 1: Page Loading
+        document.getElementById('loadTest').innerHTML = '✅ JavaScript is working!';
+        document.getElementById('loadTest').className = 'success';
+
+        // Test 2: CDN Resources
+        window.addEventListener('load', function() {
+            // Test Bootstrap
+            const bootstrapTest = document.querySelector('.btn') !== null || 
+                                getComputedStyle(document.body).fontFamily.includes('system-ui');
+            document.getElementById('bootstrapTest').innerHTML = bootstrapTest ? 
+                '✅ Bootstrap loaded' : '❌ Bootstrap failed';
+            document.getElementById('bootstrapTest').className = bootstrapTest ? 'success' : 'error';
+
+            // Test Font Awesome (check if icon fonts are available)
+            const faTest = document.querySelector('.fas') !== null || 
+                          window.FontAwesome !== undefined;
+            document.getElementById('fontawesomeTest').innerHTML = faTest ? 
+                '✅ Font Awesome loaded' : '❌ Font Awesome failed';
+            document.getElementById('fontawesomeTest').className = faTest ? 'success' : 'error';
+        });
+
+        // Test 3: Email Function
+        function testEmail() {
+            try {
+                const testEmailContent = `
+🧪 DATASIGHT AI - EMAIL TEST
+
+This is a test email to verify the email system is working.
+
+Test Details:
+- Time: ${new Date().toLocaleString()}
+- Browser: ${navigator.userAgent}
+- Page: Diagnostic Test
+
+If you receive this email, the system is working correctly!
+                `.trim();
+
+                const emailSubject = '🧪 DataSight AI - Email System Test';
+                const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(testEmailContent)}`;
+                
+                window.open(mailtoLink);
+                document.getElementById('emailTest').innerHTML = '✅ Email client opened! Check if email opens correctly.';
+                document.getElementById('emailTest').className = 'success';
+            } catch (error) {
+                document.getElementById('emailTest').innerHTML = '❌ Email test failed: ' + error.message;
+                document.getElementById('emailTest').className = 'error';
+            }
+        }
+
+        // Test 4: File Upload
+        function testFileUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById('fileTest').innerHTML = `✅ File selected: ${file.name} (${Math.round(file.size/1024)}KB)`;
+                document.getElementById('fileTest').className = 'success';
+            } else {
+                document.getElementById('fileTest').innerHTML = '❌ No file selected';
+                document.getElementById('fileTest').className = 'error';
+            }
+        }
+
+        // Test 5: Form Submission
+        function testForm(event) {
+            event.preventDefault();
+            try {
+                const formData = new FormData(event.target);
+                document.getElementById('formTest').innerHTML = '✅ Form submission works! Data captured successfully.';
+                document.getElementById('formTest').className = 'success';
+                
+                // Reset form
+                event.target.reset();
+                return false;
+            } catch (error) {
+                document.getElementById('formTest').innerHTML = '❌ Form test failed: ' + error.message;
+                document.getElementById('formTest').className = 'error';
+                return false;
+            }
+        }
+
+        // Console log for debugging
+        console.log('🧪 DataSight AI Diagnostic Test Page Loaded');
+        console.log('Current URL:', window.location.href);
+        console.log('User Agent:', navigator.userAgent);
+    </script>
+</body>
+</html>

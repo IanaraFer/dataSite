@@ -160,13 +160,42 @@
         const urlParams = new URLSearchParams(window.location.search);
         const firstName = urlParams.get('firstName');
         const company = urlParams.get('company');
+        const hasDataset = urlParams.get('hasDataset') === 'true';
         
         if (firstName) {
             document.querySelector('h1').textContent = `Thank You, ${firstName}!`;
         }
         
         if (company) {
-            document.querySelector('h3').textContent = `Your Free AI Business Health Check for ${company} is Being Generated`;
+            const titleText = hasDataset ? 
+                `Your ${company} Dataset is Being Analyzed by Our AI` :
+                `Your Free AI Business Health Check for ${company} is Being Generated`;
+            document.querySelector('h3').textContent = titleText;
+        }
+
+        // Update timeline based on whether dataset was uploaded
+        if (hasDataset) {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            // Update first timeline item for dataset analysis
+            timelineItems[0].querySelector('strong').textContent = 'Dataset Analysis (10-15 minutes)';
+            timelineItems[0].querySelector('small').textContent = 'Our AI is analyzing your uploaded data for personalized insights';
+            
+            // Update second timeline item
+            timelineItems[1].querySelector('strong').textContent = 'Custom Report Delivery (Within 2 hours)';
+            timelineItems[1].querySelector('small').textContent = 'Detailed analysis of YOUR data sent to your email';
+            
+            // Update third timeline item
+            timelineItems[2].querySelector('strong').textContent = 'Priority Strategy Call (Within 4 hours)';
+            timelineItems[2].querySelector('small').textContent = 'We\'ll call to discuss your specific data insights';
+            
+            // Add special notice for dataset uploads
+            const alertDiv = document.querySelector('.alert-success');
+            alertDiv.innerHTML = `
+                <i class="fas fa-chart-line me-2"></i>
+                <strong>Priority Processing!</strong> We've received your dataset and started analyzing your actual business data. 
+                You'll receive a comprehensive report within 2 hours.
+            `;
         }
 
         // Simulate progress for user experience

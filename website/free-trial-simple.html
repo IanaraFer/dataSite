@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataSight AI - Free Trial (Simple Test)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .form-container { background: white; border-radius: 15px; padding: 30px; max-width: 600px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .btn-primary-custom { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 15px 30px; border-radius: 25px; font-weight: 600; width: 100%; }
+        .upload-area { border: 2px dashed #1f77b4; border-radius: 10px; padding: 20px; text-align: center; background: rgba(31, 119, 180, 0.05); cursor: pointer; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="text-center mb-4">
+                <h2>🚀 DataSight AI - Free Business Health Check</h2>
+                <p class="text-muted">Get your AI-powered business analysis in 15 minutes</p>
+            </div>
+            
+            <form id="simpleForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">First Name *</label>
+                        <input type="text" class="form-control" name="firstName" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Last Name *</label>
+                        <input type="text" class="form-control" name="lastName" required>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Business Email *</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" class="form-control" name="phone" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Company Name *</label>
+                    <input type="text" class="form-control" name="company" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Industry *</label>
+                    <select class="form-select" name="industry" required>
+                        <option value="">Select Industry</option>
+                        <option value="technology">Technology</option>
+                        <option value="retail">Retail</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="finance">Finance</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Annual Revenue *</label>
+                    <select class="form-select" name="revenue" required>
+                        <option value="">Select Revenue Range</option>
+                        <option value="under-500k">Under €500k</option>
+                        <option value="500k-1m">€500k - €1M</option>
+                        <option value="1m-5m">€1M - €5M</option>
+                        <option value="5m-20m">€5M - €20M</option>
+                        <option value="over-20m">Over €20M</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Main Business Challenge (Optional)</label>
+                    <textarea class="form-control" name="challenge" rows="3" placeholder="e.g., Need better sales forecasting, customer insights, etc."></textarea>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label">Upload Your Business Data (Optional)</label>
+                    <div class="upload-area" onclick="document.getElementById('businessData').click()">
+                        <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
+                        <h6>Upload CSV, Excel, or Data File</h6>
+                        <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
+                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
+                        <div id="uploadedFile" class="mt-2 text-success" style="display: none;">
+                            <i class="fas fa-check-circle me-1"></i>
+                            <span id="fileName"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary-custom">
+                    <i class="fas fa-rocket me-2"></i>Get My FREE AI Analysis
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <p class="text-muted small">
+                    <i class="fas fa-lock me-1"></i>Your data is secure and GDPR compliant<br>
+                    Results delivered to your email in 15 minutes
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        console.log('🧪 Simple Free Trial Page Loaded');
+
+        // File upload handler
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('uploadedFile').style.display = 'block';
+                console.log('✅ File uploaded:', file.name);
+                
+                // Store file info
+                window.uploadedDataset = {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type
+                };
+            }
+        }
+
+        // Form submission handler
+        document.getElementById('simpleForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('🚀 Form submitted');
+            
+            // Show loading state
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            submitButton.disabled = true;
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Add file info if uploaded
+            if (window.uploadedDataset) {
+                data.datasetName = window.uploadedDataset.name;
+                data.datasetSize = Math.round(window.uploadedDataset.size / 1024) + 'KB';
+            }
+            
+            console.log('📊 Form data:', data);
+            
+            // Create email content
+            const emailSubject = `🚀 URGENT: New DataSight AI Lead - ${data.firstName} from ${data.company}`;
+            const emailBody = `
+🚀 NEW DATASIGHT AI LEAD ALERT!
+${window.uploadedDataset ? '📊 INCLUDES DATASET FOR ANALYSIS!' : ''}
+
+👤 CONTACT INFORMATION:
+Name: ${data.firstName} ${data.lastName}
+Company: ${data.company}
+Email: ${data.email}
+Phone: ${data.phone}
+
+🏢 BUSINESS DETAILS:
+Industry: ${data.industry}
+Annual Revenue: ${data.revenue}
+Main Challenge: ${data.challenge || 'Not specified'}
+
+${window.uploadedDataset ? `📊 DATASET UPLOADED:
+File: ${data.datasetName}
+Size: ${data.datasetSize}
+🔥 PRIORITY: High - Customer uploaded data for analysis!` : '📝 No dataset uploaded - offer to analyze sample data'}
+
+⏰ SUBMISSION TIME: ${new Date().toLocaleString()}
+
+📋 IMMEDIATE ACTION REQUIRED:
+${window.uploadedDataset ? 
+`1. 🔥 CALL WITHIN 15 MINUTES: ${data.phone} (they uploaded data!)
+2. 📊 Download and analyze their dataset immediately  
+3. 📧 Send personalized analysis within 2 hours
+4. 💰 This is a HOT LEAD - they're ready to see results!` :
+`1. 📞 Call within 24 hours: ${data.phone}
+2. 📧 Send demo analysis to: ${data.email}
+3. 💼 Offer to analyze their data
+4. 🎯 Schedule demo call`}
+
+---
+⚡ RESPOND IMMEDIATELY for highest conversion rates!
+This lead was generated from your DataSight AI free trial page.
+            `.trim();
+
+            // Wait 2 seconds to simulate processing
+            setTimeout(() => {
+                // Reset button
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                
+                // Open email client with lead notification
+                const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                window.open(mailtoLink);
+                
+                // Show success message
+                const datasetMessage = window.uploadedDataset ? 
+                    ` Your ${window.uploadedDataset.name} file has been received and will be analyzed within 2 hours.` : 
+                    '';
+                
+                alert(`✅ SUCCESS! Your free AI business health check request has been submitted.${datasetMessage} 
+
+📧 IMPORTANT: An email will open now - please click SEND to notify our team immediately.
+You'll receive your comprehensive report within 15 minutes at ${data.email}.`);
+                
+                // Redirect to thank you page
+                window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}&hasDataset=${!!window.uploadedDataset}`;
+            }, 2000);
+        });
+
+        console.log('✅ All event listeners attached successfully');
+    </script>
+</body>
+</html>
