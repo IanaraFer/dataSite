@@ -1,11 +1,11 @@
-# 🤖 DataSiteAI - One-Page Business Overview
+# 🤖 DataSight AI - One-Page Business Overview
 
 ---
 
 ## **Transform Your Data Into Decisions - Automatically**
 
 ### 🎯 **What We Do**
-DataSiteAI is an intelligent business analytics platform that automatically analyzes your company data and delivers actionable insights using advanced AI and machine learning.
+DataSight AI is an intelligent business analytics platform that automatically analyzes your company data and delivers actionable insights using advanced AI and machine learning.
 
 ---
 
@@ -45,7 +45,7 @@ DataSiteAI is an intelligent business analytics platform that automatically anal
 
 ---
 
-### 🏆 **Why Choose DataSiteAI?**
+### 🏆 **Why Choose DataSight AI?**
 
 ✅ **No Technical Skills Required** - Drag and drop interface  
 ✅ **70% Less Expensive** than Tableau or Power BI  
@@ -75,10 +75,10 @@ DataSiteAI is an intelligent business analytics platform that automatically anal
 
 ### 📞 **Contact Information**
 
-**🌐 Website**: www.datasiteai.io *(launching soon)*  
-**📧 Email**: datasiteai.founders@gmail.com  
+**🌐 Website**: www.datasight.ai *(coming soon)*  
+**📧 Email**: hello@datasight.ai  
 **📱 Phone**: +49 XXX XXX XXXX  
-**💼 LinkedIn**: DataSiteAI  
+**💼 LinkedIn**: DataSight AI  
 
 ---
 
@@ -96,7 +96,7 @@ DataSiteAI is an intelligent business analytics platform that automatically anal
 
 ### 💬 **What Our Customers Say**
 
-*"DataSiteAI helped us identify a 23% increase in customer lifetime value within our premium segment. The insights were actionable and easy to understand."*  
+*"DataSight AI helped us identify a 23% increase in customer lifetime value within our premium segment. The insights were actionable and easy to understand."*  
 **— Sarah Johnson, COO, RetailMax**
 
 *"We reduced our fraud detection time from days to minutes. The AI flagged patterns we never would have caught manually."*  
@@ -110,8 +110,8 @@ DataSiteAI is an intelligent business analytics platform that automatically anal
 **Start your free trial today and see the difference AI can make!**
 
 **👉 Schedule Your Demo: [Book Now]**  
-**👉 Start Free Trial: [Try DataSiteAI]**  
+**👉 Start Free Trial: [Try DataSight AI]**  
 
 ---
 
-*DataSiteAI - Making every business owner a data scientist* 🚀
+*DataSight AI - Making every business owner a data scientist* 🚀
