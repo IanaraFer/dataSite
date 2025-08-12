@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataSight AI - Transform Your Data Into Decisions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home">
+                <i class="fas fa-robot me-2"></i>DataSight AI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#demo">Demo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="platform.html" target="_blank">
+                        <i class="fas fa-external-link-alt me-1"></i>Launch Platform
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold text-white mb-4">
+                        Transform Your Data Into Decisions
+                        <span class="text-warning">Automatically</span>
+                    </h1>
+                    <p class="lead text-light mb-4">
+                        DataSight AI is the only platform that makes every business owner a data scientist. 
+                        Upload your data and get actionable insights in minutes, not months.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        <a href="platform.html" target="_blank" class="btn btn-warning btn-lg px-4">
+                            <i class="fas fa-rocket me-2"></i>Try Live Demo
+                        </a>
+                        <a href="#demo" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-play me-2"></i>Watch Video
+                        </a>
+                    </div>
+                    <div class="row text-center text-light">
+                        <div class="col-4">
+                            <h3 class="fw-bold">73%</h3>
+                            <small>Companies struggle with data</small>
+                        </div>
+                        <div class="col-4">
+                            <h3 class="fw-bold">85%</h3>
+                            <small>Forecast accuracy</small>
+                        </div>
+                        <div class="col-4">
+                            <h3 class="fw-bold">340%</h3>
+                            <small>Average ROI</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/600x400/1f77b4/ffffff?text=AI+Analytics+Dashboard" 
+                             alt="DataSight AI Dashboard" class="img-fluid rounded shadow-lg">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-light btn-lg rounded-circle" style="width: 80px; height: 80px;" 
+                                    onclick="showDemoModal()">
+                                <i class="fas fa-play text-primary fs-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Why Choose DataSight AI?</h2>
+                <p class="lead text-muted">Enterprise-level analytics made simple for every business</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card h-100 p-4 bg-white rounded shadow-sm">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-brain text-primary fs-1"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">AI-Powered Insights</h4>
+                        <p class="text-muted">Advanced machine learning algorithms automatically analyze your data and provide actionable business recommendations in plain English.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card h-100 p-4 bg-white rounded shadow-sm">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-chart-line text-success fs-1"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Sales Forecasting</h4>
+                        <p class="text-muted">Predict future revenue with 85%+ accuracy using our Prophet-based forecasting engine. Make informed decisions about inventory and growth.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card h-100 p-4 bg-white rounded shadow-sm">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-users text-info fs-1"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Customer Segmentation</h4>
+                        <p class="text-muted">Automatically group customers by behavior and value. Discover your most profitable segments and optimize marketing strategies.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card h-100 p-4 bg-white rounded shadow-sm">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-search text-warning fs-1"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Anomaly Detection</h4>
+                        <p class="text-muted">Spot unusual patterns and outliers in real-time. Detect fraud, identify opportunities, and catch problems before they impact your business.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card h-100 p-4 bg-white rounded shadow-sm">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-dashboard text-danger fs-1"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Interactive Dashboards</h4>
+                        <p class="text-muted">Beautiful, professional dashboards that update in real-time. Share insights with your team through stunning visualizations.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card h-100 p-4 bg-white rounded shadow-sm">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-bolt text-purple fs-1"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Lightning Fast</h4>
+                        <p class="text-muted">Get insights in minutes, not weeks. Simply upload your data and let our AI do the heavy lifting. No technical skills required.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="py-5 bg-primary text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="display-5 fw-bold mb-4">See DataSight AI in Action</h2>
+                    <p class="lead mb-4">
+                        Watch how easy it is to transform raw business data into actionable insights. 
+                        No coding, no complexity – just results.
+                    </p>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Upload CSV or Excel files instantly</li>
+                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>AI analyzes patterns automatically</li>
+                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Get forecasts and recommendations</li>
+                        <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Export beautiful reports</li>
+                    </ul>
+                    <a href="platform.html" target="_blank" class="btn btn-warning btn-lg me-3">
+                        <i class="fas fa-rocket me-2"></i>Try Live Platform
+                    </a>
+                    <button class="btn btn-outline-light btn-lg" onclick="showDemoModal()">
+                        <i class="fas fa-play me-2"></i>Watch Demo
+                    </button>
+                </div>
+                <div class="col-lg-6">
+                    <div class="demo-video-placeholder bg-dark rounded p-5 text-center">
+                        <i class="fas fa-play-circle fs-1 text-warning mb-3"></i>
+                        <h4>Interactive Demo Video</h4>
+                        <p class="mb-0">3-minute walkthrough of key features</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Simple, Transparent Pricing</h2>
+                <p class="lead text-muted">Choose the plan that fits your business size and needs</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="pricing-card h-100 p-4 bg-white rounded shadow-sm border">
+                        <div class="text-center">
+                            <h3 class="fw-bold text-primary">Starter</h3>
+                            <div class="pricing-price mb-3">
+                                <span class="fs-1 fw-bold">€29</span>
+                                <span class="text-muted">/month</span>
+                            </div>
+                            <p class="text-muted mb-4">Perfect for small businesses</p>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Up to 10,000 data rows</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Basic AI analytics</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>5 dashboard templates</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Email support</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>1 user account</li>
+                        </ul>
+                        <button class="btn btn-outline-primary w-100">Start Free Trial</button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pricing-card h-100 p-4 bg-primary text-white rounded shadow-sm position-relative">
+                        <div class="position-absolute top-0 start-50 translate-middle">
+                            <span class="badge bg-warning text-dark px-3 py-2">Most Popular</span>
+                        </div>
+                        <div class="text-center mt-3">
+                            <h3 class="fw-bold">Professional</h3>
+                            <div class="pricing-price mb-3">
+                                <span class="fs-1 fw-bold">€99</span>
+                                <span class="opacity-75">/month</span>
+                            </div>
+                            <p class="opacity-75 mb-4">For growing businesses</p>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Up to 100,000 data rows</li>
+                            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Advanced AI analytics</li>
+                            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>25 dashboard templates</li>
+                            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>Priority support</li>
+                            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>5 user accounts</li>
+                            <li class="mb-2"><i class="fas fa-check text-warning me-2"></i>API access</li>
+                        </ul>
+                        <button class="btn btn-warning w-100 text-dark fw-bold">Start Free Trial</button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="pricing-card h-100 p-4 bg-white rounded shadow-sm border">
+                        <div class="text-center">
+                            <h3 class="fw-bold text-primary">Enterprise</h3>
+                            <div class="pricing-price mb-3">
+                                <span class="fs-1 fw-bold">€299</span>
+                                <span class="text-muted">/month</span>
+                            </div>
+                            <p class="text-muted mb-4">For large organizations</p>
+                        </div>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Unlimited data</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Custom AI models</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>White-label options</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Phone support</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Unlimited users</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Custom training</li>
+                        </ul>
+                        <button class="btn btn-outline-primary w-100">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <p class="text-muted">🔥 <strong>Limited Time:</strong> First 100 customers get 50% off for 6 months!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">What Our Customers Say</h2>
+                <p class="lead text-muted">Real results from real businesses</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="testimonial-card p-4 bg-white rounded shadow-sm h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">"DataSight AI helped us identify a 23% increase in customer lifetime value within our premium segment. The insights were actionable and easy to understand."</p>
+                        <div class="d-flex align-items-center">
+                            <img src="https://via.placeholder.com/50x50/007bff/ffffff?text=SJ" alt="Sarah Johnson" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-0">Sarah Johnson</h6>
+                                <small class="text-muted">COO, RetailMax</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="testimonial-card p-4 bg-white rounded shadow-sm h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">"We reduced our fraud detection time from days to minutes. The AI flagged patterns we never would have caught manually."</p>
+                        <div class="d-flex align-items-center">
+                            <img src="https://via.placeholder.com/50x50/28a745/ffffff?text=MC" alt="Michael Chen" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-0">Michael Chen</h6>
+                                <small class="text-muted">CFO, FinanceFlow</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="testimonial-card p-4 bg-white rounded shadow-sm h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">"Finally, a tool that doesn't require a PhD in data science. We got actionable insights on day one."</p>
+                        <div class="d-flex align-items-center">
+                            <img src="https://via.placeholder.com/50x50/dc3545/ffffff?text=AR" alt="Anna Rodriguez" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-0">Anna Rodriguez</h6>
+                                <small class="text-muted">CEO, TechStart</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="display-5 fw-bold mb-4">About DataSight AI</h2>
+                    <p class="lead mb-4">
+                        We believe every business owner should have access to enterprise-level analytics, 
+                        regardless of their technical expertise or budget.
+                    </p>
+                    <p class="mb-4">
+                        Founded in 2025, DataSight AI was born from the frustration of seeing talented 
+                        entrepreneurs make gut decisions when they could be making data-driven ones. 
+                        Our platform democratizes artificial intelligence and makes advanced analytics 
+                        accessible to businesses of all sizes.
+                    </p>
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <h3 class="fw-bold text-primary">1,247</h3>
+                            <p class="text-muted">Companies Served</p>
+                        </div>
+                        <div class="col-6">
+                            <h3 class="fw-bold text-primary">45,623</h3>
+                            <p class="text-muted">Insights Generated</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://via.placeholder.com/500x400/f8f9fa/6c757d?text=Our+Mission" alt="About DataSight AI" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="display-5 fw-bold mb-3">Ready to Transform Your Business?</h2>
+            <p class="lead mb-4">Join over 1,000 businesses already using DataSight AI to make smarter decisions</p>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <a href="platform.html" target="_blank" class="btn btn-warning btn-lg px-4">
+                    <i class="fas fa-rocket me-2"></i>Start Free Trial
+                </a>
+                <button class="btn btn-outline-light btn-lg px-4" onclick="showContactModal()">
+                    <i class="fas fa-calendar me-2"></i>Book Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-robot me-2"></i>DataSight AI
+                    </h5>
+                    <p class="text-muted">Making every business owner a data scientist through the power of artificial intelligence.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light"><i class="fab fa-linkedin fs-4"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-twitter fs-4"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-youtube fs-4"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-bold mb-3">Product</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#features" class="text-muted text-decoration-none">Features</a></li>
+                        <li><a href="#pricing" class="text-muted text-decoration-none">Pricing</a></li>
+                        <li><a href="platform.html" class="text-muted text-decoration-none">Demo</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">API</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-bold mb-3">Company</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#about" class="text-muted text-decoration-none">About</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Careers</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Blog</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Press</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-bold mb-3">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Help Center</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Documentation</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Contact</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Status</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-bold mb-3">Legal</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-muted text-decoration-none">Privacy</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Terms</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Security</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">&copy; 2025 DataSight AI. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">Made with ❤️ for data-driven businesses</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Demo Modal -->
+    <div class="modal fade" id="demoModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">DataSight AI Demo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Book a Demo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Company</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Schedule Demo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
