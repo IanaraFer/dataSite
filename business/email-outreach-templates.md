@@ -21,11 +21,13 @@ If it's more than 2 hours, I have something that might interest you.
 
 **DataSight AI** has helped over 1,200 businesses like yours increase ROI by 340% on average by turning raw data into precise business decisions.
 
-**For example:**
-- Predict next quarter's revenue with 87% accuracy
-- Automatically identify your most profitable customers
-- Spot opportunities and risks before competitors
-- Get actionable recommendations in plain English
+**Our AI analytics platform offers 16+ analysis types:**
+- Revenue forecasting with 87% accuracy
+- Customer lifetime value and churn prediction
+- Market basket analysis for cross-selling opportunities
+- RFM segmentation and cohort analysis
+- Seasonal pattern detection and growth analysis
+- Executive reporting with actionable recommendations
 
 **No technical skills required. Results in minutes, not months.**
 
@@ -75,9 +77,12 @@ I can show you a 15-minute demo using data similar to yours. You'll see exactly 
 Available this week for a quick call?
 
 Best regards,
-[Your Name]
-DataSight AI
-📧 [your-email]
+**DataSight AI Founding Team**
+📧 datasightai.founders@gmail.com
+🌐 www.datasight.ai
+� +353 874502058
+
+*Turning Data into Decisions—Automatically*
 
 P.S. Even if DataSight AI isn't right for you, the demo will show you what questions you should be asking your data. Many clients say that alone was worth the conversation.
 
@@ -111,7 +116,9 @@ Want to see how this works for companies like [Company Name]? I can show you a 1
 Available for a quick call this week?
 
 Best,
-[Your Name]
+**DataSight AI Founding Team**
+📧 datasightai.founders@gmail.com
+📱 +353 874502058
 
 ### **FOR MANUFACTURING:**
 
@@ -134,7 +141,9 @@ Manufacturing companies using AI analytics are reducing waste by 35% and increas
 Interested in seeing how this applies to your operations?
 
 Best regards,
-[Your Name]
+**DataSight AI Founding Team**
+📧 datasightai.founders@gmail.com
+📱 +353 874502058
 
 ### **FOR PROFESSIONAL SERVICES:**
 
@@ -157,7 +166,9 @@ Most professional services firms can't answer this precisely, but **DataSight AI
 Want to see what insights your client data reveals?
 
 Best,
-[Your Name]
+**DataSight AI Founding Team**
+📧 datasightai.founders@gmail.com
+📱 +353 874502058
 
 ---
 
@@ -183,7 +194,9 @@ I'm looking to help 3-5 more companies before the end of the quarter, and I'd lo
 If someone comes to mind, just reply with their info and I'll reach out professionally, mentioning you referred them.
 
 Thanks!
-[Your Name]
+**DataSight AI Founding Team**
+📧 datasightai.founders@gmail.com
+📱 +353 874502058
 
 P.S. If they become a client, I'd love to send you a [gift card/bottle of wine/charitable donation] as a thank you.
 
@@ -216,7 +229,9 @@ Interested in exploring how this could work for [their company]?
 I can show you the partner dashboard and commission structure in a 20-minute call.
 
 Best regards,
-[Your Name]
+**DataSight AI Founding Team**
+📧 datasightai.founders@gmail.com
+📱 +353 874502058
 
 ---
 
