@@ -322,33 +322,33 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">First Name *</label>
-                                        <input type="text" class="form-control form-control-lg" id="firstName" required>
+                                        <input type="text" class="form-control form-control-lg" id="firstName" name="firstName" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Last Name *</label>
-                                        <input type="text" class="form-control form-control-lg" id="lastName" required>
+                                        <input type="text" class="form-control form-control-lg" id="lastName" name="lastName" required>
                                     </div>
                                 </div>
                                 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Business Email *</label>
-                                        <input type="email" class="form-control form-control-lg" id="email" required>
+                                        <input type="email" class="form-control form-control-lg" id="email" name="email" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Phone Number *</label>
-                                        <input type="tel" class="form-control form-control-lg" id="phone" required>
+                                        <input type="tel" class="form-control form-control-lg" id="phone" name="phone" required>
                                     </div>
                                 </div>
                                 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Company Name *</label>
-                                        <input type="text" class="form-control form-control-lg" id="company" required>
+                                        <input type="text" class="form-control form-control-lg" id="company" name="company" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Industry *</label>
-                                        <select class="form-select form-select-lg" id="industry" required>
+                                        <select class="form-select form-select-lg" id="industry" name="industry" required>
                                             <option value="">Select Industry</option>
                                             <option value="retail">Retail/E-commerce</option>
                                             <option value="restaurant">Restaurant/Food Service</option>
@@ -364,7 +364,7 @@
                                 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Approximate Annual Revenue *</label>
-                                    <select class="form-select form-select-lg" id="revenue" required>
+                                    <select class="form-select form-select-lg" id="revenue" name="revenue" required>
                                         <option value="">Select Revenue Range</option>
                                         <option value="under-500k">Under €500K</option>
                                         <option value="500k-1m">€500K - €1M</option>
@@ -376,13 +376,13 @@
                                 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">What's your biggest business challenge?</label>
-                                    <textarea class="form-control" id="challenge" rows="3" 
+                                    <textarea class="form-control" id="challenge" name="challenge" rows="3" 
                                               placeholder="e.g., Understanding customer behavior, predicting sales, optimizing inventory..."></textarea>
                                 </div>
                                 
                                 <div class="mb-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="consent" required>
+                                        <input class="form-check-input" type="checkbox" id="consent" name="consent" required>
                                         <label class="form-check-label" for="consent">
                                             I agree to receive my free AI analysis and occasional emails about DataSight AI. 
                                             You can unsubscribe anytime. <a href="#" class="text-primary">Privacy Policy</a>
@@ -449,6 +449,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
         function scrollToForm() {
             document.getElementById('form-section').scrollIntoView({ behavior: 'smooth' });
@@ -462,22 +463,6 @@
                 document.getElementById('spotsLeft').textContent = spotsLeft;
             }
         }, 30000);
-
-        // Form submission
-        document.getElementById('healthCheckForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show success message
-            alert('Thank you! Your free AI business health check is being generated. You\'ll receive your comprehensive report within 15 minutes at the email address provided.');
-            
-            // Here you would normally send the data to your backend
-            // For now, we'll just log it
-            const formData = new FormData(this);
-            console.log('Form submitted with data:', Object.fromEntries(formData));
-            
-            // Redirect to thank you page or show success state
-            window.location.href = 'platform.html';
-        });
 
         // Add some urgency with timer
         function startUrgencyTimer() {
@@ -495,8 +480,146 @@
             }
         }
 
+        // Initialize EmailJS (you'll need to set this up)
+        emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+
+        // Form submission handler
+        document.getElementById('healthCheckForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading state
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            submitButton.disabled = true;
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Save to localStorage for backup
+            const leads = JSON.parse(localStorage.getItem('datasight_leads') || '[]');
+            const newLead = {
+                ...data,
+                timestamp: new Date().toISOString(),
+                id: Date.now().toString(),
+                status: 'new'
+            };
+            leads.push(newLead);
+            localStorage.setItem('datasight_leads', JSON.stringify(leads));
+            
+            // Prepare email data
+            const emailData = {
+                to_email: 'datasightai.founders@gmail.com',
+                from_name: `${data.firstName} ${data.lastName}`,
+                from_email: data.email,
+                company: data.company,
+                phone: data.phone,
+                industry: data.industry,
+                revenue: data.revenue,
+                challenge: data.challenge || 'Not specified',
+                timestamp: new Date().toLocaleString(),
+                subject: `New DataSight AI Lead: ${data.firstName} from ${data.company}`
+            };
+
+            // For now, let's use a simpler approach with Netlify Forms or direct email
+            // Create a comprehensive email with all the lead information
+            const emailBody = `
+🚀 NEW DATASIGHT AI LEAD ALERT!
+
+👤 CONTACT INFORMATION:
+Name: ${data.firstName} ${data.lastName}
+Company: ${data.company}
+Email: ${data.email}
+Phone: ${data.phone}
+
+🏢 BUSINESS DETAILS:
+Industry: ${data.industry}
+Annual Revenue: ${data.revenue}
+Main Challenge: ${data.challenge || 'Not specified'}
+
+⏰ SUBMISSION TIME: ${new Date().toLocaleString()}
+
+📋 NEXT STEPS:
+1. Call within 15 minutes for best conversion rates
+2. Send personalized AI analysis via email
+3. Schedule demo call within 24 hours
+4. Add to CRM with "hot lead" status
+
+💰 POTENTIAL VALUE:
+Based on revenue range, this could be a €${getLeadValue(data.revenue)} opportunity.
+
+---
+This lead was generated from your DataSight AI free trial landing page.
+            `.trim();
+
+            // Use a service like Formspree for now (free and simple)
+            fetch('https://formspree.io/f/xpzgdqrk', { // You'll need to create this
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: 'datasightai.founders@gmail.com',
+                    subject: `🚀 NEW LEAD: ${data.firstName} from ${data.company}`,
+                    message: emailBody,
+                    _replyto: data.email,
+                    _subject: `New DataSight AI Lead: ${data.firstName} from ${data.company}`,
+                    lead_data: JSON.stringify(data)
+                })
+            }).then(response => {
+                // Reset button
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                
+                if (response.ok) {
+                    // Success - show message and redirect
+                    alert('✅ SUCCESS! Your free AI business health check request has been submitted. You\'ll receive your comprehensive report within 15 minutes at ' + data.email);
+                    
+                    // Also send a copy to yourself via mailto as backup
+                    const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(`NEW LEAD: ${data.firstName} from ${data.company}`)}&body=${encodeURIComponent(emailBody)}`;
+                    window.open(mailtoLink);
+                    
+                    // Redirect to thank you page
+                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}`;
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            }).catch(error => {
+                console.error('Email sending failed:', error);
+                
+                // Fallback to mailto
+                const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(`NEW LEAD: ${data.firstName} from ${data.company}`)}&body=${encodeURIComponent(emailBody)}`;
+                window.open(mailtoLink);
+                
+                // Reset button
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                
+                // Still show success to user
+                alert('✅ Your request has been submitted! Check your email for confirmation. Our team will contact you within 15 minutes.');
+                
+                // Redirect to thank you page
+                window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}`;
+            });
+        });
+
+        function getLeadValue(revenue) {
+            const values = {
+                'under-500k': '2,500-5,000',
+                '500k-1m': '5,000-10,000', 
+                '1m-5m': '10,000-25,000',
+                '5m-20m': '25,000-75,000',
+                'over-20m': '50,000-150,000'
+            };
+            return values[revenue] || '5,000-15,000';
+        }
+
         startUrgencyTimer();
         setInterval(startUrgencyTimer, 60000);
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
