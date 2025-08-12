@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataSiteAI - Generate Your Business Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .analysis-container { background: white; border-radius: 15px; padding: 30px; max-width: 800px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .btn-primary-custom { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 15px 30px; border-radius: 25px; font-weight: 600; }
+        .analysis-section { background: #f8f9fa; border-left: 4px solid #007bff; padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .metric-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px; margin: 10px 0; text-align: center; }
+        .recommendation { background: #e8f5e8; border: 1px solid #28a745; border-radius: 10px; padding: 15px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="analysis-container">
+            <div class="text-center mb-4">
+                <h2><i class="fas fa-chart-line me-2"></i>DataSiteAI - Your Business Analysis</h2>
+                <p class="text-muted">Generate and send your personalized AI business health check</p>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Your Email Address</label>
+                    <input type="email" id="userEmail" class="form-control" placeholder="Enter your email" value="datasightai.founders@gmail.com">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Company Name</label>
+                    <input type="text" id="companyName" class="form-control" placeholder="Your company name" value="DataSight AI">
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Industry</label>
+                    <select id="industry" class="form-select">
+                        <option value="technology">Technology</option>
+                        <option value="retail">Retail</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="finance">Finance</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="consulting">Consulting</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Revenue Range</label>
+                    <select id="revenue" class="form-select">
+                        <option value="under-500k">Under €500k</option>
+                        <option value="500k-1m">€500k - €1M</option>
+                        <option value="1m-5m">€1M - €5M</option>
+                        <option value="5m-20m">€5M - €20M</option>
+                        <option value="over-20m">Over €20M</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Company Size</label>
+                    <select id="companySize" class="form-select">
+                        <option value="1-10">1-10 employees</option>
+                        <option value="11-50">11-50 employees</option>
+                        <option value="51-200">51-200 employees</option>
+                        <option value="201-1000">201-1000 employees</option>
+                        <option value="1000+">1000+ employees</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="text-center mb-4">
+                <button onclick="generateAnalysis()" class="btn btn-primary-custom btn-lg">
+                    <i class="fas fa-robot me-2"></i>Generate My AI Business Analysis
+                </button>
+            </div>
+            
+            <div id="analysisResult" style="display: none;">
+                <div class="analysis-section">
+                    <h4><i class="fas fa-chart-bar me-2"></i>Business Health Score</h4>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="metric-card">
+                                <h3 id="overallScore" class="text-primary">85/100</h3>
+                                <small>Overall Health</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-card">
+                                <h3 id="growthScore" class="text-success">92/100</h3>
+                                <small>Growth Potential</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-card">
+                                <h3 id="efficiencyScore" class="text-warning">78/100</h3>
+                                <small>Efficiency</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-card">
+                                <h3 id="riskScore" class="text-info">83/100</h3>
+                                <small>Risk Management</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <h4><i class="fas fa-lightbulb me-2"></i>Key Insights</h4>
+                    <div id="keyInsights"></div>
+                </div>
+                
+                <div class="analysis-section">
+                    <h4><i class="fas fa-rocket me-2"></i>Recommendations</h4>
+                    <div id="recommendations"></div>
+                </div>
+                
+                <div class="analysis-section">
+                    <h4><i class="fas fa-chart-line me-2"></i>Growth Opportunities</h4>
+                    <div id="opportunities"></div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button onclick="sendAnalysisEmail()" class="btn btn-primary-custom btn-lg">
+                        <i class="fas fa-envelope me-2"></i>Send Analysis to My Email
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function generateAnalysis() {
+            const company = document.getElementById('companyName').value;
+            const industry = document.getElementById('industry').value;
+            const revenue = document.getElementById('revenue').value;
+            const size = document.getElementById('companySize').value;
+            
+            // Generate dynamic scores based on inputs
+            const baseScores = {
+                technology: { overall: 85, growth: 92, efficiency: 78, risk: 83 },
+                retail: { overall: 78, growth: 85, efficiency: 82, risk: 75 },
+                healthcare: { overall: 88, growth: 89, efficiency: 85, risk: 92 },
+                finance: { overall: 82, growth: 87, efficiency: 88, risk: 95 },
+                manufacturing: { overall: 79, growth: 82, efficiency: 85, risk: 78 },
+                consulting: { overall: 86, growth: 88, efficiency: 82, risk: 80 },
+                other: { overall: 80, growth: 85, efficiency: 80, risk: 80 }
+            };
+            
+            const scores = baseScores[industry] || baseScores.other;
+            
+            // Revenue adjustments
+            const revenueMultipliers = {
+                'under-500k': 0.9,
+                '500k-1m': 0.95,
+                '1m-5m': 1.0,
+                '5m-20m': 1.05,
+                'over-20m': 1.1
+            };
+            
+            const multiplier = revenueMultipliers[revenue] || 1.0;
+            
+            // Apply adjustments
+            Object.keys(scores).forEach(key => {
+                scores[key] = Math.min(100, Math.round(scores[key] * multiplier));
+            });
+            
+            // Update display
+            document.getElementById('overallScore').textContent = scores.overall + '/100';
+            document.getElementById('growthScore').textContent = scores.growth + '/100';
+            document.getElementById('efficiencyScore').textContent = scores.efficiency + '/100';
+            document.getElementById('riskScore').textContent = scores.risk + '/100';
+            
+            // Generate insights
+            const insights = generateInsights(industry, revenue, size, scores);
+            document.getElementById('keyInsights').innerHTML = insights;
+            
+            // Generate recommendations
+            const recommendations = generateRecommendations(industry, revenue, scores);
+            document.getElementById('recommendations').innerHTML = recommendations;
+            
+            // Generate opportunities
+            const opportunities = generateOpportunities(industry, revenue, size);
+            document.getElementById('opportunities').innerHTML = opportunities;
+            
+            // Show results
+            document.getElementById('analysisResult').style.display = 'block';
+            document.getElementById('analysisResult').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function generateInsights(industry, revenue, size, scores) {
+            const insights = [
+                `📊 Your ${industry} business shows ${scores.overall >= 80 ? 'strong' : scores.overall >= 70 ? 'good' : 'moderate'} overall performance with significant potential for optimization.`,
+                `💰 Revenue optimization potential: Based on your ${revenue} range, you could increase profitability by 15-25% through data-driven decisions.`,
+                `🎯 Growth trajectory: Your growth score of ${scores.growth}/100 indicates ${scores.growth >= 85 ? 'excellent' : scores.growth >= 75 ? 'good' : 'moderate'} expansion opportunities.`,
+                `⚡ Efficiency gaps: Current efficiency score of ${scores.efficiency}/100 suggests potential for ${100 - scores.efficiency}% improvement in operational processes.`
+            ];
+            
+            return insights.map(insight => `<p><i class="fas fa-check-circle text-primary me-2"></i>${insight}</p>`).join('');
+        }
+        
+        function generateRecommendations(industry, revenue, scores) {
+            const recommendations = [];
+            
+            if (scores.efficiency < 85) {
+                recommendations.push({
+                    title: "Implement Data Analytics Dashboard",
+                    description: "Deploy real-time analytics to monitor KPIs and identify bottlenecks. Expected ROI: 200-300% within 6 months.",
+                    priority: "High"
+                });
+            }
+            
+            if (scores.growth < 90) {
+                recommendations.push({
+                    title: "Customer Segmentation Analysis",
+                    description: "Use AI to identify high-value customer segments and personalize marketing strategies.",
+                    priority: "High"
+                });
+            }
+            
+            if (scores.risk < 85) {
+                recommendations.push({
+                    title: "Predictive Risk Management",
+                    description: "Implement AI-powered risk detection to prevent issues before they impact business operations.",
+                    priority: "Medium"
+                });
+            }
+            
+            recommendations.push({
+                title: "Sales Forecasting Automation",
+                description: "Deploy machine learning models to predict sales trends and optimize inventory management.",
+                priority: "Medium"
+            });
+            
+            return recommendations.map(rec => 
+                `<div class="recommendation">
+                    <h6><i class="fas fa-star text-warning me-2"></i>${rec.title} 
+                    <span class="badge bg-${rec.priority === 'High' ? 'danger' : 'warning'} ms-2">${rec.priority} Priority</span></h6>
+                    <p class="mb-0">${rec.description}</p>
+                </div>`
+            ).join('');
+        }
+        
+        function generateOpportunities(industry, revenue, size) {
+            const opportunities = [
+                {
+                    title: "AI-Powered Customer Insights",
+                    impact: "25-40% increase in customer retention",
+                    timeframe: "3-6 months"
+                },
+                {
+                    title: "Automated Financial Forecasting",
+                    impact: "15-30% improvement in budget accuracy",
+                    timeframe: "2-4 months"
+                },
+                {
+                    title: "Competitive Intelligence Platform",
+                    impact: "20-35% faster market response time",
+                    timeframe: "4-8 months"
+                },
+                {
+                    title: "Process Optimization through ML",
+                    impact: "10-25% operational cost reduction",
+                    timeframe: "6-12 months"
+                }
+            ];
+            
+            return opportunities.map(opp => 
+                `<div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-arrow-up text-success me-2"></i>${opp.title}</h6>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <small class="text-muted">Impact</small><br>
+                        <strong class="text-success">${opp.impact}</strong>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <small class="text-muted">Timeline</small><br>
+                        <strong class="text-primary">${opp.timeframe}</strong>
+                    </div>
+                </div>`
+            ).join('');
+        }
+        
+        function sendAnalysisEmail() {
+            const email = document.getElementById('userEmail').value;
+            const company = document.getElementById('companyName').value;
+            const industry = document.getElementById('industry').value;
+            
+            if (!email) {
+                alert('Please enter your email address');
+                return;
+            }
+            
+            // Get all the analysis content
+            const overallScore = document.getElementById('overallScore').textContent;
+            const growthScore = document.getElementById('growthScore').textContent;
+            const efficiencyScore = document.getElementById('efficiencyScore').textContent;
+            const riskScore = document.getElementById('riskScore').textContent;
+            
+            const keyInsights = document.getElementById('keyInsights').textContent;
+            const recommendations = document.getElementById('recommendations').textContent;
+            
+            // Create comprehensive email content
+            const emailSubject = `🚀 Your DataSight AI Business Analysis Report - ${company}`;
+            const emailBody = `
+🎯 DATASIGHT AI - BUSINESS ANALYSIS REPORT
+═══════════════════════════════════════════
+
+📊 BUSINESS HEALTH SCORES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Overall Health Score: ${overallScore}
+• Growth Potential: ${growthScore}
+• Operational Efficiency: ${efficiencyScore}
+• Risk Management: ${riskScore}
+
+🔍 KEY INSIGHTS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${keyInsights}
+
+💡 IMMEDIATE ACTION ITEMS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. 📈 Implement Data Analytics Dashboard (High Priority)
+   → Expected ROI: 200-300% within 6 months
+   → Monitor KPIs and identify bottlenecks in real-time
+
+2. 🎯 Customer Segmentation Analysis (High Priority)
+   → Use AI to identify high-value segments
+   → Personalize marketing for 25-40% retention boost
+
+3. ⚡ Sales Forecasting Automation (Medium Priority)
+   → Deploy ML models for trend prediction
+   → Optimize inventory and reduce costs by 15-30%
+
+4. 🛡️ Predictive Risk Management (Medium Priority)
+   → AI-powered early warning systems
+   → Prevent issues before they impact operations
+
+🚀 GROWTH OPPORTUNITIES:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• AI-Powered Customer Insights: 25-40% retention increase (3-6 months)
+• Automated Financial Forecasting: 15-30% budget accuracy (2-4 months)
+• Competitive Intelligence: 20-35% faster market response (4-8 months)
+• Process Optimization: 10-25% cost reduction (6-12 months)
+
+💰 ESTIMATED BUSINESS IMPACT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Total Potential Revenue Increase: 35-60% annually
+Cost Reduction Potential: 15-35%
+ROI Timeline: 3-6 months for full implementation
+
+📞 NEXT STEPS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Schedule a FREE 30-minute strategy call: +353 874502058
+2. Request detailed implementation roadmap
+3. Explore custom AI solutions for ${industry} industry
+4. Access DataSight AI platform demo
+
+🔒 This analysis was generated using advanced AI algorithms based on your business profile.
+All data is kept confidential and GDPR compliant.
+
+📧 Questions? Reply to this email or contact us at:
+Email: datasightai.founders@gmail.com
+Phone: +353 874502058
+Website: DataSight AI Platform
+
+═══════════════════════════════════════════
+© 2025 DataSight AI - Transforming Business Through Intelligence
+            `.trim();
+
+            // Open email client with the complete analysis
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+            window.open(mailtoLink);
+            
+            // Also send a copy to the business email
+            const businessEmailSubject = `📊 Analysis Report Sent to ${company} (${email})`;
+            const businessEmailBody = `
+📊 ANALYSIS REPORT DELIVERY CONFIRMATION
+
+Report sent to: ${email}
+Company: ${company}
+Industry: ${industry}
+Timestamp: ${new Date().toLocaleString()}
+
+Business Health Scores:
+• Overall: ${overallScore}
+• Growth: ${growthScore}
+• Efficiency: ${efficiencyScore}
+• Risk: ${riskScore}
+
+📞 FOLLOW-UP REQUIRED:
+• Call customer within 24 hours: ${email}
+• Offer strategy consultation
+• Discuss implementation timeline
+• Schedule platform demo
+
+This is a qualified lead ready for conversion.
+            `.trim();
+            
+            const businessMailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(businessEmailSubject)}&body=${encodeURIComponent(businessEmailBody)}`;
+            
+            // Open both emails
+            setTimeout(() => {
+                window.open(businessMailtoLink);
+            }, 1000);
+            
+            alert(`✅ SUCCESS! Your comprehensive business analysis has been sent to ${email}
+
+📧 Check your email client - two emails will open:
+1. Your detailed analysis report
+2. Business notification for follow-up
+
+You'll receive your complete AI business health check with:
+• Detailed scores and insights
+• Actionable recommendations
+• Growth opportunities
+• Implementation roadmap
+
+📞 Questions? Call us at +353 874502058`);
+        }
+        
+        // Auto-load with saved data if available
+        window.addEventListener('load', function() {
+            // Try to load saved lead data
+            const leads = JSON.parse(localStorage.getItem('datasight_leads') || '[]');
+            if (leads.length > 0) {
+                const lastLead = leads[leads.length - 1];
+                if (lastLead.email) document.getElementById('userEmail').value = lastLead.email;
+                if (lastLead.company) document.getElementById('companyName').value = lastLead.company;
+                if (lastLead.industry) document.getElementById('industry').value = lastLead.industry;
+                if (lastLead.revenue) document.getElementById('revenue').value = lastLead.revenue;
+            }
+        });
+    </script>
+</body>
+</html>

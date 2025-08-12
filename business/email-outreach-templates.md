@@ -1,4 +1,12 @@
-# 📧 Email Outreach Templates for DataSight AI
+# 📧 Email Outreach Templates for Dat📧 datasightai.founders@gmail.com
+🌐 **YOUR-Best regards,
+**DataSight AI Founding Team**
+📧 datasightai.founders@gmail.com
+🌐 **[YOUR-WEBSITE-HERE]** (Need to set up domain)
+📱 +353 874502058tasightai.founders@gmail.com
+🌐 **YOUR-DOMAIN.com** (Replace with your actual domain)
+📱 +353 874502058AIN.com** (Replace with your actual domain)
+📱 +353 874502058ght AI
 
 *Professional email templates for different company types and situations*
 
