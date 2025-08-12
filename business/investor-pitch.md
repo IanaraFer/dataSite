@@ -309,8 +309,8 @@ Our platform democratizes data science by providing:
 **Ready to Transform How Businesses Use Data?**
 
 **Contact Information**:
-- **Email**: founders@datasight.ai
-- **Phone**: +49 XXX XXX XXXX
+- **Email**: datasightai.founders@gmail.com
+- **Phone**: +353 874502058
 - **Website**: www.datasight.ai
 - **LinkedIn**: [Your LinkedIn Profile]
 

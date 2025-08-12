@@ -1,4 +1,10 @@
-# 📧 Email Outreach Templates for DataSight AI
+# 📧 Email Outreach Templates forBest regards,
+**DataSight AI Founding Team**
+📧 datasightai.founders@gmail.com
+🌐 www.datasight.ai
+📱 +353 874502058
+
+*Turning Data into Decisions—Automatically*ght AI
 
 *Professional email templates for different company types and situations*
 
@@ -32,11 +38,12 @@ If it's more than 2 hours, I have something that might interest you.
 Would you be interested in a quick 15-minute demo to see how this could work for [Company Name]? I can show you exactly how companies in [their industry] are using AI to gain competitive advantages.
 
 Best regards,
-[Your Name]
-Founder, DataSight AI
-📧 [your-email]
-📱 [your-phone]
+**DataSight AI Founding Team**
+� founders@datasight.ai
 🌐 www.datasight.ai
+📱 +49 XXX XXX XXXX
+
+*Turning Data into Decisions—Automatically*
 
 P.S. If you're not the right person for this, could you point me toward whoever handles data analytics or business intelligence at [Company Name]?
 

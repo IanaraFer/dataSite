@@ -197,9 +197,9 @@ We're reaching out because companies like yours are sitting on goldmines of data
 **Our Commitment:** Your success is our success. We don't just provide software - we provide results.
 
 **Contact Information:**
-- **Email:** contact@datasight.ai
+- **Email:** datasightai.founders@gmail.com
 - **Website:** www.datasight.ai
-- **Phone:** [Your phone number]
+- **Phone:** +353 874502058
 - **LinkedIn:** [Your LinkedIn profile]
 
 ---
@@ -214,7 +214,7 @@ The data you need to outperform your competition is already in your systems. Dat
 
 1. **Email us:** "Start my free trial" - setup begins immediately
 2. **Visit our website:** www.datasight.ai/trial
-3. **Call us directly:** [Your phone] for immediate consultation
+3. **Call us directly:** +353 874502058 for immediate consultation
 
 **Questions?** We're here to help. No pressure, just honest advice about whether DataSight AI is right for your business.
 
@@ -222,8 +222,8 @@ Best regards,
 
 **[Your Name]**
 Founder & CEO, DataSight AI
-📧 [your-email@datasight.ai]
-📱 [Your Phone Number]
+📧 datasightai.founders@gmail.com
+📱 +353 874502058
 🌐 www.datasight.ai
 
 ---
