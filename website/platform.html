@@ -243,22 +243,142 @@
                 <!-- Analysis Controls -->
                 <div class="card mb-4" id="analysisControls" style="display: none;">
                     <div class="card-header bg-success text-white">
-                        <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>AI Analysis</h5>
+                        <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>AI Analysis Suite</h5>
                     </div>
                     <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-ai" onclick="runForecast()">
-                                <i class="fas fa-crystal-ball me-2"></i>Generate Forecast
-                            </button>
-                            <button class="btn btn-ai" onclick="runSegmentation()">
-                                <i class="fas fa-users me-2"></i>Customer Segments
-                            </button>
-                            <button class="btn btn-ai" onclick="runAnomalyDetection()">
-                                <i class="fas fa-search me-2"></i>Find Anomalies
-                            </button>
-                            <button class="btn btn-ai" onclick="generateInsights()">
-                                <i class="fas fa-lightbulb me-2"></i>AI Insights
-                            </button>
+                        <!-- Core Analytics -->
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-chart-line me-1"></i>Core Analytics</h6>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runForecast()">
+                                        <i class="fas fa-crystal-ball me-2"></i>Revenue Forecasting
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runTrendAnalysis()">
+                                        <i class="fas fa-trending-up me-2"></i>Trend Analysis
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runSeasonalAnalysis()">
+                                        <i class="fas fa-calendar-alt me-2"></i>Seasonal Patterns
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runGrowthAnalysis()">
+                                        <i class="fas fa-chart-area me-2"></i>Growth Analysis
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Customer Analytics -->
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-users me-1"></i>Customer Analytics</h6>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runSegmentation()">
+                                        <i class="fas fa-users me-2"></i>Customer Segments
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runLifetimeValue()">
+                                        <i class="fas fa-gem me-2"></i>Lifetime Value
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runChurnPrediction()">
+                                        <i class="fas fa-user-times me-2"></i>Churn Prediction
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runRFMAnalysis()">
+                                        <i class="fas fa-star me-2"></i>RFM Analysis
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product & Sales Analytics -->
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-shopping-cart me-1"></i>Product & Sales Analytics</h6>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runProductPerformance()">
+                                        <i class="fas fa-box me-2"></i>Product Performance
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runMarketBasket()">
+                                        <i class="fas fa-shopping-basket me-2"></i>Market Basket
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runPricingAnalysis()">
+                                        <i class="fas fa-dollar-sign me-2"></i>Pricing Analysis
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runSalesOptimization()">
+                                        <i class="fas fa-target me-2"></i>Sales Optimization
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Analytics -->
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-2"><i class="fas fa-brain me-1"></i>Advanced Analytics</h6>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runAnomalyDetection()">
+                                        <i class="fas fa-search me-2"></i>Anomaly Detection
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runSentimentAnalysis()">
+                                        <i class="fas fa-smile me-2"></i>Sentiment Analysis
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runCohortAnalysis()">
+                                        <i class="fas fa-layer-group me-2"></i>Cohort Analysis
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runCompetitorAnalysis()">
+                                        <i class="fas fa-chess me-2"></i>Competitor Analysis
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Insights & Reports -->
+                        <div>
+                            <h6 class="text-muted mb-2"><i class="fas fa-lightbulb me-1"></i>AI Insights & Reports</h6>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="generateInsights()">
+                                        <i class="fas fa-lightbulb me-2"></i>AI Business Insights
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="generateExecutiveReport()">
+                                        <i class="fas fa-file-contract me-2"></i>Executive Report
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runPredictiveModels()">
+                                        <i class="fas fa-robot me-2"></i>Predictive Models
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-ai w-100" onclick="runRecommendationEngine()">
+                                        <i class="fas fa-magic me-2"></i>AI Recommendations
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

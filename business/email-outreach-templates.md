@@ -1,10 +1,4 @@
-# 📧 Email Outreach Templates forBest regards,
-**DataSight AI Founding Team**
-📧 datasightai.founders@gmail.com
-🌐 www.datasight.ai
-📱 +353 874502058
-
-*Turning Data into Decisions—Automatically*ght AI
+# 📧 Email Outreach Templates for DataSight AI
 
 *Professional email templates for different company types and situations*
 
