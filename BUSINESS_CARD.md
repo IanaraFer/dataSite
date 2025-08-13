@@ -1,11 +1,11 @@
-# 🤖 DataSight AI - One-Page Business Overview
+# 🤖 Analytica Core AI - One-Page Business Overview
 
 ---
 
 ## **Transform Your Data Into Decisions - Automatically**
 
 ### 🎯 **What We Do**
-DataSight AI is an intelligent business analytics platform that automatically analyzes your company data and delivers actionable insights using advanced AI and machine learning.
+Analytica Core AI is an intelligent business analytics platform that automatically analyzes your company data and delivers actionable insights using advanced AI and machine learning.
 
 ---
 
@@ -45,7 +45,7 @@ DataSight AI is an intelligent business analytics platform that automatically an
 
 ---
 
-### 🏆 **Why Choose DataSight AI?**
+### 🏆 **Why Choose DataSiteAI?**
 
 ✅ **No Technical Skills Required** - Drag and drop interface  
 ✅ **70% Less Expensive** than Tableau or Power BI  
@@ -75,10 +75,10 @@ DataSight AI is an intelligent business analytics platform that automatically an
 
 ### 📞 **Contact Information**
 
-**🌐 Website**: www.datasight.ai *(coming soon)*  
-**📧 Email**: hello@datasight.ai  
+**🌐 Website**: www.analyticacoreai.com *(launching soon)*  
+**📧 Email**: hello@analyticacoreai.com  
 **📱 Phone**: +49 XXX XXX XXXX  
-**💼 LinkedIn**: DataSight AI  
+**💼 LinkedIn**: DataSiteAI  
 
 ---
 
@@ -96,7 +96,7 @@ DataSight AI is an intelligent business analytics platform that automatically an
 
 ### 💬 **What Our Customers Say**
 
-*"DataSight AI helped us identify a 23% increase in customer lifetime value within our premium segment. The insights were actionable and easy to understand."*  
+*"DataSiteAI helped us identify a 23% increase in customer lifetime value within our premium segment. The insights were actionable and easy to understand."*  
 **— Sarah Johnson, COO, RetailMax**
 
 *"We reduced our fraud detection time from days to minutes. The AI flagged patterns we never would have caught manually."*  
@@ -110,8 +110,8 @@ DataSight AI is an intelligent business analytics platform that automatically an
 **Start your free trial today and see the difference AI can make!**
 
 **👉 Schedule Your Demo: [Book Now]**  
-**👉 Start Free Trial: [Try DataSight AI]**  
+**👉 Start Free Trial: [Try Analytica Core AI]**  
 
 ---
 
-*DataSight AI - Making every business owner a data scientist* 🚀
+*Analytica Core AI - Making every business owner a data scientist* 🚀
