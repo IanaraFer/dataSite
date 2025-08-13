@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytica Core AI - Automated Setup Assistant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+        }
+        .step {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+        .step h3 {
+            color: #333;
+            margin-top: 0;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin: 10px 5px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        .success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .info {
+            background: #d1ecf1;
+            border-color: #17a2b8;
+            color: #0c5460;
+        }
+        .warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+        .code {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        .files-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .file-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        .progress {
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🚀 Analytica Core AI</div>
+            <div class="subtitle">Automated Setup Assistant</div>
+        </div>
+
+        <div class="step success">
+            <h3>✅ Your Website is Ready!</h3>
+            <p>Your complete <strong>Analytica Core AI</strong> business platform is prepared and ready to deploy.</p>
+            <div class="files-list">
+                <h4>📁 Website Files Ready for Upload:</h4>
+                <div class="file-item">
+                    <span class="file-icon">🏠</span>
+                    <span>index.html - Professional homepage</span>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">📝</span>
+                    <span>free-trial-simple.html - Lead capture form</span>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">🔬</span>
+                    <span>platform.html - AI analytics demo</span>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">📊</span>
+                    <span>generate-analysis.html - Business analysis tool</span>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">🎨</span>
+                    <span>styles.css - Professional styling</span>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">⚡</span>
+                    <span>script.js - Interactive functionality</span>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">📧</span>
+                    <span>Email system configured for founder@analyticacoreai.com</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="step info">
+            <h3>🎯 Automated Launch Process</h3>
+            <p>I'll guide you through the simplest possible setup. Each step takes just 1-2 minutes:</p>
+            
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p id="progressText">Ready to begin...</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 1: Open Your Hosting Provider</h3>
+            <p>I'll open InfinityFree (100% free hosting) for you:</p>
+            <button class="btn" onclick="openInfinityFree()">🚀 Open InfinityFree</button>
+            <p><small>✅ Free forever • ✅ Custom domain support • ✅ 5GB storage</small></p>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Create Account (2 minutes)</h3>
+            <p>On InfinityFree:</p>
+            <div class="code">
+                1. Click "Create Free Account"<br>
+                2. Enter your email and create password<br>
+                3. Verify email (check inbox)<br>
+                4. Login to your new account
+            </div>
+            <button class="btn" onclick="markStep2Complete()">✅ Account Created</button>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Add Your Domain (1 minute)</h3>
+            <p>In your InfinityFree dashboard:</p>
+            <div class="code">
+                1. Click "Create New Account"<br>
+                2. Choose any subdomain (temporary)<br>
+                3. Click "Addon Domains"<br>
+                4. Add: analyticacoreai.com<br>
+                5. Note the nameservers (ns1.epizy.com, ns2.epizy.com)
+            </div>
+            <button class="btn" onclick="markStep3Complete()">✅ Domain Added</button>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Upload Website Files (2 minutes)</h3>
+            <p>I'll help you upload your files:</p>
+            <div class="code">
+                1. Click "File Manager" in InfinityFree<br>
+                2. Go to "public_html" folder<br>
+                3. Click "Upload Files"<br>
+                4. Select ALL files from: c:\Users\35387\Desktop\dataSite\website\<br>
+                5. Upload and extract
+            </div>
+            <button class="btn" onclick="openFileLocation()">📁 Open Website Files</button>
+            <button class="btn" onclick="markStep4Complete()">✅ Files Uploaded</button>
+        </div>
+
+        <div class="step">
+            <h3>Step 5: Connect Domain (1 minute)</h3>
+            <p>Update your Namecheap settings:</p>
+            <button class="btn" onclick="openNamecheap()">🌐 Open Namecheap</button>
+            <div class="code">
+                1. Login to Namecheap<br>
+                2. Domain List → Manage analyticacoreai.com<br>
+                3. Advanced DNS → Change nameservers to:<br>
+                   ns1.epizy.com<br>
+                   ns2.epizy.com<br>
+                4. Save changes
+            </div>
+            <button class="btn" onclick="markStep5Complete()">✅ DNS Updated</button>
+        </div>
+
+        <div class="step success" id="finalStep" style="display: none;">
+            <h3>🎉 Congratulations! Your Business is LIVE!</h3>
+            <p><strong>analyticacoreai.com</strong> will be live within 24 hours!</p>
+            <p>Your complete <strong>Analytica Core AI</strong> platform includes:</p>
+            <ul>
+                <li>✅ Professional homepage with your branding</li>
+                <li>✅ Free trial lead capture system</li>
+                <li>✅ AI analytics platform demo</li>
+                <li>✅ Business analysis generator</li>
+                <li>✅ Email system (founder@analyticacoreai.com)</li>
+                <li>✅ Mobile-responsive design</li>
+                <li>✅ SSL certificate (secure https://)</li>
+            </ul>
+            <button class="btn" onclick="testWebsite()">🌐 Test Your Website</button>
+        </div>
+
+        <div class="step warning">
+            <h3>📞 Need Help?</h3>
+            <p>If you get stuck on any step, just tell me where you are and I'll provide specific guidance!</p>
+            <p><strong>Total setup time: 5-7 minutes</strong></p>
+            <p><strong>Your business launches today!</strong> 🚀</p>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const totalSteps = 5;
+
+        function updateProgress() {
+            const percentage = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = percentage + '%';
+            
+            const messages = [
+                'Ready to begin...',
+                'Hosting provider opened...',
+                'Account created successfully!',
+                'Domain configured!',
+                'Website files uploaded!',
+                'DNS updated - Website launching!'
+            ];
+            document.getElementById('progressText').textContent = messages[currentStep];
+        }
+
+        function openInfinityFree() {
+            window.open('https://infinityfree.net', '_blank');
+            currentStep = 1;
+            updateProgress();
+        }
+
+        function markStep2Complete() {
+            currentStep = 2;
+            updateProgress();
+        }
+
+        function markStep3Complete() {
+            currentStep = 3;
+            updateProgress();
+        }
+
+        function openFileLocation() {
+            // This would ideally open the file explorer, but we'll show instructions
+            alert('Please navigate to: c:\\Users\\35387\\Desktop\\dataSite\\website\\ and select ALL files for upload');
+        }
+
+        function markStep4Complete() {
+            currentStep = 4;
+            updateProgress();
+        }
+
+        function openNamecheap() {
+            window.open('https://www.namecheap.com/myaccount/login/', '_blank');
+        }
+
+        function markStep5Complete() {
+            currentStep = 5;
+            updateProgress();
+            document.getElementById('finalStep').style.display = 'block';
+        }
+
+        function testWebsite() {
+            const testUrl = prompt('Enter your temporary website URL from InfinityFree to test:');
+            if (testUrl) {
+                window.open(testUrl, '_blank');
+            }
+        }
+
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>
