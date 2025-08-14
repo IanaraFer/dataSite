@@ -456,5 +456,76 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="platform.js"></script>
+    <!-- Update the contact information section -->
+    <script>
+        /**
+         * Platform Configuration
+         * Following project coding instructions and business context
+         */
+
+        const PLATFORM_CONFIG = {
+            // Company Information
+            companyName: 'AnalyticaCore AI',
+            platformName: 'DataSight AI',
+            
+            // Contact Information
+            email: 'founder@analyticacoreai.com',
+            website: 'https://analyticacoreai.com',
+            
+            // Business Information
+            tagline: 'Transform Your Business Data Into Actionable Insights',
+            description: 'AI-powered company data analysis platform built for SMEs',
+            
+            // Social Media (update with your actual profiles)
+            social: {
+                linkedin: 'https://linkedin.com/company/analyticacoreai',
+                twitter: 'https://twitter.com/analyticacoreai',
+                github: 'https://github.com/analyticacoreai'
+            },
+            
+            // Support Information
+            support: {
+                email: 'support@analyticacoreai.com',
+                documentation: 'https://docs.analyticacoreai.com',
+                helpDesk: 'https://help.analyticacoreai.com'
+            }
+        };
+
+        // Update any JavaScript email references
+        const CONTACT_EMAIL = 'founder@analyticacoreai.com';
+        const COMPANY_NAME = 'AnalyticaCore AI';
+        const PLATFORM_NAME = 'DataSight AI';
+
+        document.addEventListener('DOMContentLoaded', updateEmailReferences);
+
+        function updateEmailReferences() {
+            // New email to replace with
+            const newEmail = 'founder@analyticacoreai.com';
+            // Old email to be replaced
+            const oldEmail = 'datasightai.founders@gmail.com';
+
+            // Update all mailto links
+            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+                if (link.href.includes(oldEmail)) {
+                    link.href = `mailto:${newEmail}`;
+                    link.textContent = newEmail;
+                }
+            });
+
+            // Update any text content
+            document.querySelectorAll('*').forEach(element => {
+                if (element.textContent && element.textContent.includes(oldEmail)) {
+                    element.textContent = element.textContent.replace(oldEmail, newEmail);
+                }
+            });
+
+            console.log(`✅ Updated all email references to ${newEmail}`);
+        }
+
+        // Export for use in other files
+        if (typeof module !== 'undefined' && module.exports) {
+            module.exports = PLATFORM_CONFIG;
+        }
+    </script>
 </body>
 </html>
