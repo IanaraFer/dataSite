@@ -1,655 +1,1083 @@
-// Global Variables
-let currentData = null;
-let charts = {};
-let loadingModal;
+/**
+ * DataSight AI Platform - Interactive Demo
+ * Following project coding instructions and best practices
+ */
 
-// Sample data for demo
-const sampleData = [
-    { date: '2024-01-01', revenue: 15000, customers: 120, satisfaction: 85, category: 'Electronics' },
-    { date: '2024-01-02', revenue: 18000, customers: 145, satisfaction: 87, category: 'Electronics' },
-    { date: '2024-01-03', revenue: 12000, customers: 98, satisfaction: 82, category: 'Clothing' },
-    { date: '2024-01-04', revenue: 22000, customers: 178, satisfaction: 91, category: 'Electronics' },
-    { date: '2024-01-05', revenue: 16000, customers: 132, satisfaction: 86, category: 'Electronics' },
-    { date: '2024-01-06', revenue: 14000, customers: 115, satisfaction: 84, category: 'Clothing' },
-    { date: '2024-01-07', revenue: 19000, customers: 156, satisfaction: 88, category: 'Electronics' },
-    { date: '2024-01-08', revenue: 25000, customers: 201, satisfaction: 93, category: 'Electronics' },
-    { date: '2024-01-09', revenue: 13000, customers: 108, satisfaction: 81, category: 'Clothing' },
-    { date: '2024-01-10', revenue: 21000, customers: 169, satisfaction: 89, category: 'Electronics' },
-    { date: '2024-01-11', revenue: 17000, customers: 140, satisfaction: 85, category: 'Electronics' },
-    { date: '2024-01-12', revenue: 23000, customers: 184, satisfaction: 92, category: 'Electronics' },
-    { date: '2024-01-13', revenue: 15000, customers: 123, satisfaction: 83, category: 'Clothing' },
-    { date: '2024-01-14', revenue: 20000, customers: 164, satisfaction: 90, category: 'Electronics' },
-    { date: '2024-01-15', revenue: 18000, customers: 148, satisfaction: 87, category: 'Electronics' }
-];
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
-    console.log('DataSight AI Platform initialized! 🚀');
-});
-
-// File Upload Handler
-function handleFileUpload(input) {
-    const file = input.files[0];
-    if (file && file.type === 'text/csv') {
-        showLoading('Uploading and processing your file...', 'Analyzing data structure and content...');
+class DataSightPlatform {
+    constructor() {
+        this.currentData = null;
+        this.analysisResults = {};
+        this.charts = {};
+        this.isAnalyzing = false;
         
+        // Initialize platform
+        this.init();
+    }
+
+    /**
+     * Initialize the platform following project guidelines
+     */
+    init() {
+        try {
+            console.log('🚀 DataSight AI Platform initializing...');
+            this.setupEventListeners();
+            this.initializeCharts();
+            console.log('✅ Platform ready for analysis');
+        } catch (error) {
+            console.error('❌ Platform initialization error:', error);
+            this.showError('Platform initialization failed: ' + error.message);
+        }
+    }
+
+    /**
+     * Setup event listeners for user interactions
+     */
+    setupEventListeners() {
+        // File input handler
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => this.handleFileUpload(e.target));
+        }
+
+        // Drag and drop functionality
+        const uploadArea = document.querySelector('.upload-area');
+        if (uploadArea) {
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    this.processFile(files[0]);
+                }
+            });
+        }
+    }
+
+    /**
+     * Initialize chart containers
+     */
+    initializeCharts() {
+        this.chartContainers = {
+            revenue: 'revenueChart',
+            forecast: 'forecastChart',
+            trends: 'trendsChart',
+            segments: 'segmentsChart'
+        };
+    }
+
+    /**
+     * Handle file upload with validation following security best practices
+     */
+    handleFileUpload(input) {
+        try {
+            const file = input.files[0];
+            if (!file) return;
+
+            // File validation following project security guidelines
+            if (!this.validateFile(file)) {
+                return;
+            }
+
+            this.processFile(file);
+        } catch (error) {
+            console.error('File upload error:', error);
+            this.showError('File upload failed: ' + error.message);
+        }
+    }
+
+    /**
+     * Validate uploaded file following security best practices
+     */
+    validateFile(file) {
+        // File size validation (max 10MB)
+        const maxSize = 10 * 1024 * 1024;
+        if (file.size > maxSize) {
+            this.showError('File too large. Maximum size is 10MB.');
+            return false;
+        }
+
+        // File type validation
+        const allowedTypes = ['text/csv', 'application/csv'];
+        if (!allowedTypes.includes(file.type) && !file.name.endsWith('.csv')) {
+            this.showError('Invalid file type. Please upload a CSV file.');
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Process uploaded file with proper error handling
+     */
+    processFile(file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        
+        reader.onload = (e) => {
             try {
-                const csv = e.target.result;
-                const parsed = parseCSV(csv);
-                currentData = parsed;
+                const csvData = e.target.result;
+                const parsedData = this.parseCSV(csvData);
                 
-                setTimeout(() => {
-                    hideLoading();
-                    showDataLoaded();
-                    updateMetrics();
-                    showDataPreview();
-                }, 2000);
+                if (parsedData && parsedData.length > 0) {
+                    this.currentData = parsedData;
+                    this.displayDataPreview(parsedData);
+                    this.calculateMetrics(parsedData);
+                    this.showAnalysisControls();
+                    this.showSuccess(`✅ File uploaded successfully! ${parsedData.length} records loaded.`);
+                } else {
+                    this.showError('No valid data found in the file.');
+                }
             } catch (error) {
-                hideLoading();
-                alert('Error parsing CSV file. Please ensure it\'s properly formatted.');
+                console.error('File processing error:', error);
+                this.showError('Error processing file: ' + error.message);
             }
         };
+
+        reader.onerror = () => {
+            this.showError('Error reading file.');
+        };
+
         reader.readAsText(file);
-    } else {
-        alert('Please upload a valid CSV file.');
     }
-}
 
-// Parse CSV data
-function parseCSV(csv) {
-    const lines = csv.split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
-    const data = [];
-    
-    for (let i = 1; i < lines.length; i++) {
-        if (lines[i].trim()) {
-            const values = lines[i].split(',');
-            const row = {};
-            headers.forEach((header, index) => {
-                row[header] = values[index] ? values[index].trim() : '';
+    /**
+     * Parse CSV data with proper validation
+     */
+    parseCSV(csvText) {
+        try {
+            const lines = csvText.trim().split('\n');
+            if (lines.length < 2) {
+                throw new Error('CSV must contain at least a header and one data row');
+            }
+
+            const headers = lines[0].split(',').map(h => h.trim().replace(/['"]/g, ''));
+            const data = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',').map(v => v.trim().replace(/['"]/g, ''));
+                if (values.length === headers.length) {
+                    const row = {};
+                    headers.forEach((header, index) => {
+                        row[header] = values[index];
+                    });
+                    data.push(row);
+                }
+            }
+
+            return data;
+        } catch (error) {
+            throw new Error('Invalid CSV format: ' + error.message);
+        }
+    }
+
+    /**
+     * Load sample business data for demonstration
+     */
+    loadSampleData() {
+        try {
+            console.log('📊 Loading sample business data...');
+            
+            // Generate realistic sample business data following SME use cases
+            const sampleData = this.generateSampleBusinessData();
+            this.currentData = sampleData;
+            
+            this.displayDataPreview(sampleData);
+            this.calculateMetrics(sampleData);
+            this.showAnalysisControls();
+            this.showSuccess('✅ Sample data loaded successfully! Ready for AI analysis.');
+            
+        } catch (error) {
+            console.error('Sample data loading error:', error);
+            this.showError('Failed to load sample data: ' + error.message);
+        }
+    }
+
+    /**
+     * Generate realistic sample business data for SME analysis
+     */
+    generateSampleBusinessData() {
+        const data = [];
+        const startDate = new Date('2023-01-01');
+        const endDate = new Date('2024-01-01');
+        
+        // Business data patterns for SME
+        const regions = ['North', 'South', 'East', 'West'];
+        const products = ['Electronics', 'Clothing', 'Home & Garden', 'Sports', 'Books'];
+        const channels = ['Online', 'Store', 'Mobile App', 'Phone'];
+
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            const dayOfYear = Math.floor((d - startDate) / (1000 * 60 * 60 * 24));
+            
+            // Realistic business patterns
+            const baseRevenue = 15000;
+            const seasonality = 3000 * Math.sin((dayOfYear / 365) * 2 * Math.PI);
+            const weeklyPattern = 2000 * Math.sin((dayOfYear / 7) * 2 * Math.PI);
+            const growth = dayOfYear * 10;
+            const randomVariation = (Math.random() - 0.5) * 5000;
+            
+            const dailyRevenue = Math.max(1000, baseRevenue + seasonality + weeklyPattern + growth + randomVariation);
+            
+            data.push({
+                Date: d.toISOString().split('T')[0],
+                Revenue: Math.round(dailyRevenue),
+                Customers: Math.round(50 + Math.random() * 100),
+                Region: regions[Math.floor(Math.random() * regions.length)],
+                Product: products[Math.floor(Math.random() * products.length)],
+                Channel: channels[Math.floor(Math.random() * channels.length)],
+                Satisfaction: (3.5 + Math.random() * 1.5).toFixed(1),
+                MarketingSpend: Math.round(1000 + Math.random() * 3000),
+                OrderValue: Math.round(50 + Math.random() * 200)
             });
-            data.push(row);
+        }
+
+        return data;
+    }
+
+    /**
+     * Display data preview table
+     */
+    displayDataPreview(data) {
+        try {
+            const previewCard = document.getElementById('dataPreview');
+            const table = document.getElementById('previewTable');
+            
+            if (!table || !data.length) return;
+
+            // Clear existing content
+            const thead = table.querySelector('thead tr');
+            const tbody = table.querySelector('tbody');
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            // Add headers
+            const headers = Object.keys(data[0]);
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                thead.appendChild(th);
+            });
+
+            // Add first 5 rows
+            const previewData = data.slice(0, 5);
+            previewData.forEach(row => {
+                const tr = document.createElement('tr');
+                headers.forEach(header => {
+                    const td = document.createElement('td');
+                    td.textContent = row[header];
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            previewCard.style.display = 'block';
+            previewCard.classList.add('fade-in');
+            
+        } catch (error) {
+            console.error('Data preview error:', error);
         }
     }
-    
-    return data;
-}
 
-// Load Sample Data
-function loadSampleData() {
-    showLoading('Loading sample dataset...', 'Preparing retail analytics data...');
-    
-    setTimeout(() => {
-        currentData = sampleData;
-        hideLoading();
-        showDataLoaded();
-        updateMetrics();
-        showDataPreview();
-    }, 1500);
-}
+    /**
+     * Calculate and display key business metrics
+     */
+    calculateMetrics(data) {
+        try {
+            if (!data || !data.length) return;
 
-// Show data loaded state
-function showDataLoaded() {
-    document.getElementById('metricsRow').style.display = 'flex';
-    document.getElementById('analysisControls').style.display = 'block';
-    document.getElementById('dataPreview').style.display = 'block';
-    
-    // Animate metrics
-    document.getElementById('metricsRow').classList.add('fade-in');
-}
+            // Calculate key metrics following business context
+            const metrics = {
+                totalRevenue: 0,
+                totalCustomers: 0,
+                avgSatisfaction: 0,
+                growthRate: 0
+            };
 
-// Update key metrics
-function updateMetrics() {
-    if (!currentData) return;
-    
-    const totalRevenue = currentData.reduce((sum, row) => sum + (parseFloat(row.revenue) || 0), 0);
-    const totalCustomers = currentData.reduce((sum, row) => sum + (parseFloat(row.customers) || 0), 0);
-    const avgSatisfaction = currentData.reduce((sum, row) => sum + (parseFloat(row.satisfaction) || 0), 0) / currentData.length;
-    
-    // Animate counter updates
-    animateCounter('revenueMetric', totalRevenue, '€');
-    animateCounter('customersMetric', totalCustomers, '');
-    animateCounter('satisfactionMetric', Math.round(avgSatisfaction), '%');
-    animateCounter('growthMetric', 23, '%'); // Mock growth rate
-}
+            // Revenue and customers
+            data.forEach(row => {
+                metrics.totalRevenue += parseFloat(row.Revenue) || 0;
+                metrics.totalCustomers += parseFloat(row.Customers) || 0;
+                metrics.avgSatisfaction += parseFloat(row.Satisfaction) || 0;
+            });
 
-// Animate counter
-function animateCounter(elementId, targetValue, suffix) {
-    const element = document.getElementById(elementId);
-    const duration = 1500;
-    const steps = 60;
-    const increment = targetValue / steps;
-    let current = 0;
-    
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= targetValue) {
-            element.textContent = (suffix === '€' ? '€' + Math.round(targetValue).toLocaleString() : Math.round(targetValue).toLocaleString() + suffix);
-            clearInterval(timer);
-        } else {
-            element.textContent = (suffix === '€' ? '€' + Math.round(current).toLocaleString() : Math.round(current).toLocaleString() + suffix);
+            metrics.avgSatisfaction = metrics.avgSatisfaction / data.length;
+
+            // Calculate growth rate (compare first and last quarters)
+            const firstQuarter = data.slice(0, Math.floor(data.length / 4));
+            const lastQuarter = data.slice(-Math.floor(data.length / 4));
+            
+            const firstQuarterAvg = firstQuarter.reduce((sum, row) => sum + (parseFloat(row.Revenue) || 0), 0) / firstQuarter.length;
+            const lastQuarterAvg = lastQuarter.reduce((sum, row) => sum + (parseFloat(row.Revenue) || 0), 0) / lastQuarter.length;
+            
+            metrics.growthRate = ((lastQuarterAvg - firstQuarterAvg) / firstQuarterAvg) * 100;
+
+            // Update UI
+            this.updateMetricsDisplay(metrics);
+            
+        } catch (error) {
+            console.error('Metrics calculation error:', error);
         }
-    }, duration / steps);
-}
-
-// Show data preview
-function showDataPreview() {
-    if (!currentData || currentData.length === 0) return;
-    
-    const table = document.getElementById('previewTable');
-    const headers = Object.keys(currentData[0]);
-    
-    // Create headers
-    const headerRow = table.querySelector('thead tr');
-    headerRow.innerHTML = '';
-    headers.forEach(header => {
-        const th = document.createElement('th');
-        th.textContent = header;
-        headerRow.appendChild(th);
-    });
-    
-    // Create rows (show first 5 rows)
-    const tbody = table.querySelector('tbody');
-    tbody.innerHTML = '';
-    const displayData = currentData.slice(0, 5);
-    
-    displayData.forEach(row => {
-        const tr = document.createElement('tr');
-        headers.forEach(header => {
-            const td = document.createElement('td');
-            td.textContent = row[header] || '';
-            tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-    });
-}
-
-// Run Forecast Analysis
-function runForecast() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
     }
-    
-    showLoading('Running AI forecast model...', 'Analyzing trends and patterns...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showForecastResults();
-    }, 3000);
-}
 
-// Show Forecast Results
-function showForecastResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    // Generate mock forecast data
-    const forecastData = generateForecastData();
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-crystal-ball me-2"></i>Revenue Forecast</h5>
-            </div>
-            <div class="card-body">
-                <div class="chart-container">
-                    <div id="forecastChart"></div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-primary mb-2">
-                                <i class="fas fa-trending-up me-1"></i>Key Insights
-                            </h6>
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-1">📈 Expected 18% revenue growth next quarter</li>
-                                <li class="mb-1">🎯 Peak sales predicted for March 15th</li>
-                                <li class="mb-1">⚠️ Potential dip in early February</li>
-                                <li class="mb-1">💡 Recommend inventory increase by 25%</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-success mb-2">
-                                <i class="fas fa-chart-line me-1"></i>Forecast Accuracy
-                            </h6>
-                            <div class="d-flex align-items-center mb-2">
-                                <span class="me-2">Model Confidence:</span>
-                                <div class="progress flex-grow-1">
-                                    <div class="progress-bar bg-success" style="width: 87%"></div>
-                                </div>
-                                <span class="ms-2 fw-bold">87%</span>
-                            </div>
-                            <small class="text-muted">Based on historical patterns and seasonal trends</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create the forecast chart
-    createForecastChart(forecastData);
-}
+    /**
+     * Update metrics display with animation
+     */
+    updateMetricsDisplay(metrics) {
+        // Animate metric updates
+        this.animateMetric('revenueMetric', metrics.totalRevenue, '€');
+        this.animateMetric('customersMetric', metrics.totalCustomers, '');
+        this.animateMetric('growthMetric', metrics.growthRate, '%');
+        this.animateMetric('satisfactionMetric', metrics.avgSatisfaction * 20, '%'); // Convert to percentage
 
-// Generate Forecast Data
-function generateForecastData() {
-    const historical = currentData.map(row => ({
-        date: row.date,
-        revenue: parseFloat(row.revenue) || 0
-    }));
-    
-    // Generate future predictions
-    const future = [];
-    const lastDate = new Date(historical[historical.length - 1].date);
-    const baseRevenue = historical[historical.length - 1].revenue;
-    
-    for (let i = 1; i <= 10; i++) {
-        const futureDate = new Date(lastDate);
-        futureDate.setDate(lastDate.getDate() + i);
+        // Show metrics row
+        const metricsRow = document.getElementById('metricsRow');
+        if (metricsRow) {
+            metricsRow.style.display = 'flex';
+            metricsRow.classList.add('fade-in');
+        }
+    }
+
+    /**
+     * Animate metric values with proper formatting
+     */
+    animateMetric(elementId, targetValue, suffix) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        const startValue = 0;
+        const duration = 2000; // 2 seconds
+        const startTime = Date.now();
+
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Easing function
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            const currentValue = startValue + (targetValue - startValue) * easeOutQuart;
+
+            // Format value based on suffix
+            let displayValue;
+            if (suffix === '€') {
+                displayValue = '€' + Math.round(currentValue).toLocaleString();
+            } else if (suffix === '%') {
+                displayValue = Math.round(currentValue) + '%';
+            } else {
+                displayValue = Math.round(currentValue).toLocaleString();
+            }
+
+            element.textContent = displayValue;
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+
+        animate();
+    }
+
+    /**
+     * Show analysis controls panel
+     */
+    showAnalysisControls() {
+        const controlsPanel = document.getElementById('analysisControls');
+        if (controlsPanel) {
+            controlsPanel.style.display = 'block';
+            controlsPanel.classList.add('fade-in');
+        }
+
+        // Hide welcome card
+        const welcomeCard = document.getElementById('welcomeCard');
+        if (welcomeCard) {
+            welcomeCard.style.display = 'none';
+        }
+    }
+
+    /**
+     * Show loading modal with progress animation
+     */
+    showLoading(title, subtitle, duration = 3000) {
+        const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        const loadingText = document.getElementById('loadingText');
+        const loadingSubtext = document.getElementById('loadingSubtext');
+        const progressBar = document.getElementById('progressBar');
+
+        loadingText.textContent = title;
+        loadingSubtext.textContent = subtitle;
+
+        modal.show();
+
+        // Animate progress bar
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 100 / (duration / 100);
+            progressBar.style.width = Math.min(progress, 100) + '%';
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    modal.hide();
+                }, 500);
+            }
+        }, 100);
+
+        return modal;
+    }
+
+    /**
+     * Revenue Forecasting Analysis
+     */
+    runForecast() {
+        if (!this.validateDataForAnalysis()) return;
+
+        this.showLoading('🔮 AI Revenue Forecasting', 'Analyzing trends and patterns...', 4000);
+
+        setTimeout(() => {
+            const forecastData = this.generateForecastData();
+            this.displayForecastResults(forecastData);
+        }, 4000);
+    }
+
+    /**
+     * Generate forecast data using simple trend analysis
+     */
+    generateForecastData() {
+        if (!this.currentData) return null;
+
+        // Calculate historical trend
+        const revenueData = this.currentData
+            .map(row => parseFloat(row.Revenue))
+            .filter(val => !isNaN(val));
+
+        // Simple linear regression for trend
+        const n = revenueData.length;
+        const x = Array.from({length: n}, (_, i) => i);
+        const y = revenueData;
+
+        const sumX = x.reduce((a, b) => a + b, 0);
+        const sumY = y.reduce((a, b) => a + b, 0);
+        const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
+        const sumXX = x.reduce((sum, xi) => sum + xi * xi, 0);
+
+        const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+        const intercept = (sumY - slope * sumX) / n;
+
+        // Generate 30-day forecast
+        const forecast = [];
+        for (let i = 0; i < 30; i++) {
+            const futureValue = intercept + slope * (n + i);
+            const variation = (Math.random() - 0.5) * futureValue * 0.1; // 10% variation
+            
+            const date = new Date();
+            date.setDate(date.getDate() + i + 1);
+            
+            forecast.push({
+                date: date.toISOString().split('T')[0],
+                predicted: Math.max(1000, futureValue + variation),
+                confidence: 0.85 + Math.random() * 0.1 // 85-95% confidence
+            });
+        }
+
+        return {
+            historical: revenueData.slice(-30), // Last 30 days
+            forecast: forecast,
+            trend: slope > 0 ? 'Positive' : slope < 0 ? 'Negative' : 'Stable',
+            avgGrowth: (slope / (sumY / n)) * 100
+        };
+    }
+
+    /**
+     * Display forecast results with Plotly chart
+     */
+    displayForecastResults(forecastData) {
+        const resultsDiv = document.getElementById('analysisResults');
         
-        // Simple trend with some randomness
-        const trend = baseRevenue * (1 + (i * 0.02)) + (Math.random() - 0.5) * 3000;
-        future.push({
-            date: futureDate.toISOString().split('T')[0],
-            revenue: Math.max(trend, 0)
-        });
-    }
-    
-    return { historical, future };
-}
-
-// Create Forecast Chart
-function createForecastChart(data) {
-    const historicalTrace = {
-        x: data.historical.map(d => d.date),
-        y: data.historical.map(d => d.revenue),
-        type: 'scatter',
-        mode: 'lines+markers',
-        name: 'Historical Data',
-        line: { color: '#1f77b4', width: 3 },
-        marker: { size: 6 }
-    };
-    
-    const forecastTrace = {
-        x: data.future.map(d => d.date),
-        y: data.future.map(d => d.revenue),
-        type: 'scatter',
-        mode: 'lines+markers',
-        name: 'Forecast',
-        line: { color: '#ff7f0e', width: 3, dash: 'dash' },
-        marker: { size: 6 }
-    };
-    
-    const layout = {
-        title: 'Revenue Forecast - Next 10 Days',
-        xaxis: { title: 'Date' },
-        yaxis: { title: 'Revenue (€)' },
-        showlegend: true,
-        height: 400,
-        margin: { t: 50, r: 50, b: 50, l: 60 }
-    };
-    
-    Plotly.newPlot('forecastChart', [historicalTrace, forecastTrace], layout, {responsive: true});
-}
-
-// Run Customer Segmentation
-function runSegmentation() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Analyzing customer segments...', 'Applying machine learning clustering...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showSegmentationResults();
-    }, 2500);
-}
-
-// Show Segmentation Results
-function showSegmentationResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0"><i class="fas fa-users me-2"></i>Customer Segmentation</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="chart-container">
-                            <div id="segmentChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-success mb-3">
-                                <i class="fas fa-bullseye me-1"></i>Segment Insights
-                            </h6>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-primary">Premium</span>
-                                    <span class="fw-bold">23%</span>
-                                </div>
-                                <small class="text-muted">High value, loyal customers</small>
-                            </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-warning">Standard</span>
-                                    <span class="fw-bold">45%</span>
-                                </div>
-                                <small class="text-muted">Regular purchase behavior</small>
-                            </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-info">Growth</span>
-                                    <span class="fw-bold">32%</span>
-                                </div>
-                                <small class="text-muted">Potential for upselling</small>
-                            </div>
-                        </div>
-                    </div>
+        const html = `
+            <div class="card analysis-card fade-in">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-crystal-ball me-2"></i>AI Revenue Forecasting Results</h5>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-primary mb-2">
-                                <i class="fas fa-lightbulb me-1"></i>Recommended Actions
-                            </h6>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <strong>Premium Segment:</strong><br>
-                                    <small class="text-muted">Offer exclusive products and VIP support</small>
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Standard Segment:</strong><br>
-                                    <small class="text-muted">Focus on retention and cross-selling</small>
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Growth Segment:</strong><br>
-                                    <small class="text-muted">Targeted promotions and education</small>
-                                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="insight-card p-3">
+                                <h6 class="text-primary">📈 Trend Direction</h6>
+                                <h4 class="mb-0">${forecastData.trend}</h4>
+                                <small class="text-muted">Overall market direction</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="insight-card p-3">
+                                <h6 class="text-success">📊 Growth Rate</h6>
+                                <h4 class="mb-0">${forecastData.avgGrowth.toFixed(1)}%</h4>
+                                <small class="text-muted">Expected monthly growth</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="insight-card p-3">
+                                <h6 class="text-info">🎯 Confidence</h6>
+                                <h4 class="mb-0">87%</h4>
+                                <small class="text-muted">Model accuracy</small>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create segmentation chart
-    createSegmentationChart();
-}
-
-// Create Segmentation Chart
-function createSegmentationChart() {
-    const data = [{
-        values: [23, 45, 32],
-        labels: ['Premium Customers', 'Standard Customers', 'Growth Customers'],
-        type: 'pie',
-        marker: {
-            colors: ['#1f77b4', '#ffc107', '#17a2b8']
-        },
-        textinfo: 'label+percent',
-        textposition: 'outside'
-    }];
-    
-    const layout = {
-        title: 'Customer Segments Distribution',
-        height: 400,
-        showlegend: true,
-        margin: { t: 50, r: 50, b: 50, l: 50 }
-    };
-    
-    Plotly.newPlot('segmentChart', data, layout, {responsive: true});
-}
-
-// Run Anomaly Detection
-function runAnomalyDetection() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Detecting anomalies...', 'Scanning for unusual patterns...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showAnomalyResults();
-    }, 2000);
-}
-
-// Show Anomaly Results
-function showAnomalyResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0"><i class="fas fa-search me-2"></i>Anomaly Detection</h5>
-            </div>
-            <div class="card-body">
-                <div class="chart-container">
-                    <div id="anomalyChart"></div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <div class="insight-card p-3 rounded border-warning">
-                            <h6 class="text-warning mb-2">
-                                <i class="fas fa-exclamation-triangle me-1"></i>Anomalies Detected
-                            </h6>
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-2">
-                                    <span class="badge bg-danger me-2">HIGH</span>
-                                    Revenue spike on Jan 8th (+67% above normal)
-                                </li>
-                                <li class="mb-2">
-                                    <span class="badge bg-warning me-2">MED</span>
-                                    Unusual customer drop on Jan 9th
-                                </li>
-                                <li class="mb-2">
-                                    <span class="badge bg-info me-2">LOW</span>
-                                    Satisfaction score variance detected
-                                </li>
-                            </ul>
-                        </div>
+                    
+                    <div class="chart-container">
+                        <div id="forecastChart" style="height: 400px;"></div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="insight-card p-3 rounded border-success">
-                            <h6 class="text-success mb-2">
-                                <i class="fas fa-check-circle me-1"></i>Recommended Actions
-                            </h6>
-                            <ul class="list-unstyled mb-0">
-                                <li class="mb-1">🔍 Investigate Jan 8th revenue source</li>
-                                <li class="mb-1">📧 Follow up with Jan 9th customers</li>
-                                <li class="mb-1">📊 Review satisfaction feedback</li>
-                                <li class="mb-1">🚨 Set up automated alerts</li>
+                    
+                    <div class="mt-4">
+                        <h6 class="text-primary">💡 AI Insights & Recommendations:</h6>
+                        <div class="insight-card p-3">
+                            <ul class="mb-0">
+                                <li><strong>Revenue Outlook:</strong> ${forecastData.trend} trend detected with ${forecastData.avgGrowth.toFixed(1)}% expected growth</li>
+                                <li><strong>Business Strategy:</strong> ${forecastData.trend === 'Positive' ? 'Consider scaling operations and marketing budget' : 'Focus on optimization and cost control'}</li>
+                                <li><strong>Inventory Planning:</strong> Adjust stock levels based on predicted demand patterns</li>
+                                <li><strong>Cash Flow:</strong> Plan for ${forecastData.trend === 'Positive' ? 'increased' : 'stable'} revenue streams</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    `;
-    
-    createAnomalyChart();
-}
+        `;
 
-// Create Anomaly Chart
-function createAnomalyChart() {
-    const normalData = currentData.filter((_, i) => i !== 7 && i !== 8); // Exclude anomalies
-    const anomalies = [currentData[7], currentData[8]]; // Jan 8th and 9th
-    
-    const normalTrace = {
-        x: normalData.map(d => d.date),
-        y: normalData.map(d => parseFloat(d.revenue)),
-        type: 'scatter',
-        mode: 'markers',
-        name: 'Normal Data',
-        marker: { color: '#1f77b4', size: 8 }
-    };
-    
-    const anomalyTrace = {
-        x: anomalies.map(d => d.date),
-        y: anomalies.map(d => parseFloat(d.revenue)),
-        type: 'scatter',
-        mode: 'markers',
-        name: 'Anomalies',
-        marker: { color: '#dc3545', size: 12, symbol: 'diamond' }
-    };
-    
-    const layout = {
-        title: 'Revenue Anomaly Detection',
-        xaxis: { title: 'Date' },
-        yaxis: { title: 'Revenue (€)' },
-        showlegend: true,
-        height: 400,
-        margin: { t: 50, r: 50, b: 50, l: 60 }
-    };
-    
-    Plotly.newPlot('anomalyChart', [normalTrace, anomalyTrace], layout, {responsive: true});
-}
+        resultsDiv.innerHTML = html;
 
-// Generate AI Insights
-function generateInsights() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
+        // Create Plotly forecast chart
+        this.createForecastChart(forecastData);
     }
-    
-    showLoading('Generating AI insights...', 'Analyzing business patterns...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showInsightsResults();
-    }, 2500);
-}
 
-// Show Insights Results
-function showInsightsResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>AI Business Insights</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="insight-card p-4 rounded mb-3">
-                            <h6 class="text-primary mb-3">
-                                <i class="fas fa-brain me-2"></i>Key Business Insights
-                            </h6>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <div class="p-3 bg-light rounded">
-                                        <h6 class="text-success mb-2">💰 Revenue Optimization</h6>
-                                        <p class="mb-0 small">Your Electronics category generates 73% of revenue. Consider expanding this segment with complementary products.</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <div class="p-3 bg-light rounded">
-                                        <h6 class="text-warning mb-2">📅 Seasonal Patterns</h6>
-                                        <p class="mb-0 small">Weekend sales are 34% higher. Implement weekend-specific promotions to maximize revenue.</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <div class="p-3 bg-light rounded">
-                                        <h6 class="text-info mb-2">👥 Customer Behavior</h6>
-                                        <p class="mb-0 small">High satisfaction correlates with 2.3x higher purchase frequency. Focus on satisfaction scores.</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <div class="p-3 bg-light rounded">
-                                        <h6 class="text-danger mb-2">⚠️ Risk Factors</h6>
-                                        <p class="mb-0 small">Clothing segment shows declining trend. Consider market research or product refresh.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="insight-card p-3 rounded mb-3">
-                            <h6 class="text-primary mb-3">📈 ROI Calculator</h6>
-                            <div class="mb-3">
-                                <label class="form-label">Investment (€)</label>
-                                <input type="number" class="form-control" id="investment" value="10000" onchange="calculateROI()">
-                            </div>
-                            <div class="text-center p-3 bg-success text-white rounded">
-                                <h4 class="mb-0" id="roiResult">340%</h4>
-                                <small>Predicted ROI</small>
-                            </div>
-                        </div>
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-primary mb-3">🎯 Quick Actions</h6>
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-sm btn-outline-primary">Export Report</button>
-                                <button class="btn btn-sm btn-outline-success">Schedule Alert</button>
-                                <button class="btn btn-sm btn-outline-info">Share Insights</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
+    /**
+     * Create interactive forecast chart using Plotly
+     */
+    createForecastChart(forecastData) {
+        // Prepare historical data
+        const historicalDates = this.currentData.slice(-30).map(row => row.Date);
+        const historicalValues = forecastData.historical;
 
-// Calculate ROI
-function calculateROI() {
-    const investment = parseFloat(document.getElementById('investment').value) || 0;
-    const predictedReturn = investment * 3.4; // Mock calculation
-    const roi = ((predictedReturn - investment) / investment * 100).toFixed(0);
-    document.getElementById('roiResult').textContent = roi + '%';
-}
+        // Prepare forecast data
+        const forecastDates = forecastData.forecast.map(f => f.date);
+        const forecastValues = forecastData.forecast.map(f => f.predicted);
+        const upperBound = forecastData.forecast.map(f => f.predicted * 1.1);
+        const lowerBound = forecastData.forecast.map(f => f.predicted * 0.9);
 
-// Show Loading Modal
-function showLoading(title, subtitle) {
-    document.getElementById('loadingText').textContent = title;
-    document.getElementById('loadingSubtext').textContent = subtitle;
-    loadingModal.show();
-    
-    // Animate progress bar
-    const progressBar = document.getElementById('progressBar');
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += Math.random() * 20;
-        if (progress > 100) progress = 100;
-        progressBar.style.width = progress + '%';
+        const traces = [
+            {
+                x: historicalDates,
+                y: historicalValues,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Historical Revenue',
+                line: {color: '#1f77b4', width: 3}
+            },
+            {
+                x: forecastDates,
+                y: forecastValues,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Forecast',
+                line: {color: '#ff7f0e', width: 3, dash: 'dash'}
+            },
+            {
+                x: forecastDates,
+                y: upperBound,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Upper Bound',
+                line: {color: 'rgba(255, 127, 14, 0.3)', width: 1},
+                fill: 'tonexty',
+                fillcolor: 'rgba(255, 127, 14, 0.1)'
+            },
+            {
+                x: forecastDates,
+                y: lowerBound,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Lower Bound',
+                line: {color: 'rgba(255, 127, 14, 0.3)', width: 1}
+            }
+        ];
+
+        const layout = {
+            title: 'Revenue Forecast - Next 30 Days',
+            xaxis: {title: 'Date'},
+            yaxis: {title: 'Revenue (€)'},
+            hovermode: 'x unified',
+            showlegend: true
+        };
+
+        Plotly.newPlot('forecastChart', traces, layout, {responsive: true});
+    }
+
+    /**
+     * Customer Segmentation Analysis
+     */
+    runSegmentation() {
+        if (!this.validateDataForAnalysis()) return;
+
+        this.showLoading('👥 AI Customer Segmentation', 'Analyzing customer behavior patterns...', 3500);
+
+        setTimeout(() => {
+            const segmentationData = this.generateSegmentationData();
+            this.displaySegmentationResults(segmentationData);
+        }, 3500);
+    }
+
+    /**
+     * Generate customer segmentation data
+     */
+    generateSegmentationData() {
+        // Simulate RFM analysis results
+        const segments = [
+            {
+                name: 'VIP Champions',
+                size: 23,
+                color: '#2ca02c',
+                characteristics: 'High value, frequent buyers, recent purchases',
+                revenue: 150000,
+                avgOrderValue: 280,
+                recommendations: 'Exclusive offers, premium service, loyalty rewards'
+            },
+            {
+                name: 'Loyal Customers',
+                size: 34,
+                color: '#1f77b4',
+                characteristics: 'Regular buyers, good value, engaged',
+                revenue: 120000,
+                avgOrderValue: 180,
+                recommendations: 'Upselling, cross-selling, retention programs'
+            },
+            {
+                name: 'Potential Loyalists',
+                size: 28,
+                color: '#ff7f0e',
+                characteristics: 'Recent customers, good potential',
+                revenue: 80000,
+                avgOrderValue: 120,
+                recommendations: 'Onboarding programs, engagement campaigns'
+            },
+            {
+                name: 'At Risk',
+                size: 15,
+                color: '#d62728',
+                characteristics: 'Declining engagement, needs attention',
+                revenue: 30000,
+                avgOrderValue: 90,
+                recommendations: 'Win-back campaigns, special offers, surveys'
+            }
+        ];
+
+        return segments;
+    }
+
+    /**
+     * Display customer segmentation results
+     */
+    displaySegmentationResults(segments) {
+        const resultsDiv = document.getElementById('analysisResults');
         
-        if (progress >= 100) {
-            clearInterval(interval);
+        const segmentCards = segments.map(segment => `
+            <div class="col-md-6 mb-3">
+                <div class="insight-card p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0" style="color: ${segment.color}">${segment.name}</h6>
+                        <span class="badge" style="background-color: ${segment.color}">${segment.size}%</span>
+                    </div>
+                    <p class="small text-muted mb-2">${segment.characteristics}</p>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <small class="text-muted">Revenue</small>
+                            <div class="fw-bold">€${segment.revenue.toLocaleString()}</div>
+                        </div>
+                        <div class="col-4">
+                            <small class="text-muted">Avg Order</small>
+                            <div class="fw-bold">€${segment.avgOrderValue}</div>
+                        </div>
+                        <div class="col-4">
+                            <small class="text-muted">Size</small>
+                            <div class="fw-bold">${segment.size}%</div>
+                        </div>
+                    </div>
+                    <hr>
+                    <small><strong>Strategy:</strong> ${segment.recommendations}</small>
+                </div>
+            </div>
+        `).join('');
+
+        const html = `
+            <div class="card analysis-card fade-in">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-users me-2"></i>AI Customer Segmentation Results</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="chart-container">
+                                <div id="segmentationChart" style="height: 300px;"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary mb-3">💡 Segmentation Insights</h6>
+                            <div class="insight-card p-3">
+                                <ul class="mb-0">
+                                    <li><strong>Customer Distribution:</strong> Well-balanced across segments</li>
+                                    <li><strong>Revenue Concentration:</strong> Top 23% generate 40% of revenue</li>
+                                    <li><strong>Growth Opportunity:</strong> 28% potential loyalists to develop</li>
+                                    <li><strong>Risk Management:</strong> 15% customers need immediate attention</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h6 class="text-primary mb-3">🎯 Customer Segments & Strategies</h6>
+                    <div class="row">
+                        ${segmentCards}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        resultsDiv.innerHTML = html;
+
+        // Create segmentation pie chart
+        this.createSegmentationChart(segments);
+    }
+
+    /**
+     * Create customer segmentation pie chart
+     */
+    createSegmentationChart(segments) {
+        const data = [{
+            values: segments.map(s => s.size),
+            labels: segments.map(s => s.name),
+            type: 'pie',
+            marker: {
+                colors: segments.map(s => s.color)
+            },
+            textinfo: 'label+percent',
+            textposition: 'outside'
+        }];
+
+        const layout = {
+            title: 'Customer Segments Distribution',
+            showlegend: true,
+            margin: {t: 50, l: 50, r: 50, b: 50}
+        };
+
+        Plotly.newPlot('segmentationChart', data, layout, {responsive: true});
+    }
+
+    /**
+     * Validate data for analysis
+     */
+    validateDataForAnalysis() {
+        if (!this.currentData || this.currentData.length === 0) {
+            this.showError('Please upload data or load sample data first.');
+            return false;
         }
-    }, 200);
-}
+        return true;
+    }
 
-// Hide Loading Modal
-function hideLoading() {
-    loadingModal.hide();
-    // Reset progress bar
-    setTimeout(() => {
-        document.getElementById('progressBar').style.width = '0%';
-    }, 500);
-}
+    /**
+     * Trend Analysis
+     */
+    runTrendAnalysis() {
+        if (!this.validateDataForAnalysis()) return;
+        this.showLoading('📈 AI Trend Analysis', 'Identifying patterns and trends...', 3000);
+        setTimeout(() => this.displayTrendAnalysis(), 3000);
+    }
 
-// Reset Demo
-function resetDemo() {
-    if (confirm('Are you sure you want to reset the demo? All data will be cleared.')) {
-        currentData = null;
-        document.getElementById('metricsRow').style.display = 'none';
+    displayTrendAnalysis() {
+        const html = `
+            <div class="card analysis-card fade-in">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-trending-up me-2"></i>Trend Analysis Results</h5>
+                </div>
+                <div class="card-body">
+                    <div class="insight-card p-3">
+                        <h6 class="text-primary">📊 Key Trends Identified:</h6>
+                        <ul>
+                            <li><strong>Revenue Growth:</strong> 18.5% increase over the analysis period</li>
+                            <li><strong>Customer Acquisition:</strong> Steady 2.3% monthly growth</li>
+                            <li><strong>Seasonal Patterns:</strong> Peak performance in Q4, 25% above average</li>
+                            <li><strong>Weekly Patterns:</strong> Friday-Sunday show 40% higher sales</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.getElementById('analysisResults').innerHTML = html;
+    }
+
+    /**
+     * Other analysis methods (simplified for demo)
+     */
+    runSeasonalAnalysis() {
+        if (!this.validateDataForAnalysis()) return;
+        this.showLoading('📅 Seasonal Pattern Analysis', 'Detecting seasonal trends...', 2500);
+        setTimeout(() => this.displaySeasonalResults(), 2500);
+    }
+
+    displaySeasonalResults() {
+        const html = `
+            <div class="card analysis-card fade-in">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Seasonal Analysis Results</h5>
+                </div>
+                <div class="card-body">
+                    <div class="insight-card p-3">
+                        <h6 class="text-primary">🗓️ Seasonal Insights:</h6>
+                        <ul>
+                            <li><strong>Peak Season:</strong> November-December (+35% revenue)</li>
+                            <li><strong>Low Season:</strong> January-February (-20% revenue)</li>
+                            <li><strong>Spring Growth:</strong> March-May steady 5% monthly increase</li>
+                            <li><strong>Summer Stability:</strong> June-August consistent performance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.getElementById('analysisResults').innerHTML = html;
+    }
+
+    runGrowthAnalysis() {
+        if (!this.validateDataForAnalysis()) return;
+        this.showLoading('📊 Growth Analysis', 'Calculating growth metrics...', 2800);
+        setTimeout(() => this.displayGrowthResults(), 2800);
+    }
+
+    displayGrowthResults() {
+        const html = `
+            <div class="card analysis-card fade-in">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-area me-2"></i>Growth Analysis Results</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="insight-card p-3">
+                                <h6 class="text-success">📈 Revenue Growth</h6>
+                                <h4>+24.8%</h4>
+                                <small>Year-over-year growth rate</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="insight-card p-3">
+                                <h6 class="text-primary">👥 Customer Growth</h6>
+                                <h4>+12.3%</h4>
+                                <small>Customer base expansion</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.getElementById('analysisResults').innerHTML = html;
+    }
+
+    /**
+     * Generate comprehensive AI business insights
+     */
+    generateInsights() {
+        if (!this.validateDataForAnalysis()) return;
+        
+        this.showLoading('🧠 AI Business Insights', 'Generating actionable recommendations...', 4500);
+        
+        setTimeout(() => {
+            this.displayComprehensiveInsights();
+        }, 4500);
+    }
+
+    displayComprehensiveInsights() {
+        const html = `
+            <div class="card analysis-card fade-in">
+                <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <h5 class="mb-0"><i class="fas fa-brain me-2"></i>AI-Generated Business Insights</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="insight-card p-3">
+                                <h6 class="text-primary">🎯 Executive Summary</h6>
+                                <ul class="mb-0">
+                                    <li><strong>Overall Performance:</strong> Strong growth trajectory with 18.5% YoY increase</li>
+                                    <li><strong>Market Position:</strong> Solid customer base with room for expansion</li>
+                                    <li><strong>Key Opportunity:</strong> Q4 seasonal optimization potential</li>
+                                    <li><strong>Risk Factor:</strong> 15% customers need retention focus</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="insight-card p-3">
+                                <h6 class="text-success">💰 Financial Health</h6>
+                                <ul class="mb-0">
+                                    <li><strong>Revenue Trend:</strong> Positive and accelerating</li>
+                                    <li><strong>Customer Value:</strong> Increasing average order value</li>
+                                    <li><strong>Profitability:</strong> Healthy margins with growth potential</li>
+                                    <li><strong>Cash Flow:</strong> Stable with seasonal peaks</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-card p-4 mb-4" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                        <h6 class="mb-3"><i class="fas fa-lightbulb me-2"></i>Top AI Recommendations</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>🚀 Growth Acceleration</h6>
+                                <ul>
+                                    <li>Increase marketing spend by 25% during Q4</li>
+                                    <li>Expand product lines in top-performing categories</li>
+                                    <li>Launch customer referral program</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>🎯 Optimization Focus</h6>
+                                <ul>
+                                    <li>Implement dynamic pricing for peak periods</li>
+                                    <li>Optimize inventory for seasonal demands</li>
+                                    <li>Enhance customer retention programs</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="insight-card p-3">
+                                <h6 class="text-warning">⚡ Immediate Actions (0-30 days)</h6>
+                                <ul class="small mb-0">
+                                    <li>Launch win-back campaign for at-risk customers</li>
+                                    <li>Optimize website for mobile conversion</li>
+                                    <li>A/B test pricing strategies</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="insight-card p-3">
+                                <h6 class="text-info">📊 Short-term Goals (1-3 months)</h6>
+                                <ul class="small mb-0">
+                                    <li>Implement customer segmentation marketing</li>
+                                    <li>Expand to new geographic markets</li>
+                                    <li>Launch loyalty program</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="insight-card p-3">
+                                <h6 class="text-success">🎯 Long-term Strategy (3-12 months)</h6>
+                                <ul class="small mb-0">
+                                    <li>Develop premium product tier</li>
+                                    <li>Build strategic partnerships</li>
+                                    <li>Implement AI-driven personalization</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('analysisResults').innerHTML = html;
+    }
+
+    /**
+     * Additional analysis methods for completeness
+     */
+    runLifetimeValue() { this.showSimpleAnalysis('💎 Customer Lifetime Value', 'Calculating customer lifetime value...', 'Average CLV: €2,450 | Top 20% customers: €8,900 | Recommended retention budget: €245/customer'); }
+    runChurnPrediction() { this.showSimpleAnalysis('🚨 Churn Prediction', 'Predicting customer churn risk...', 'Low risk: 65% | Medium risk: 20% | High risk: 15% | Recommended intervention: Personalized offers for high-risk segment'); }
+    runRFMAnalysis() { this.showSimpleAnalysis('⭐ RFM Analysis', 'Analyzing Recency, Frequency, Monetary...', 'Champions: 18% | Loyal Customers: 31% | Potential Loyalists: 26% | At Risk: 15% | Lost: 10%'); }
+    runProductPerformance() { this.showSimpleAnalysis('📦 Product Performance', 'Analyzing product metrics...', 'Top performer: Electronics (+28% revenue) | Rising star: Home & Garden (+15%) | Declining: Books (-8%)'); }
+    runMarketBasket() { this.showSimpleAnalysis('🛍️ Market Basket Analysis', 'Finding product associations...', 'Strong correlation: Electronics + Accessories (65% co-purchase) | Recommended bundles: Home + Garden combo'); }
+    runPricingAnalysis() { this.showSimpleAnalysis('💲 Pricing Analysis', 'Optimizing pricing strategy...', 'Optimal price points identified | Revenue increase potential: 12-18% | Price elasticity: Moderate'); }
+    runSalesOptimization() { this.showSimpleAnalysis('🎯 Sales Optimization', 'Optimizing sales processes...', 'Peak sales hours: 2-4 PM, 7-9 PM | Best channels: Online (45%), Mobile (35%) | Conversion rate: 3.2%'); }
+    runAnomalyDetection() { this.showSimpleAnalysis('🔍 Anomaly Detection', 'Detecting unusual patterns...', '3 anomalies detected | Significant spikes on Black Friday (+340%) | Unusual drops during system maintenance'); }
+    runSentimentAnalysis() { this.showSimpleAnalysis('😊 Sentiment Analysis', 'Analyzing customer sentiment...', 'Overall sentiment: 72% positive | Top issues: Shipping delays | Satisfaction drivers: Product quality, Customer service'); }
+    runCohortAnalysis() { this.showSimpleAnalysis('📊 Cohort Analysis', 'Analyzing customer cohorts...', 'Month 1 retention: 85% | Month 6 retention: 45% | Month 12 retention: 28% | Best cohort: Q4 2023 customers'); }
+    runCompetitorAnalysis() { this.showSimpleAnalysis('♟️ Competitive Analysis', 'Analyzing market position...', 'Market share: 12% | Price position: Competitive | Key differentiators: Customer service, Product quality'); }
+    runPredictiveModels() { this.showSimpleAnalysis('🤖 Predictive Models', 'Running ML models...', 'Sales prediction accuracy: 87% | Customer behavior model: 82% | Inventory optimization: 91% accuracy'); }
+    runRecommendationEngine() { this.showSimpleAnalysis('✨ AI Recommendations', 'Generating personalized recommendations...', 'Cross-sell opportunities: +23% revenue potential | Upsell targets: 340 customers | Personalization impact: +15% conversion'); }
+    generateExecutiveReport() { this.showSimpleAnalysis('📄 Executive Report', 'Compiling executive summary...', 'Report generated with KPIs, trends, and strategic recommendations | Download available in multiple formats'); }
+
+    showSimpleAnalysis(title, loadingText, result) {
+        if (!this.validateDataForAnalysis()) return;
+        
+        this.showLoading(title, loadingText, 2500);
+        
+        setTimeout(() => {
+            const html = `
+                <div class="card analysis-card fade-in">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">${title}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="insight-card p-3">
+                            <h6 class="text-primary">📊 Analysis Results:</h6>
+                            <p class="mb-0">${result}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('analysisResults').innerHTML = html;
+        }, 2500);
+    }
+
+    /**
+     * Utility methods for user feedback
+     */
+    showSuccess(message) {
+        this.showAlert(message, 'success');
+    }
+
+    showError(message) {
+        this.showAlert(message, 'danger');
+    }
+
+    showAlert(message, type) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(alertDiv);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.parentNode.removeChild(alertDiv);
+            }
+        }, 5000);
+    }
+
+    /**
+     * Reset demo to initial state
+     */
+    resetDemo() {
+        this.currentData = null;
+        this.analysisResults = {};
+        
+        // Hide analysis panels
         document.getElementById('analysisControls').style.display = 'none';
         document.getElementById('dataPreview').style.display = 'none';
-        document.getElementById('fileInput').value = '';
+        document.getElementById('metricsRow').style.display = 'none';
         
-        // Reset analysis results
+        // Show welcome card
+        const welcomeCard = document.getElementById('welcomeCard');
+        if (welcomeCard) {
+            welcomeCard.style.display = 'block';
+        }
+        
+        // Reset results area
         document.getElementById('analysisResults').innerHTML = `
             <div class="card analysis-card h-100" id="welcomeCard">
                 <div class="card-body text-center py-5">
@@ -680,842 +1108,47 @@ function resetDemo() {
             </div>
         `;
         
-        console.log('Demo reset successfully! 🔄');
+        this.showSuccess('✅ Demo reset successfully!');
     }
 }
 
-// ============================================
-// NEW ENHANCED ANALYSIS FUNCTIONS
-// ============================================
-
-// Trend Analysis
-function runTrendAnalysis() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Analyzing trends...', 'Detecting patterns and trends in your data...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showTrendAnalysisResults();
-    }, 2000);
+// Global functions for HTML onclick events
+function loadSampleData() {
+    window.dataSightPlatform.loadSampleData();
 }
 
-function showTrendAnalysisResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0"><i class="fas fa-trending-up me-2"></i>Trend Analysis</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="chart-container">
-                            <div id="trendChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-info mb-3">
-                                <i class="fas fa-chart-line me-1"></i>Trend Insights
-                            </h6>
-                            <div class="alert alert-success border-0 p-2 mb-2">
-                                <small><i class="fas fa-arrow-up me-1"></i><strong>Growth Trend:</strong> 18% increase over last 6 months</small>
-                            </div>
-                            <div class="alert alert-warning border-0 p-2 mb-2">
-                                <small><i class="fas fa-exclamation-triangle me-1"></i><strong>Seasonality:</strong> Strong Q4 pattern detected</small>
-                            </div>
-                            <div class="alert alert-info border-0 p-2 mb-2">
-                                <small><i class="fas fa-calendar me-1"></i><strong>Peak Period:</strong> November-December</small>
-                            </div>
-                            <div class="alert alert-primary border-0 p-2">
-                                <small><i class="fas fa-lightbulb me-1"></i><strong>Recommendation:</strong> Increase inventory by 25% for Q4</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create trend chart
-    const trendData = [
-        {
-            x: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            y: [45000, 48000, 52000, 49000, 55000, 58000, 61000, 59000, 65000, 72000, 89000, 95000],
-            type: 'scatter',
-            mode: 'lines+markers',
-            name: 'Revenue Trend',
-            line: {color: '#1f77b4', width: 3},
-            marker: {size: 8}
-        }
-    ];
-    
-    Plotly.newPlot('trendChart', trendData, {
-        title: 'Revenue Trend Analysis',
-        xaxis: {title: 'Month'},
-        yaxis: {title: 'Revenue (€)'},
-        margin: {t: 50, r: 50, b: 50, l: 80}
-    });
+function resetDemo() {
+    window.dataSightPlatform.resetDemo();
 }
 
-// Seasonal Analysis
-function runSeasonalAnalysis() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Analyzing seasonal patterns...', 'Identifying seasonal trends and cycles...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showSeasonalAnalysisResults();
-    }, 2200);
+function handleFileUpload(input) {
+    window.dataSightPlatform.handleFileUpload(input);
 }
 
-function showSeasonalAnalysisResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Seasonal Pattern Analysis</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="chart-container">
-                            <div id="seasonalChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-warning mb-3">
-                                <i class="fas fa-calendar me-1"></i>Seasonal Insights
-                            </h6>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-success">Q4</span>
-                                    <span class="fw-bold">+45%</span>
-                                </div>
-                                <small class="text-muted">Peak season performance</small>
-                            </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-danger">Q1</span>
-                                    <span class="fw-bold">-23%</span>
-                                </div>
-                                <small class="text-muted">Low season period</small>
-                            </div>
-                            <div class="alert alert-info border-0 p-2">
-                                <small><i class="fas fa-chart-bar me-1"></i><strong>Best Months:</strong> Nov, Dec, Jan</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create seasonal chart
-    const seasonalData = [
-        {
-            x: ['Q1', 'Q2', 'Q3', 'Q4'],
-            y: [195000, 220000, 235000, 340000],
-            type: 'bar',
-            name: 'Seasonal Revenue',
-            marker: {color: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4']}
-        }
-    ];
-    
-    Plotly.newPlot('seasonalChart', seasonalData, {
-        title: 'Quarterly Seasonal Patterns',
-        xaxis: {title: 'Quarter'},
-        yaxis: {title: 'Revenue (€)'},
-        margin: {t: 50, r: 50, b: 50, l: 80}
-    });
-}
+// Analysis functions
+function runForecast() { window.dataSightPlatform.runForecast(); }
+function runTrendAnalysis() { window.dataSightPlatform.runTrendAnalysis(); }
+function runSeasonalAnalysis() { window.dataSightPlatform.runSeasonalAnalysis(); }
+function runGrowthAnalysis() { window.dataSightPlatform.runGrowthAnalysis(); }
+function runSegmentation() { window.dataSightPlatform.runSegmentation(); }
+function runLifetimeValue() { window.dataSightPlatform.runLifetimeValue(); }
+function runChurnPrediction() { window.dataSightPlatform.runChurnPrediction(); }
+function runRFMAnalysis() { window.dataSightPlatform.runRFMAnalysis(); }
+function runProductPerformance() { window.dataSightPlatform.runProductPerformance(); }
+function runMarketBasket() { window.dataSightPlatform.runMarketBasket(); }
+function runPricingAnalysis() { window.dataSightPlatform.runPricingAnalysis(); }
+function runSalesOptimization() { window.dataSightPlatform.runSalesOptimization(); }
+function runAnomalyDetection() { window.dataSightPlatform.runAnomalyDetection(); }
+function runSentimentAnalysis() { window.dataSightPlatform.runSentimentAnalysis(); }
+function runCohortAnalysis() { window.dataSightPlatform.runCohortAnalysis(); }
+function runCompetitorAnalysis() { window.dataSightPlatform.runCompetitorAnalysis(); }
+function generateInsights() { window.dataSightPlatform.generateInsights(); }
+function generateExecutiveReport() { window.dataSightPlatform.generateExecutiveReport(); }
+function runPredictiveModels() { window.dataSightPlatform.runPredictiveModels(); }
+function runRecommendationEngine() { window.dataSightPlatform.runRecommendationEngine(); }
 
-// Growth Analysis
-function runGrowthAnalysis() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Calculating growth metrics...', 'Analyzing growth rates and projections...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showGrowthAnalysisResults();
-    }, 1800);
-}
-
-function showGrowthAnalysisResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0"><i class="fas fa-chart-area me-2"></i>Growth Analysis</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="chart-container">
-                            <div id="growthChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-success mb-3">
-                                <i class="fas fa-rocket me-1"></i>Growth Metrics
-                            </h6>
-                            <div class="row text-center mb-3">
-                                <div class="col-6">
-                                    <div class="border rounded p-2">
-                                        <div class="h4 text-success mb-0">+24%</div>
-                                        <small class="text-muted">YoY Growth</small>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="border rounded p-2">
-                                        <div class="h4 text-info mb-0">+18%</div>
-                                        <small class="text-muted">Monthly Growth</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="alert alert-success border-0 p-2 mb-2">
-                                <small><i class="fas fa-thumbs-up me-1"></i><strong>Strong Growth:</strong> Above industry average</small>
-                            </div>
-                            <div class="alert alert-info border-0 p-2">
-                                <small><i class="fas fa-target me-1"></i><strong>Projection:</strong> €1.2M by year end</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create growth chart
-    const growthData = [
-        {
-            x: ['6 months ago', '5 months ago', '4 months ago', '3 months ago', '2 months ago', 'Last month', 'This month'],
-            y: [15, 18, 12, 25, 22, 28, 24],
-            type: 'bar',
-            name: 'Monthly Growth %',
-            marker: {color: '#2ecc71'}
-        }
-    ];
-    
-    Plotly.newPlot('growthChart', growthData, {
-        title: 'Monthly Growth Rate',
-        xaxis: {title: 'Period'},
-        yaxis: {title: 'Growth Rate (%)'},
-        margin: {t: 50, r: 50, b: 50, l: 80}
-    });
-}
-
-// Customer Lifetime Value
-function runLifetimeValue() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Calculating customer lifetime value...', 'Analyzing customer purchase patterns...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showLifetimeValueResults();
-    }, 2500);
-}
-
-function showLifetimeValueResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-gem me-2"></i>Customer Lifetime Value Analysis</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="chart-container">
-                            <div id="clvChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-primary mb-3">
-                                <i class="fas fa-coins me-1"></i>CLV Insights
-                            </h6>
-                            <div class="text-center mb-3">
-                                <div class="h2 text-primary">€2,850</div>
-                                <small class="text-muted">Average CLV</small>
-                            </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-success">Top 10%</span>
-                                    <span class="fw-bold">€8,500</span>
-                                </div>
-                                <small class="text-muted">Premium customers</small>
-                            </div>
-                            <div class="alert alert-warning border-0 p-2">
-                                <small><i class="fas fa-exclamation-triangle me-1"></i><strong>Focus:</strong> Increase retention by 5% to boost CLV 25%</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create CLV distribution chart
-    const clvData = [
-        {
-            x: ['€0-500', '€500-1000', '€1000-2000', '€2000-5000', '€5000+'],
-            y: [125, 203, 287, 156, 45],
-            type: 'bar',
-            name: 'Customer Count',
-            marker: {color: '#3498db'}
-        }
-    ];
-    
-    Plotly.newPlot('clvChart', clvData, {
-        title: 'Customer Lifetime Value Distribution',
-        xaxis: {title: 'CLV Range'},
-        yaxis: {title: 'Number of Customers'},
-        margin: {t: 50, r: 50, b: 50, l: 80}
-    });
-}
-
-// Churn Prediction
-function runChurnPrediction() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Predicting customer churn...', 'Analyzing customer behavior patterns...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showChurnPredictionResults();
-    }, 3000);
-}
-
-function showChurnPredictionResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-danger text-white">
-                <h5 class="mb-0"><i class="fas fa-user-times me-2"></i>Churn Prediction Analysis</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="chart-container">
-                            <div id="churnChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-danger mb-3">
-                                <i class="fas fa-exclamation-circle me-1"></i>Churn Risk
-                            </h6>
-                            <div class="alert alert-danger border-0 p-2 mb-2">
-                                <small><i class="fas fa-users me-1"></i><strong>High Risk:</strong> 87 customers (7.2%)</small>
-                            </div>
-                            <div class="alert alert-warning border-0 p-2 mb-2">
-                                <small><i class="fas fa-user-clock me-1"></i><strong>Medium Risk:</strong> 156 customers (12.9%)</small>
-                            </div>
-                            <div class="alert alert-success border-0 p-2 mb-3">
-                                <small><i class="fas fa-shield-alt me-1"></i><strong>Low Risk:</strong> 967 customers (79.9%)</small>
-                            </div>
-                            <div class="alert alert-info border-0 p-2">
-                                <small><i class="fas fa-lightbulb me-1"></i><strong>Action:</strong> Launch retention campaign for high-risk customers</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create churn prediction chart
-    const churnData = [
-        {
-            labels: ['Low Risk', 'Medium Risk', 'High Risk'],
-            values: [967, 156, 87],
-            type: 'pie',
-            marker: {colors: ['#2ecc71', '#f39c12', '#e74c3c']},
-            hole: 0.4
-        }
-    ];
-    
-    Plotly.newPlot('churnChart', churnData, {
-        title: 'Customer Churn Risk Distribution',
-        margin: {t: 50, r: 50, b: 50, l: 50}
-    });
-}
-
-// RFM Analysis
-function runRFMAnalysis() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Running RFM analysis...', 'Analyzing Recency, Frequency, and Monetary value...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showRFMAnalysisResults();
-    }, 2800);
-}
-
-function showRFMAnalysisResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0"><i class="fas fa-star me-2"></i>RFM Analysis (Recency, Frequency, Monetary)</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="chart-container">
-                            <div id="rfmChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-info mb-3">
-                                <i class="fas fa-medal me-1"></i>RFM Segments
-                            </h6>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-success">Champions</span>
-                                    <span class="fw-bold">15%</span>
-                                </div>
-                                <small class="text-muted">Best customers - high value, frequent, recent</small>
-                            </div>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-primary">Loyal</span>
-                                    <span class="fw-bold">23%</span>
-                                </div>
-                                <small class="text-muted">Regular customers - good frequency</small>
-                            </div>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-warning">At Risk</span>
-                                    <span class="fw-bold">18%</span>
-                                </div>
-                                <small class="text-muted">Haven't purchased recently</small>
-                            </div>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-danger">Lost</span>
-                                    <span class="fw-bold">12%</span>
-                                </div>
-                                <small class="text-muted">Haven't purchased in long time</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create RFM segmentation chart
-    const rfmData = [
-        {
-            x: ['Champions', 'Loyal', 'Potential', 'New', 'At Risk', 'Cannot Lose', 'Lost'],
-            y: [180, 276, 195, 89, 216, 67, 144],
-            type: 'bar',
-            name: 'Customer Count',
-            marker: {color: ['#2ecc71', '#3498db', '#9b59b6', '#1abc9c', '#f39c12', '#e67e22', '#e74c3c']}
-        }
-    ];
-    
-    Plotly.newPlot('rfmChart', rfmData, {
-        title: 'RFM Customer Segmentation',
-        xaxis: {title: 'RFM Segment'},
-        yaxis: {title: 'Number of Customers'},
-        margin: {t: 50, r: 50, b: 50, l: 80}
-    });
-}
-
-// Product Performance
-function runProductPerformance() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Analyzing product performance...', 'Evaluating sales and profitability by product...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showProductPerformanceResults();
-    }, 2200);
-}
-
-function showProductPerformanceResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0"><i class="fas fa-box me-2"></i>Product Performance Analysis</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="chart-container">
-                            <div id="productChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-warning mb-3">
-                                <i class="fas fa-trophy me-1"></i>Top Performers
-                            </h6>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-success">Electronics</span>
-                                    <span class="fw-bold">€456K</span>
-                                </div>
-                                <small class="text-muted">73% of total revenue</small>
-                            </div>
-                            <div class="mb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-info">Clothing</span>
-                                    <span class="fw-bold">€123K</span>
-                                </div>
-                                <small class="text-muted">19% of total revenue</small>
-                            </div>
-                            <div class="alert alert-success border-0 p-2">
-                                <small><i class="fas fa-chart-line me-1"></i><strong>Trend:</strong> Electronics growing 34% YoY</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create product performance chart
-    const productData = [
-        {
-            x: ['Electronics', 'Clothing', 'Books', 'Home & Garden', 'Sports'],
-            y: [456000, 123000, 45000, 67000, 89000],
-            type: 'bar',
-            name: 'Revenue by Category',
-            marker: {color: '#f39c12'}
-        }
-    ];
-    
-    Plotly.newPlot('productChart', productData, {
-        title: 'Product Category Performance',
-        xaxis: {title: 'Product Category'},
-        yaxis: {title: 'Revenue (€)'},
-        margin: {t: 50, r: 50, b: 50, l: 80}
-    });
-}
-
-// Market Basket Analysis
-function runMarketBasket() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Analyzing purchase patterns...', 'Finding product associations and cross-selling opportunities...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showMarketBasketResults();
-    }, 2600);
-}
-
-function showMarketBasketResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0"><i class="fas fa-shopping-basket me-2"></i>Market Basket Analysis</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="chart-container">
-                            <div id="basketChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-success mb-3">
-                                <i class="fas fa-link me-1"></i>Product Associations
-                            </h6>
-                            <div class="alert alert-success border-0 p-2 mb-2">
-                                <small><i class="fas fa-mobile-alt me-1"></i><strong>Phones + Cases:</strong> 87% buy together</small>
-                            </div>
-                            <div class="alert alert-info border-0 p-2 mb-2">
-                                <small><i class="fas fa-laptop me-1"></i><strong>Laptops + Mice:</strong> 65% buy together</small>
-                            </div>
-                            <div class="alert alert-warning border-0 p-2 mb-2">
-                                <small><i class="fas fa-headphones me-1"></i><strong>Headphones + Cables:</strong> 54% buy together</small>
-                            </div>
-                            <div class="alert alert-primary border-0 p-2">
-                                <small><i class="fas fa-bullseye me-1"></i><strong>Opportunity:</strong> Cross-sell can increase revenue by 23%</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create market basket association chart
-    const basketData = [
-        {
-            x: ['Phone + Case', 'Laptop + Mouse', 'Headphones + Cable', 'Book + Bookmark', 'Shirt + Pants'],
-            y: [87, 65, 54, 43, 38],
-            type: 'bar',
-            name: 'Association Strength (%)',
-            marker: {color: '#2ecc71'}
-        }
-    ];
-    
-    Plotly.newPlot('basketChart', basketData, {
-        title: 'Product Association Strength',
-        xaxis: {title: 'Product Combinations'},
-        yaxis: {title: 'Association Strength (%)'},
-        margin: {t: 50, r: 50, b: 50, l: 80}
-    });
-}
-
-// Pricing Analysis
-function runPricingAnalysis() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Analyzing pricing optimization...', 'Evaluating price elasticity and optimization opportunities...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showPricingAnalysisResults();
-    }, 2400);
-}
-
-function showPricingAnalysisResults() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0"><i class="fas fa-dollar-sign me-2"></i>Pricing Analysis & Optimization</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="chart-container">
-                            <div id="pricingChart"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="insight-card p-3 rounded">
-                            <h6 class="text-primary mb-3">
-                                <i class="fas fa-tag me-1"></i>Pricing Insights
-                            </h6>
-                            <div class="alert alert-success border-0 p-2 mb-2">
-                                <small><i class="fas fa-arrow-up me-1"></i><strong>Electronics:</strong> Can increase price by 8%</small>
-                            </div>
-                            <div class="alert alert-warning border-0 p-2 mb-2">
-                                <small><i class="fas fa-minus me-1"></i><strong>Books:</strong> Price-sensitive category</small>
-                            </div>
-                            <div class="alert alert-info border-0 p-2 mb-2">
-                                <small><i class="fas fa-balance-scale me-1"></i><strong>Optimal:</strong> Clothing prices well positioned</small>
-                            </div>
-                            <div class="alert alert-primary border-0 p-2">
-                                <small><i class="fas fa-coins me-1"></i><strong>Revenue Impact:</strong> +€67K with price optimization</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Create pricing elasticity chart
-    const pricingData = [
-        {
-            x: ['Electronics', 'Clothing', 'Books', 'Home & Garden', 'Sports'],
-            y: [0.3, 0.8, 1.4, 0.6, 0.9],
-            type: 'bar',
-            name: 'Price Elasticity',
-            marker: {color: ['#2ecc71', '#3498db', '#e74c3c', '#f39c12', '#9b59b6']}
-        }
-    ];
-    
-    Plotly.newPlot('pricingChart', pricingData, {
-        title: 'Price Elasticity by Category',
-        xaxis: {title: 'Product Category'},
-        yaxis: {title: 'Price Elasticity'},
-        margin: {t: 50, r: 50, b: 50, l: 80}
-    });
-}
-
-// Executive Report
-function generateExecutiveReport() {
-    if (!currentData) {
-        alert('Please load data first!');
-        return;
-    }
-    
-    showLoading('Generating executive report...', 'Compiling comprehensive business insights...');
-    
-    setTimeout(() => {
-        hideLoading();
-        showExecutiveReport();
-    }, 3500);
-}
-
-function showExecutiveReport() {
-    const resultsDiv = document.getElementById('analysisResults');
-    
-    resultsDiv.innerHTML = `
-        <div class="card analysis-card fade-in">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0"><i class="fas fa-file-contract me-2"></i>Executive Summary Report</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="executive-summary p-4 rounded border">
-                            <h4 class="text-dark mb-4"><i class="fas fa-chart-line me-2"></i>Business Performance Overview</h4>
-                            
-                            <div class="row mb-4">
-                                <div class="col-md-3 text-center">
-                                    <div class="border rounded p-3 bg-light">
-                                        <div class="h3 text-success mb-1">€780K</div>
-                                        <small class="text-muted">Total Revenue</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <div class="border rounded p-3 bg-light">
-                                        <div class="h3 text-info mb-1">1,210</div>
-                                        <small class="text-muted">Active Customers</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <div class="border rounded p-3 bg-light">
-                                        <div class="h3 text-warning mb-1">+24%</div>
-                                        <small class="text-muted">YoY Growth</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 text-center">
-                                    <div class="border rounded p-3 bg-light">
-                                        <div class="h3 text-primary mb-1">€2,850</div>
-                                        <small class="text-muted">Avg CLV</small>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <h5 class="mb-3"><i class="fas fa-key me-2"></i>Key Findings</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="alert alert-success border-0 mb-2">
-                                        <strong>✓ Strong Growth:</strong> 24% year-over-year revenue increase
-                                    </div>
-                                    <div class="alert alert-success border-0 mb-2">
-                                        <strong>✓ Customer Loyalty:</strong> 79.9% of customers are low churn risk
-                                    </div>
-                                    <div class="alert alert-success border-0">
-                                        <strong>✓ Product Focus:</strong> Electronics driving 73% of revenue
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="alert alert-warning border-0 mb-2">
-                                        <strong>⚠ Seasonal Dependency:</strong> 45% revenue increase in Q4
-                                    </div>
-                                    <div class="alert alert-warning border-0 mb-2">
-                                        <strong>⚠ At-Risk Customers:</strong> 87 customers need retention focus
-                                    </div>
-                                    <div class="alert alert-info border-0">
-                                        <strong>💡 Opportunity:</strong> Cross-selling can boost revenue 23%
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <h5 class="mb-3"><i class="fas fa-bullseye me-2"></i>Strategic Recommendations</h5>
-                            <ol class="list-group list-group-flush">
-                                <li class="list-group-item border-0"><strong>Inventory Planning:</strong> Increase Q4 inventory by 25% for seasonal demand</li>
-                                <li class="list-group-item border-0"><strong>Customer Retention:</strong> Launch targeted campaign for 87 high-risk customers</li>
-                                <li class="list-group-item border-0"><strong>Pricing Optimization:</strong> Increase electronics prices by 8% for +€67K revenue</li>
-                                <li class="list-group-item border-0"><strong>Cross-Selling:</strong> Implement "frequently bought together" recommendations</li>
-                                <li class="list-group-item border-0"><strong>Market Expansion:</strong> Leverage 15% champion customers for referral program</li>
-                            </ol>
-                            
-                            <div class="text-center mt-4">
-                                <button class="btn btn-primary me-2" onclick="window.print()">
-                                    <i class="fas fa-print me-1"></i>Print Report
-                                </button>
-                                <button class="btn btn-success" onclick="downloadReport()">
-                                    <i class="fas fa-download me-1"></i>Download PDF
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// Additional placeholder functions for remaining analysis types
-function runSalesOptimization() {
-    alert('Sales Optimization analysis coming soon! This feature will identify the best sales strategies and conversion opportunities.');
-}
-
-function runSentimentAnalysis() {
-    alert('Sentiment Analysis coming soon! This feature will analyze customer feedback and reviews to understand satisfaction levels.');
-}
-
-function runCohortAnalysis() {
-    alert('Cohort Analysis coming soon! This feature will track customer behavior over time to understand retention patterns.');
-}
-
-function runCompetitorAnalysis() {
-    alert('Competitor Analysis coming soon! This feature will benchmark your performance against industry standards.');
-}
-
-function runPredictiveModels() {
-    alert('Predictive Models coming soon! This feature will create custom AI models for your specific business needs.');
-}
-
-function runRecommendationEngine() {
-    alert('Recommendation Engine coming soon! This feature will provide personalized product and content recommendations.');
-}
-
-function downloadReport() {
-    alert('PDF download feature coming soon! This will generate a comprehensive business report for download.');
-}
-
-console.log('DataSight AI Platform ready! 🚀');
-console.log('Enhanced with 16+ analysis types! 📊');
+// Initialize platform when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DataSight AI Platform Loading...');
+    window.dataSightPlatform = new DataSightPlatform();
+});
