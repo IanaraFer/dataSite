@@ -3,435 +3,476 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataSiteAI Platform - Live Demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>AnalyticaCore AI - AI-Powered Company Data Analysis Platform</title>
+    
+    <!-- Following project coding instructions and SME business context -->
+    <meta name="description" content="AnalyticaCore AI - AI-powered company data analysis platform for SME businesses. Transform your data into actionable insights.">
+    <meta name="keywords" content="AnalyticaCore AI, data analysis, business intelligence, SME, analytics, forecasting">
+    
+    <!-- Bootstrap CSS for responsive design -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Plotly.js for advanced visualizations -->
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+    
     <style>
+        /* Custom styles following project brand guidelines */
         :root {
-            --primary-color: #1f77b4;
-            --secondary-color: #ff7f0e;
-            --success-color: #2ca02c;
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
             --warning-color: #ffc107;
             --danger-color: #dc3545;
-            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --info-color: #17a2b8;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
         }
-
-        .platform-header {
-            background: var(--gradient-bg);
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
         }
-
+        
         .card {
             border: none;
             border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 2rem;
         }
-
+        
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
         }
-
-        .metric-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .metric-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-
+        
         .upload-area {
-            border: 3px dashed #1f77b4;
+            border: 2px dashed var(--primary-color);
             border-radius: 15px;
             padding: 3rem;
             text-align: center;
-            background: rgba(31, 119, 180, 0.05);
-            cursor: pointer;
+            background: rgba(102, 126, 234, 0.05);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
-
+        
         .upload-area:hover {
-            background: rgba(31, 119, 180, 0.1);
-            border-color: #0d47a1;
+            background: rgba(102, 126, 234, 0.1);
+            border-color: var(--secondary-color);
         }
-
-        .analysis-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        }
-
+        
         .btn-ai {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             border: none;
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
             color: white;
             font-weight: 600;
-            padding: 0.75rem 2rem;
-            border-radius: 25px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
-
+        
         .btn-ai:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
             color: white;
         }
-
-        .insight-card {
-            border-left: 4px solid var(--primary-color);
-            background: white;
+        
+        .btn-ai:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
-
-        .progress-modern {
-            height: 8px;
-            border-radius: 10px;
-            background: #e9ecef;
+        
+        .metric-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .analysis-card {
+            background: white;
+            border-radius: 15px;
             overflow: hidden;
         }
-
-        .progress-modern .progress-bar {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        
+        .chart-container {
+            background: white;
             border-radius: 10px;
+            padding: 1rem;
         }
-
-        .demo-data-table {
-            font-size: 0.9rem;
-        }
-
-        .loading-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #1f77b4;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
+        
         .fade-in {
-            animation: fadeIn 0.6s ease-in;
+            animation: fadeIn 0.5s ease-in;
         }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .chart-container {
-            background: white;
-            border-radius: 15px;
+        
+        .progress-bar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .contact-info {
+            background: rgba(255, 255, 255, 0.2);
             padding: 1rem;
-            margin-bottom: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+            
+            .upload-area {
+                padding: 2rem;
+            }
+            
+            .metric-value {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="platform-header">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: var(--primary-color);">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <h1 class="h3 mb-0">
-                    <i class="fas fa-robot me-2"></i>DataSight AI Platform
-                    <span class="badge bg-warning text-dark ms-2">LIVE DEMO</span>
-                </h1>
-                <div>
-                    <button class="btn btn-outline-light me-2" onclick="resetDemo()">
-                        <i class="fas fa-refresh me-1"></i>Reset Demo
-                    </button>
-                    <a href="index.html" class="btn btn-warning">
-                        <i class="fas fa-home me-1"></i>Back to Site
-                    </a>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-brain me-2"></i>AnalyticaCore AI
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="mailto:founder@analyticacoreai.com">
+                    <i class="fas fa-envelope me-1"></i>Contact
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">
+                <i class="fas fa-brain me-3"></i>AnalyticaCore AI
+            </h1>
+            <p class="lead mb-4 fs-3">
+                AI-Powered Company Data Analysis Platform for Small-Medium Enterprises
+            </p>
+            <div class="contact-info">
+                <div class="row">
+                    <div class="col-md-4">
+                        <i class="fas fa-building me-2"></i>
+                        <strong>AnalyticaCore AI</strong>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="fas fa-envelope me-2"></i>
+                        <a href="mailto:founder@analyticacoreai.com" class="text-white text-decoration-none">
+                            founder@analyticacoreai.com
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="fas fa-code me-2"></i>
+                        <strong>DataSight Platform</strong>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <em>Transform Your Business Data Into Strategic Insights</em>
+                </div>
+                <div class="mt-2">
+                    <small class="text-white-50">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Local deployment - Your platform is running on your machine
+                    </small>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="container my-4">
-        <!-- Welcome Message -->
-        <div class="alert alert-info border-0 shadow-sm mb-4" id="welcomeAlert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-info-circle me-3 fs-4"></i>
-                <div>
-                    <h5 class="alert-heading mb-1">Welcome to DataSight AI!</h5>
-                    <p class="mb-0">This is a live demo showing how our AI analyzes business data. Upload your own CSV file or use our sample data to see the magic happen!</p>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        </div>
+    <div class="container">
+        <!-- Alert area for notifications -->
+        <div id="alertArea"></div>
 
-        <!-- Key Metrics Row -->
-        <div class="row mb-4" id="metricsRow" style="display: none;">
+        <!-- Business Metrics Row (hidden initially) -->
+        <div class="row" id="metricsRow" style="display: none;">
             <div class="col-md-3 mb-3">
-                <div class="card metric-card text-center">
-                    <div class="card-body">
-                        <i class="fas fa-chart-line fs-1 mb-2"></i>
-                        <div class="metric-value" id="revenueMetric">€0</div>
-                        <div>Total Revenue</div>
+                <div class="metric-card">
+                    <div class="metric-value" id="revenueMetric">€0</div>
+                    <div class="metric-label">
+                        <i class="fas fa-euro-sign me-1"></i>Total Revenue
                     </div>
                 </div>
             </div>
             <div class="col-md-3 mb-3">
-                <div class="card metric-card text-center">
-                    <div class="card-body">
-                        <i class="fas fa-users fs-1 mb-2"></i>
-                        <div class="metric-value" id="customersMetric">0</div>
-                        <div>Total Customers</div>
+                <div class="metric-card">
+                    <div class="metric-value" id="customersMetric">0</div>
+                    <div class="metric-label">
+                        <i class="fas fa-users me-1"></i>Total Customers
                     </div>
                 </div>
             </div>
             <div class="col-md-3 mb-3">
-                <div class="card metric-card text-center">
-                    <div class="card-body">
-                        <i class="fas fa-trending-up fs-1 mb-2"></i>
-                        <div class="metric-value" id="growthMetric">0%</div>
-                        <div>Growth Rate</div>
+                <div class="metric-card">
+                    <div class="metric-value" id="growthMetric">0%</div>
+                    <div class="metric-label">
+                        <i class="fas fa-chart-line me-1"></i>Growth Rate
                     </div>
                 </div>
             </div>
             <div class="col-md-3 mb-3">
-                <div class="card metric-card text-center">
-                    <div class="card-body">
-                        <i class="fas fa-star fs-1 mb-2"></i>
-                        <div class="metric-value" id="satisfactionMetric">0%</div>
-                        <div>Satisfaction</div>
+                <div class="metric-card">
+                    <div class="metric-value" id="satisfactionMetric">0%</div>
+                    <div class="metric-label">
+                        <i class="fas fa-star me-1"></i>Satisfaction
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <!-- Left Column: Data Upload & Controls -->
+            <!-- Data Upload Section -->
             <div class="col-lg-4 mb-4">
-                <!-- Upload Card -->
-                <div class="card mb-4">
+                <div class="card h-100">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Data Upload</h5>
+                        <h5 class="mb-0">
+                            <i class="fas fa-upload me-2"></i>Data Management
+                        </h5>
                     </div>
                     <div class="card-body">
-                        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                            <i class="fas fa-cloud-upload-alt fs-1 text-primary mb-3"></i>
-                            <h6>Upload Your CSV File</h6>
-                            <p class="text-muted mb-0">Drag & drop or click to select</p>
-                            <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="handleFileUpload(this)">
-                        </div>
-                        
-                        <div class="text-center mt-3">
-                            <div class="text-muted mb-2">Or try our sample data</div>
-                            <button class="btn btn-outline-primary" onclick="loadSampleData()">
-                                <i class="fas fa-database me-1"></i>Load Sample Data
+                        <!-- Sample Data Button -->
+                        <div class="mb-4">
+                            <button class="btn btn-ai w-100 mb-3" onclick="loadSampleData()">
+                                <i class="fas fa-database me-2"></i>Load SME Demo Data
                             </button>
+                            <p class="text-muted small">
+                                Try our realistic SME business dataset with 365 days of comprehensive business data
+                            </p>
                         </div>
+
+                        <hr>
+
+                        <!-- File Upload -->
+                        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                            <h6>Upload Your Business Data</h6>
+                            <p class="text-muted mb-0">
+                                Click here or drag & drop CSV files<br>
+                                <small>Maximum file size: 50MB</small>
+                            </p>
+                            <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                        </div>
+
+                        <!-- Platform Features -->
+                        <div class="mt-4">
+                            <h6 class="text-primary">
+                                <i class="fas fa-star me-2"></i>Platform Features
+                            </h6>
+                            <ul class="list-unstyled small">
+                                <li><i class="fas fa-check text-success me-2"></i>AI-Powered Revenue Forecasting</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Customer Segmentation Analysis</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Business Trend Detection</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Growth Opportunity Identification</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Real-time Business Dashboards</li>
+                            </ul>
+                        </div>
+
+                        <!-- Reset Button -->
+                        <button class="btn btn-outline-secondary w-100 mt-3" onclick="resetDemo()">
+                            <i class="fas fa-refresh me-2"></i>Reset Demo
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Analysis Controls -->
-                <div class="card mb-4" id="analysisControls" style="display: none;">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0"><i class="fas fa-cogs me-2"></i>AI Analysis Suite</h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- Core Analytics -->
-                        <div class="mb-3">
-                            <h6 class="text-muted mb-2"><i class="fas fa-chart-line me-1"></i>Core Analytics</h6>
-                            <div class="row g-2">
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runForecast()">
-                                        <i class="fas fa-crystal-ball me-2"></i>Revenue Forecasting
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runTrendAnalysis()">
-                                        <i class="fas fa-trending-up me-2"></i>Trend Analysis
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runSeasonalAnalysis()">
-                                        <i class="fas fa-calendar-alt me-2"></i>Seasonal Patterns
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runGrowthAnalysis()">
-                                        <i class="fas fa-chart-area me-2"></i>Growth Analysis
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Customer Analytics -->
-                        <div class="mb-3">
-                            <h6 class="text-muted mb-2"><i class="fas fa-users me-1"></i>Customer Analytics</h6>
-                            <div class="row g-2">
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runSegmentation()">
-                                        <i class="fas fa-users me-2"></i>Customer Segments
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runLifetimeValue()">
-                                        <i class="fas fa-gem me-2"></i>Lifetime Value
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runChurnPrediction()">
-                                        <i class="fas fa-user-times me-2"></i>Churn Prediction
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runRFMAnalysis()">
-                                        <i class="fas fa-star me-2"></i>RFM Analysis
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Product & Sales Analytics -->
-                        <div class="mb-3">
-                            <h6 class="text-muted mb-2"><i class="fas fa-shopping-cart me-1"></i>Product & Sales Analytics</h6>
-                            <div class="row g-2">
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runProductPerformance()">
-                                        <i class="fas fa-box me-2"></i>Product Performance
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runMarketBasket()">
-                                        <i class="fas fa-shopping-basket me-2"></i>Market Basket
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runPricingAnalysis()">
-                                        <i class="fas fa-dollar-sign me-2"></i>Pricing Analysis
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runSalesOptimization()">
-                                        <i class="fas fa-target me-2"></i>Sales Optimization
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Advanced Analytics -->
-                        <div class="mb-3">
-                            <h6 class="text-muted mb-2"><i class="fas fa-brain me-1"></i>Advanced Analytics</h6>
-                            <div class="row g-2">
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runAnomalyDetection()">
-                                        <i class="fas fa-search me-2"></i>Anomaly Detection
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runSentimentAnalysis()">
-                                        <i class="fas fa-smile me-2"></i>Sentiment Analysis
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runCohortAnalysis()">
-                                        <i class="fas fa-layer-group me-2"></i>Cohort Analysis
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runCompetitorAnalysis()">
-                                        <i class="fas fa-chess me-2"></i>Competitor Analysis
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- AI Insights & Reports -->
-                        <div>
-                            <h6 class="text-muted mb-2"><i class="fas fa-lightbulb me-1"></i>AI Insights & Reports</h6>
-                            <div class="row g-2">
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="generateInsights()">
-                                        <i class="fas fa-lightbulb me-2"></i>AI Business Insights
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="generateExecutiveReport()">
-                                        <i class="fas fa-file-contract me-2"></i>Executive Report
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runPredictiveModels()">
-                                        <i class="fas fa-robot me-2"></i>Predictive Models
-                                    </button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button class="btn btn-ai w-100" onclick="runRecommendationEngine()">
-                                        <i class="fas fa-magic me-2"></i>AI Recommendations
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Data Preview -->
+            <!-- Data Preview Section -->
+            <div class="col-lg-8 mb-4">
                 <div class="card" id="dataPreview" style="display: none;">
                     <div class="card-header bg-info text-white">
-                        <h5 class="mb-0"><i class="fas fa-table me-2"></i>Data Preview</h5>
+                        <h5 class="mb-0">
+                            <i class="fas fa-table me-2"></i>Data Preview
+                        </h5>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-sm demo-data-table" id="previewTable">
-                                <thead>
+                            <table class="table table-striped table-hover" id="previewTable">
+                                <thead class="table-dark">
                                     <tr></tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
                         </div>
+                        <p class="text-muted mt-2">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Showing first 10 rows and 6 columns of your dataset
+                        </p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Right Column: Results & Visualizations -->
-            <div class="col-lg-8">
-                <!-- Analysis Results -->
-                <div id="analysisResults">
-                    <!-- Welcome Message for Analysis -->
-                    <div class="card analysis-card h-100" id="welcomeCard">
-                        <div class="card-body text-center py-5">
-                            <i class="fas fa-chart-area fs-1 text-primary mb-4"></i>
-                            <h3 class="text-primary mb-3">Ready for AI Analysis</h3>
-                            <p class="lead text-muted mb-4">
-                                Upload your business data or load our sample dataset to see DataSight AI in action. 
-                                Our advanced algorithms will automatically analyze your data and provide actionable insights.
-                            </p>
-                            <div class="row text-center">
-                                <div class="col-4">
-                                    <i class="fas fa-brain text-primary fs-2 mb-2"></i>
-                                    <h6>AI-Powered</h6>
-                                    <small class="text-muted">Machine learning algorithms</small>
-                                </div>
-                                <div class="col-4">
-                                    <i class="fas fa-bolt text-warning fs-2 mb-2"></i>
-                                    <h6>Lightning Fast</h6>
-                                    <small class="text-muted">Results in seconds</small>
-                                </div>
-                                <div class="col-4">
-                                    <i class="fas fa-shield-alt text-success fs-2 mb-2"></i>
-                                    <h6>Secure</h6>
-                                    <small class="text-muted">Your data stays private</small>
-                                </div>
-                            </div>
+        <!-- AI Analysis Controls -->
+        <div class="card" id="analysisControls" style="display: none;">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-robot me-2"></i>AI Analysis Suite
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Core Analytics -->
+                    <div class="col-md-4 mb-3">
+                        <h6 class="text-primary">
+                            <i class="fas fa-chart-line me-2"></i>Core Analytics
+                        </h6>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-ai" onclick="runForecast()" disabled>
+                                <i class="fas fa-crystal-ball me-2"></i>Revenue Forecast
+                            </button>
+                            <button class="btn btn-ai" onclick="runTrendAnalysis()" disabled>
+                                <i class="fas fa-trending-up me-2"></i>Trend Analysis
+                            </button>
+                            <button class="btn btn-ai" onclick="runSeasonalAnalysis()" disabled>
+                                <i class="fas fa-calendar-alt me-2"></i>Seasonal Patterns
+                            </button>
                         </div>
+                    </div>
+
+                    <!-- Customer Intelligence -->
+                    <div class="col-md-4 mb-3">
+                        <h6 class="text-primary">
+                            <i class="fas fa-users me-2"></i>Customer Intelligence
+                        </h6>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-ai" onclick="runSegmentation()" disabled>
+                                <i class="fas fa-user-friends me-2"></i>Customer Segmentation
+                            </button>
+                            <button class="btn btn-ai" onclick="runChurnPrediction()" disabled>
+                                <i class="fas fa-user-minus me-2"></i>Churn Prediction
+                            </button>
+                            <button class="btn btn-ai" onclick="runLifetimeValue()" disabled>
+                                <i class="fas fa-coins me-2"></i>Lifetime Value
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Analytics -->
+                    <div class="col-md-4 mb-3">
+                        <h6 class="text-primary">
+                            <i class="fas fa-brain me-2"></i>Advanced Analytics
+                        </h6>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-ai" onclick="runGrowthAnalysis()" disabled>
+                                <i class="fas fa-rocket me-2"></i>Growth Opportunities
+                            </button>
+                            <button class="btn btn-ai" onclick="runAnomalyDetection()" disabled>
+                                <i class="fas fa-exclamation-triangle me-2"></i>Anomaly Detection
+                            </button>
+                            <button class="btn btn-ai" onclick="generateInsights()" disabled>
+                                <i class="fas fa-lightbulb me-2"></i>AI Insights
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Analysis Options -->
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-secondary">
+                            <i class="fas fa-cogs me-2"></i>Business Intelligence
+                        </h6>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" onclick="runProductPerformance()" disabled>
+                                <i class="fas fa-box me-2"></i>Product Performance
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="runSalesOptimization()" disabled>
+                                <i class="fas fa-chart-bar me-2"></i>Sales Optimization
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-secondary">
+                            <i class="fas fa-microscope me-2"></i>Deep Analytics
+                        </h6>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-success" onclick="runCohortAnalysis()" disabled>
+                                <i class="fas fa-layer-group me-2"></i>Cohort Analysis
+                            </button>
+                            <button class="btn btn-outline-success" onclick="generateExecutiveReport()" disabled>
+                                <i class="fas fa-file-alt me-2"></i>Executive Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Results -->
+        <div class="mt-4" id="analysisResults">
+            <div class="card analysis-card h-100" id="welcomeCard">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-chart-area fs-1 text-primary mb-4"></i>
+                    <h3 class="text-primary mb-3">AnalyticaCore AI Platform Ready</h3>
+                    <p class="lead text-muted mb-4">
+                        Upload your business data or load our comprehensive SME demo dataset to experience 
+                        the power of AI-driven business insights. Our advanced algorithms will automatically 
+                        analyze your data and provide actionable recommendations.
+                    </p>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <i class="fas fa-brain text-primary fs-2 mb-2"></i>
+                            <h6>AI-Powered</h6>
+                            <small class="text-muted">Machine learning algorithms</small>
+                        </div>
+                        <div class="col-4">
+                            <i class="fas fa-bolt text-warning fs-2 mb-2"></i>
+                            <h6>Lightning Fast</h6>
+                            <small class="text-muted">Results in seconds</small>
+                        </div>
+                        <div class="col-4">
+                            <i class="fas fa-shield-alt text-success fs-2 mb-2"></i>
+                            <h6>Secure</h6>
+                            <small class="text-muted">Your data stays private</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Platform Information -->
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Platform Status:</strong> This is your local AnalyticaCore AI installation. 
+                        Your data analysis platform is running on your machine for maximum privacy and security.
                     </div>
                 </div>
             </div>
@@ -443,89 +484,91 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body text-center py-4">
-                    <div class="loading-spinner mb-3"></div>
-                    <h5 id="loadingText">Analyzing your data...</h5>
-                    <p class="text-muted mb-0" id="loadingSubtext">This may take a few moments</p>
-                    <div class="progress progress-modern mt-3">
-                        <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
+                    <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;"></div>
+                    <h5 id="loadingText">Processing...</h5>
+                    <p class="text-muted" id="loadingSubtext">Please wait while we analyze your data</p>
+                    <div class="progress mt-3">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                             id="progressBar" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>
+                        <i class="fas fa-brain me-2"></i>AnalyticaCore AI
+                    </h5>
+                    <p class="mb-2">AI-powered company data analysis platform for SME businesses</p>
+                    <p class="mb-0">
+                        <strong>Company:</strong> AnalyticaCore AI<br>
+                        <strong>Platform:</strong> DataSight AI Engine<br>
+                        <strong>Contact:</strong> 
+                        <a href="mailto:founder@analyticacoreai.com" class="text-white">
+                            founder@analyticacoreai.com
+                        </a>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h6>Platform Features</h6>
+                    <ul class="list-unstyled small">
+                        <li><i class="fas fa-check text-success me-2"></i>Revenue Forecasting with AI</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Customer Segmentation Analysis</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Business Trend Detection</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Growth Opportunity Identification</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Real-time Business Intelligence</li>
+                    </ul>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-desktop me-1"></i>
+                            Local Platform Deployment - Your data stays on your machine
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2024 AnalyticaCore AI. All rights reserved. | 
+                    <a href="mailto:founder@analyticacoreai.com" class="text-white">Support</a> |
+                    <span class="text-muted">Local Installation</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Platform JavaScript -->
     <script src="platform.js"></script>
-    <!-- Update the contact information section -->
+    
     <script>
-        /**
-         * Platform Configuration
-         * Following project coding instructions and business context
-         */
-
-        const PLATFORM_CONFIG = {
-            // Company Information
-            companyName: 'AnalyticaCore AI',
-            platformName: 'DataSight AI',
+        // Initialize platform on load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 AnalyticaCore AI Platform loaded successfully');
             
-            // Contact Information
-            email: 'founder@analyticacoreai.com',
-            website: 'https://analyticacoreai.com',
-            
-            // Business Information
-            tagline: 'Transform Your Business Data Into Actionable Insights',
-            description: 'AI-powered company data analysis platform built for SMEs',
-            
-            // Social Media (update with your actual profiles)
-            social: {
-                linkedin: 'https://linkedin.com/company/analyticacoreai',
-                twitter: 'https://twitter.com/analyticacoreai',
-                github: 'https://github.com/analyticacoreai'
-            },
-            
-            // Support Information
-            support: {
-                email: 'support@analyticacoreai.com',
-                documentation: 'https://docs.analyticacoreai.com',
-                helpDesk: 'https://help.analyticacoreai.com'
+            // Add any additional initialization here
+            if (typeof DataSightAI !== 'undefined') {
+                console.log('✅ Platform JavaScript loaded');
+            } else {
+                console.warn('⚠️ Platform JavaScript not found, using fallback');
+                
+                // Basic fallback functionality
+                window.loadSampleData = function() {
+                    alert('Demo: Sample data would be loaded here. Full functionality requires the platform.js file.');
+                };
+                
+                window.resetDemo = function() {
+                    location.reload();
+                };
             }
-        };
-
-        // Update any JavaScript email references
-        const CONTACT_EMAIL = 'founder@analyticacoreai.com';
-        const COMPANY_NAME = 'AnalyticaCore AI';
-        const PLATFORM_NAME = 'DataSight AI';
-
-        document.addEventListener('DOMContentLoaded', updateEmailReferences);
-
-        function updateEmailReferences() {
-            // New email to replace with
-            const newEmail = 'founder@analyticacoreai.com';
-            // Old email to be replaced
-            const oldEmail = 'datasightai.founders@gmail.com';
-
-            // Update all mailto links
-            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-                if (link.href.includes(oldEmail)) {
-                    link.href = `mailto:${newEmail}`;
-                    link.textContent = newEmail;
-                }
-            });
-
-            // Update any text content
-            document.querySelectorAll('*').forEach(element => {
-                if (element.textContent && element.textContent.includes(oldEmail)) {
-                    element.textContent = element.textContent.replace(oldEmail, newEmail);
-                }
-            });
-
-            console.log(`✅ Updated all email references to ${newEmail}`);
-        }
-
-        // Export for use in other files
-        if (typeof module !== 'undefined' && module.exports) {
-            module.exports = PLATFORM_CONFIG;
-        }
+        });
     </script>
 </body>
 </html>
