@@ -1,5 +1,5 @@
 """
-DataSight AI - Main Streamlit Application
+AnalyticaCore AI - Advanced Data Analysis Platform
 Following project coding instructions and SME business context
 AI-powered company data analysis platform for SMEs
 """
@@ -9,11 +9,17 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
-import logging
 from typing import Optional, Dict, Any, List, Tuple
-import json
-import io
+import logging
+from sklearn.ensemble import RandomForestRegressor, IsolationForest
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, r2_score
+import warnings
+warnings.filterwarnings('ignore')
 
 # Configure logging following project guidelines
 logging.basicConfig(
@@ -22,1078 +28,890 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Page configuration following Streamlit best practices
+# Page configuration following SME business context
 st.set_page_config(
-    page_title="DataSight AI - SME Business Analytics Platform",
-    page_icon="🤖",
+    page_title="AnalyticaCore AI - Data Analysis Platform",
+    page_icon="🧠",
     layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={
-        'Get Help': 'mailto:founder@analyticacoreai.com',
-        'Report a bug': 'mailto:founder@analyticacoreai.com',
-        'About': 'DataSight AI - AI-powered SME business analysis by AnalyticaCore AI'
-    }
+    initial_sidebar_state="expanded"
 )
 
-class DataSightAIPlatform:
+# Custom CSS following project design guidelines
+st.markdown("""
+<style>
+    .main-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .metric-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 1rem;
+    }
+    
+    .insight-box {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        padding: 1.5rem;
+        border-radius: 10px;
+        color: white;
+        margin: 1rem 0;
+    }
+    
+    .success-box {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        padding: 1rem;
+        border-radius: 8px;
+        color: white;
+        margin: 0.5rem 0;
+    }
+    
+    .stSelectbox > div > div {
+        background-color: #f8f9fa;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+class AnalyticaCoreAI:
     """
-    DataSight AI Platform for SME Business Analytics
-    Following project coding instructions and business priorities
+    Main class for AnalyticaCore AI platform
+    Following project coding guidelines and business context
     """
     
-    def __init__(self) -> None:
-        """Initialize platform with comprehensive business context"""
-        # Company information following project guidelines
+    def __init__(self):
+        """Initialize the AnalyticaCore AI platform"""
+        self.logger = logging.getLogger(__name__)
         self.company_name = "AnalyticaCore AI"
-        self.platform_name = "DataSight AI"
+        self.platform_name = "DataSight AI Engine"
         self.contact_email = "founder@analyticacoreai.com"
-        self.website = "https://analyticacoreai.com"
-        self.tagline = "Transform Your Business Data Into Actionable Insights"
         
-        # Initialize session state for data persistence
-        self._initialize_session_state()
-        
-        logger.info(f"{self.platform_name} platform initialized successfully")
-    
-    def _initialize_session_state(self) -> None:
-        """Initialize session state following Streamlit patterns"""
-        # Core data storage
-        if 'business_data' not in st.session_state:
-            st.session_state.business_data = None
-        if 'data_processed' not in st.session_state:
-            st.session_state.data_processed = False
-        if 'analysis_results' not in st.session_state:
-            st.session_state.analysis_results = {}
-        
-        # User preferences
-        if 'user_settings' not in st.session_state:
-            st.session_state.user_settings = {
-                'currency': 'EUR',
-                'date_format': 'DD/MM/YYYY',
-                'theme': 'light',
-                'auto_refresh': False
-            }
-        
-        # Activity tracking
-        if 'activity_log' not in st.session_state:
-            st.session_state.activity_log = []
-    
-    def render_platform_header(self) -> None:
+    def generate_sample_business_data(self, days: int = 365) -> pd.DataFrame:
         """
-        Render professional platform header
-        Following UI best practices and brand guidelines
-        """
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                    padding: 2rem; border-radius: 15px; margin-bottom: 2rem; text-align: center;
-                    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);">
-            <h1 style="color: white; margin: 0; font-size: 3.5rem; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                🤖 DataSight AI Platform
-            </h1>
-            <p style="color: white; margin: 1rem 0; font-size: 1.5rem; opacity: 0.95; font-weight: 300;">
-                AI-Powered Business Analytics for Small-Medium Enterprises
-            </p>
-            <div style="color: white; margin: 1.5rem 0; opacity: 0.9; font-size: 1.1rem;">
-                <span style="margin: 0 2rem;">🏢 AnalyticaCore AI</span>
-                <span style="margin: 0 2rem;">📧 founder@analyticacoreai.com</span>
-                <span style="margin: 0 2rem;">🌐 analyticacoreai.com</span>
-            </div>
-            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 10px; margin: 1rem auto; max-width: 800px;">
-                <p style="color: white; margin: 0; font-size: 1.1rem; font-weight: 500;">
-                    ⚡ Transform your business data into strategic insights with AI ⚡
-                </p>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    @st.cache_data
-    def generate_comprehensive_sme_data(_self) -> pd.DataFrame:
-        """
-        Generate comprehensive SME business dataset
-        Following business context and realistic SME patterns
-        Using @st.cache_data for performance optimization
+        Generate realistic SME business data for demonstration
+        Following SME business patterns and use cases
         """
         try:
-            logger.info("Generating comprehensive SME business dataset")
+            np.random.seed(42)  # For reproducible results
             
-            # Set seed for reproducible demo data
-            np.random.seed(42)
+            # SME business parameters following project context
+            start_date = datetime.now() - timedelta(days=days)
+            date_range = pd.date_range(start=start_date, periods=days, freq='D')
             
-            # Generate 18 months of business data for comprehensive analysis
-            start_date = datetime(2023, 1, 1)
-            end_date = datetime(2024, 6, 30)
-            date_range = pd.date_range(start_date, end_date, freq='D')
-            
-            # SME business parameters following realistic market patterns
-            regions = ['North America', 'Europe', 'Asia-Pacific', 'Latin America', 'Middle East & Africa']
-            products = [
-                'Software Licenses', 'Consulting Services', 'Cloud Solutions', 
-                'Training Programs', 'Support Services', 'Hardware Sales',
-                'Digital Marketing', 'Data Analytics', 'Mobile Apps', 'Web Development'
-            ]
-            channels = [
-                'Direct Sales', 'Online Platform', 'Partner Network', 
-                'Mobile App', 'Phone Sales', 'Social Media', 'Email Marketing'
-            ]
-            customer_segments = [
-                'Enterprise', 'SME', 'Startup', 'Government', 'Non-Profit', 'Education'
-            ]
+            # Business dimensions for SME context
+            regions = ['North America', 'Europe', 'Asia Pacific', 'Latin America']
+            products = ['Software Licenses', 'Consulting Services', 'Support Plans', 'Training Programs']
+            channels = ['Direct Sales', 'Online Platform', 'Partner Channel', 'Retail Partners']
+            segments = ['Enterprise', 'SMB', 'Startup', 'Government']
             
             data_records = []
-            base_revenue = 35000  # Higher base for realistic B2B SME
             
             for i, date in enumerate(date_range):
-                day_of_year = i
+                # Business patterns following SME analytics
+                day_of_year = date.timetuple().tm_yday
+                seasonal_factor = 1 + 0.3 * np.sin((day_of_year / 365) * 2 * np.pi)
+                weekly_factor = 0.7 if date.weekday() >= 5 else 1.2
+                growth_factor = 1 + (i / days) * 0.25
                 
-                # Complex business patterns following SME growth trajectories
+                # Base metrics for SME business
+                base_revenue = 25000
+                daily_revenue = max(8000, 
+                    base_revenue * seasonal_factor * weekly_factor * growth_factor * 
+                    (0.8 + np.random.random() * 0.4)
+                )
                 
-                # Seasonal factors (Q4 enterprise budget cycles, summer slowdown)
-                seasonal_multiplier = 1.0 + 0.3 * np.sin((day_of_year / 365) * 2 * np.pi + np.pi)
-                if date.month in [11, 12]:  # Q4 enterprise buying
-                    seasonal_multiplier *= 1.4
-                elif date.month in [7, 8]:  # Summer slowdown
-                    seasonal_multiplier *= 0.8
+                customers = max(25, int(60 + np.random.normal(0, 15)))
+                avg_order_value = daily_revenue / customers
                 
-                # Weekly B2B patterns (strong weekdays, minimal weekends)
-                day_of_week = date.weekday()
-                weekly_multiplier = 1.5 if day_of_week < 5 else 0.3
-                
-                # Growth trajectory (realistic SME scaling)
-                months_elapsed = (date - start_date).days / 30.44
-                growth_factor = 1.0 + (months_elapsed / 18) * 0.45  # 45% growth over 18 months
-                
-                # Market volatility and business cycles
-                volatility = np.random.normal(1.0, 0.2)
-                
-                # Calculate daily metrics
-                daily_revenue = base_revenue * seasonal_multiplier * weekly_multiplier * growth_factor * volatility
-                daily_revenue = max(daily_revenue, 8000)  # Minimum daily revenue floor
-                
-                # Customer and order metrics
-                customers_today = max(15, int(np.random.normal(45, 12)))
-                orders_today = customers_today + np.random.randint(-5, 15)
-                avg_order_value = daily_revenue / max(orders_today, 1)
-                
-                # Financial metrics following SME business models
-                cost_of_goods = daily_revenue * np.random.uniform(0.25, 0.35)  # Lower for service business
-                marketing_spend = daily_revenue * np.random.uniform(0.12, 0.20)
-                operational_costs = daily_revenue * np.random.uniform(0.30, 0.45)
-                gross_profit = daily_revenue - cost_of_goods
-                net_profit = gross_profit - marketing_spend - operational_costs
-                
-                # Advanced business metrics
-                customer_acquisition_cost = marketing_spend / max(customers_today * 0.25, 1)
-                lifetime_value = avg_order_value * np.random.uniform(4.5, 12.0)
-                churn_rate = np.random.uniform(2.0, 8.0)
-                retention_rate = 100 - churn_rate
-                
-                # Performance indicators
-                website_visits = np.random.randint(1200, 5000)
-                conversion_rate = (orders_today / website_visits) * 100 if website_visits > 0 else 0
-                customer_satisfaction = round(np.random.normal(4.4, 0.6), 1)
-                customer_satisfaction = max(1.0, min(5.0, customer_satisfaction))
-                
-                # Inventory and operations
-                inventory_turnover = round(np.random.uniform(8.0, 20.0), 1)
-                return_rate = round(np.random.uniform(1.0, 5.0), 2)
-                fulfillment_time = round(np.random.uniform(1.5, 4.5), 1)
+                # Additional business metrics
+                conversion_rate = max(1, min(8, np.random.normal(4.5, 1.2)))
+                satisfaction_score = max(3.0, min(5.0, np.random.normal(4.2, 0.6)))
                 
                 # Marketing metrics
-                email_open_rate = round(np.random.uniform(18.0, 35.0), 1)
-                social_engagement = round(np.random.uniform(2.5, 8.5), 1)
-                organic_traffic_pct = round(np.random.uniform(35.0, 65.0), 1)
+                marketing_spend = daily_revenue * np.random.uniform(0.08, 0.15)
+                website_visitors = customers * np.random.uniform(8, 25)
                 
                 data_records.append({
-                    # Date and basic info
                     'Date': date.strftime('%Y-%m-%d'),
-                    'Year': date.year,
-                    'Month': date.month,
-                    'Quarter': f"Q{(date.month-1)//3 + 1}",
-                    'DayOfWeek': date.strftime('%A'),
-                    'WeekOfYear': date.isocalendar()[1],
-                    
-                    # Revenue and financial metrics
                     'Revenue': round(daily_revenue, 2),
-                    'GrossProfit': round(gross_profit, 2),
-                    'NetProfit': round(net_profit, 2),
-                    'CostOfGoods': round(cost_of_goods, 2),
-                    'MarketingSpend': round(marketing_spend, 2),
-                    'OperationalCosts': round(operational_costs, 2),
-                    'GrossMargin': round((gross_profit / daily_revenue) * 100, 2),
-                    'NetMargin': round((net_profit / daily_revenue) * 100, 2),
-                    
-                    # Customer and sales metrics
-                    'Customers': customers_today,
-                    'Orders': orders_today,
+                    'Customers': customers,
                     'AvgOrderValue': round(avg_order_value, 2),
-                    'CustomerAcquisitionCost': round(customer_acquisition_cost, 2),
-                    'CustomerLifetimeValue': round(lifetime_value, 2),
-                    'CustomerSatisfaction': customer_satisfaction,
-                    'ChurnRate': round(churn_rate, 2),
-                    'RetentionRate': round(retention_rate, 2),
-                    
-                    # Operational metrics
-                    'WebsiteVisits': website_visits,
                     'ConversionRate': round(conversion_rate, 2),
-                    'InventoryTurnover': inventory_turnover,
-                    'ReturnRate': return_rate,
-                    'FulfillmentTime': fulfillment_time,
-                    
-                    # Marketing metrics
-                    'EmailOpenRate': email_open_rate,
-                    'SocialEngagement': social_engagement,
-                    'OrganicTrafficPct': organic_traffic_pct,
-                    
-                    # Categorical data
+                    'SatisfactionScore': round(satisfaction_score, 1),
+                    'MarketingSpend': round(marketing_spend, 2),
+                    'WebsiteVisitors': int(website_visitors),
                     'Region': np.random.choice(regions),
-                    'ProductCategory': np.random.choice(products),
-                    'SalesChannel': np.random.choice(channels),
-                    'CustomerSegment': np.random.choice(customer_segments),
-                    
-                    # Additional business metrics
-                    'ROI': round(((lifetime_value - customer_acquisition_cost) / customer_acquisition_cost) * 100, 1),
-                    'PaybackPeriod': round(customer_acquisition_cost / (avg_order_value * 0.3), 1),
-                    'MarketingROI': round((daily_revenue / marketing_spend), 2) if marketing_spend > 0 else 0,
+                    'Product': np.random.choice(products),
+                    'Channel': np.random.choice(channels),
+                    'Segment': np.random.choice(segments),
+                    'Quarter': f"Q{(date.month-1)//3 + 1}"
                 })
             
             df = pd.DataFrame(data_records)
-            logger.info(f"Generated comprehensive SME dataset: {df.shape[0]} records, {df.shape[1]} features")
+            df['Date'] = pd.to_datetime(df['Date'])
+            df['ROI'] = ((df['Revenue'] - df['MarketingSpend']) / df['MarketingSpend'] * 100).round(2)
             
+            self.logger.info(f"Generated {len(df)} records of sample business data")
             return df
             
         except Exception as e:
-            logger.error(f"Error generating SME dataset: {str(e)}")
+            self.logger.error(f"Error generating sample data: {str(e)}")
             st.error(f"Error generating sample data: {str(e)}")
             return pd.DataFrame()
     
-    def render_comprehensive_kpi_dashboard(self, data: pd.DataFrame) -> None:
+    def validate_uploaded_data(self, df: pd.DataFrame) -> Tuple[bool, str]:
         """
-        Render comprehensive KPI dashboard
-        Following SME business priorities and executive reporting needs
+        Validate uploaded data following data quality guidelines
         """
         try:
-            st.subheader("📊 Executive Dashboard - Key Performance Indicators")
+            if df.empty:
+                return False, "Uploaded file is empty"
             
-            # Calculate comprehensive business metrics
-            total_revenue = data['Revenue'].sum()
-            total_profit = data['NetProfit'].sum()
-            avg_customers = data['Customers'].mean()
-            avg_satisfaction = data['CustomerSatisfaction'].mean()
-            avg_cac = data['CustomerAcquisitionCost'].mean()
-            avg_ltv = data['CustomerLifetimeValue'].mean()
-            avg_conversion = data['ConversionRate'].mean()
+            if len(df.columns) < 3:
+                return False, "Data must have at least 3 columns"
             
-            # Growth calculations
-            data['Date'] = pd.to_datetime(data['Date'])
-            monthly_revenue = data.groupby(data['Date'].dt.to_period('M'))['Revenue'].sum()
-            if len(monthly_revenue) >= 2:
-                recent_months = monthly_revenue.tail(3).mean()
-                early_months = monthly_revenue.head(3).mean()
-                growth_rate = ((recent_months - early_months) / early_months * 100) if early_months > 0 else 0
-            else:
-                growth_rate = 0
+            if len(df) < 10:
+                return False, "Data must have at least 10 rows"
             
-            # Render KPI metrics in organized sections
-            st.markdown("### 💰 Financial Performance")
-            col1, col2, col3, col4 = st.columns(4)
+            # Check for date column
+            date_columns = [col for col in df.columns if 
+                           any(word in col.lower() for word in ['date', 'time', 'day', 'month', 'year'])]
             
-            with col1:
-                st.metric(
-                    "💰 Total Revenue", 
-                    f"€{total_revenue:,.0f}",
-                    delta=f"€{total_revenue/18:,.0f}/month avg"
-                )
+            if not date_columns:
+                st.warning("No date column detected. Some time-series analyses may be limited.")
             
-            with col2:
-                profit_margin = (total_profit / total_revenue * 100) if total_revenue > 0 else 0
-                st.metric(
-                    "💎 Net Profit", 
-                    f"€{total_profit:,.0f}",
-                    delta=f"{profit_margin:.1f}% margin"
-                )
+            # Check for numeric columns
+            numeric_columns = df.select_dtypes(include=[np.number]).columns
+            if len(numeric_columns) < 2:
+                return False, "Data must have at least 2 numeric columns for analysis"
             
-            with col3:
-                st.metric(
-                    "📈 Growth Rate", 
-                    f"{growth_rate:+.1f}%",
-                    delta="Monthly trend"
-                )
+            self.logger.info(f"Data validation successful: {len(df)} rows, {len(df.columns)} columns")
+            return True, "Data validation successful"
             
-            with col4:
-                roi = ((avg_ltv - avg_cac) / avg_cac * 100) if avg_cac > 0 else 0
-                st.metric(
-                    "🎯 Customer ROI", 
-                    f"{roi:.1f}%",
-                    delta="LTV vs CAC"
-                )
-            
-            st.markdown("### 👥 Customer & Sales Performance")
-            col1, col2, col3, col4 = st.columns(4)
-            
-            with col1:
-                st.metric(
-                    "👥 Daily Customers", 
-                    f"{avg_customers:,.0f}",
-                    delta="Average per day"
-                )
-            
-            with col2:
-                st.metric(
-                    "⭐ Satisfaction", 
-                    f"{avg_satisfaction:.1f}/5.0",
-                    delta="Customer rating"
-                )
-            
-            with col3:
-                st.metric(
-                    "💵 Acquisition Cost", 
-                    f"€{avg_cac:.2f}",
-                    delta="Per customer"
-                )
-            
-            with col4:
-                st.metric(
-                    "💰 Lifetime Value", 
-                    f"€{avg_ltv:.2f}",
-                    delta="Per customer"
-                )
-            
-            st.markdown("### 📊 Operational Metrics")
-            col1, col2, col3, col4 = st.columns(4)
-            
-            with col1:
-                st.metric(
-                    "🔄 Conversion Rate", 
-                    f"{avg_conversion:.1f}%",
-                    delta="Website to sale"
-                )
-            
-            with col2:
-                avg_aov = data['AvgOrderValue'].mean()
-                st.metric(
-                    "🛒 Avg Order Value", 
-                    f"€{avg_aov:.2f}",
-                    delta="Per transaction"
-                )
-            
-            with col3:
-                avg_retention = data['RetentionRate'].mean()
-                st.metric(
-                    "🔒 Retention Rate", 
-                    f"{avg_retention:.1f}%",
-                    delta="Customer retention"
-                )
-            
-            with col4:
-                avg_marketing_roi = data['MarketingROI'].mean()
-                st.metric(
-                    "📈 Marketing ROI", 
-                    f"{avg_marketing_roi:.1f}x",
-                    delta="Return on ad spend"
-                )
-                
         except Exception as e:
-            logger.error(f"Error rendering KPI dashboard: {str(e)}")
-            st.error(f"Error in KPI dashboard: {str(e)}")
+            self.logger.error(f"Data validation error: {str(e)}")
+            return False, f"Validation error: {str(e)}"
     
-    def render_advanced_analytics(self, data: pd.DataFrame) -> None:
+    def clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Render advanced analytics and visualizations
-        Following AI/ML best practices and business intelligence requirements
+        Clean data following data preprocessing best practices
         """
         try:
-            # Revenue trend analysis with forecasting
-            st.subheader("📈 Advanced Revenue Analytics & AI Forecasting")
+            cleaned_df = df.copy()
             
-            # Prepare data for analysis
-            data['Date'] = pd.to_datetime(data['Date'])
-            daily_revenue = data.groupby('Date')['Revenue'].sum().reset_index()
+            # Handle missing values
+            numeric_columns = cleaned_df.select_dtypes(include=[np.number]).columns
+            for col in numeric_columns:
+                cleaned_df[col] = cleaned_df[col].fillna(cleaned_df[col].median())
             
-            # Create comprehensive revenue visualization
-            fig_revenue = go.Figure()
+            # Handle categorical missing values
+            categorical_columns = cleaned_df.select_dtypes(include=['object']).columns
+            for col in categorical_columns:
+                cleaned_df[col] = cleaned_df[col].fillna('Unknown')
             
-            # Actual revenue line
-            fig_revenue.add_trace(go.Scatter(
-                x=daily_revenue['Date'], 
-                y=daily_revenue['Revenue'],
+            # Remove duplicates
+            initial_rows = len(cleaned_df)
+            cleaned_df = cleaned_df.drop_duplicates()
+            removed_duplicates = initial_rows - len(cleaned_df)
+            
+            if removed_duplicates > 0:
+                st.info(f"Removed {removed_duplicates} duplicate rows")
+            
+            self.logger.info(f"Data cleaning completed: {len(cleaned_df)} rows remaining")
+            return cleaned_df
+            
+        except Exception as e:
+            self.logger.error(f"Data cleaning error: {str(e)}")
+            st.error(f"Data cleaning error: {str(e)}")
+            return df
+    
+    def perform_revenue_forecast(self, df: pd.DataFrame) -> Dict[str, Any]:
+        """
+        Perform revenue forecasting using ML models
+        Following AI/ML best practices
+        """
+        try:
+            if 'Revenue' not in df.columns or 'Date' not in df.columns:
+                return {"error": "Revenue and Date columns required for forecasting"}
+            
+            # Prepare data for forecasting
+            forecast_df = df[['Date', 'Revenue']].copy()
+            forecast_df = forecast_df.sort_values('Date')
+            forecast_df['DayOfYear'] = forecast_df['Date'].dt.dayofyear
+            forecast_df['Month'] = forecast_df['Date'].dt.month
+            forecast_df['Quarter'] = forecast_df['Date'].dt.quarter
+            forecast_df['WeekOfYear'] = forecast_df['Date'].dt.isocalendar().week
+            
+            # Feature engineering
+            forecast_df['Revenue_MA7'] = forecast_df['Revenue'].rolling(window=7, min_periods=1).mean()
+            forecast_df['Revenue_MA30'] = forecast_df['Revenue'].rolling(window=30, min_periods=1).mean()
+            
+            # Prepare features and target
+            features = ['DayOfYear', 'Month', 'Quarter', 'WeekOfYear', 'Revenue_MA7', 'Revenue_MA30']
+            X = forecast_df[features].fillna(method='bfill')
+            y = forecast_df['Revenue']
+            
+            # Split data for validation
+            split_idx = int(len(X) * 0.8)
+            X_train, X_test = X[:split_idx], X[split_idx:]
+            y_train, y_test = y[:split_idx], y[split_idx:]
+            
+            # Train Random Forest model
+            model = RandomForestRegressor(n_estimators=100, random_state=42)
+            model.fit(X_train, y_train)
+            
+            # Model validation
+            y_pred = model.predict(X_test)
+            mae = mean_absolute_error(y_test, y_pred)
+            r2 = r2_score(y_test, y_pred)
+            
+            # Generate future predictions
+            last_date = forecast_df['Date'].max()
+            future_dates = pd.date_range(start=last_date + timedelta(days=1), periods=30, freq='D')
+            
+            future_features = []
+            for date in future_dates:
+                future_features.append([
+                    date.dayofyear,
+                    date.month,
+                    date.quarter,
+                    date.isocalendar().week,
+                    forecast_df['Revenue'].tail(7).mean(),
+                    forecast_df['Revenue'].tail(30).mean()
+                ])
+            
+            future_X = pd.DataFrame(future_features, columns=features)
+            future_predictions = model.predict(future_X)
+            
+            # Create forecast visualization
+            fig = go.Figure()
+            
+            # Historical data
+            fig.add_trace(go.Scatter(
+                x=forecast_df['Date'],
+                y=forecast_df['Revenue'],
                 mode='lines',
-                name='Daily Revenue',
-                line=dict(color='#1f77b4', width=2)
+                name='Historical Revenue',
+                line=dict(color='#667eea', width=2)
             ))
             
-            # Add moving averages for trend analysis
-            daily_revenue['MA_7'] = daily_revenue['Revenue'].rolling(window=7).mean()
-            daily_revenue['MA_30'] = daily_revenue['Revenue'].rolling(window=30).mean()
-            
-            fig_revenue.add_trace(go.Scatter(
-                x=daily_revenue['Date'], 
-                y=daily_revenue['MA_7'],
-                mode='lines',
-                name='7-Day Moving Average',
-                line=dict(color='orange', width=2, dash='dot')
-            ))
-            
-            fig_revenue.add_trace(go.Scatter(
-                x=daily_revenue['Date'], 
-                y=daily_revenue['MA_30'],
-                mode='lines',
-                name='30-Day Moving Average',
-                line=dict(color='red', width=2, dash='dash')
-            ))
-            
-            # Simple AI forecasting simulation
-            last_30_days = daily_revenue['Revenue'].tail(30).values
-            future_dates = pd.date_range(
-                start=daily_revenue['Date'].max() + timedelta(days=1),
-                periods=30,
-                freq='D'
-            )
-            
-            # Linear trend projection (simplified AI forecast)
-            x = np.arange(len(last_30_days))
-            z = np.polyfit(x, last_30_days, 1)
-            trend_line = np.poly1d(z)
-            future_x = np.arange(len(last_30_days), len(last_30_days) + 30)
-            forecast_values = trend_line(future_x)
-            
-            # Add noise for realistic forecast
-            forecast_noise = np.random.normal(0, np.std(last_30_days) * 0.1, len(forecast_values))
-            forecast_values += forecast_noise
-            
-            fig_revenue.add_trace(go.Scatter(
+            # Future predictions
+            fig.add_trace(go.Scatter(
                 x=future_dates,
-                y=forecast_values,
+                y=future_predictions,
                 mode='lines',
-                name='AI Forecast (30 days)',
-                line=dict(color='green', width=3, dash='dashdot'),
-                opacity=0.8
+                name='Revenue Forecast',
+                line=dict(color='#f093fb', width=2, dash='dash')
             ))
             
-            fig_revenue.update_layout(
-                title='Revenue Analytics with AI Forecasting',
-                xaxis_title='Date',
-                yaxis_title='Revenue (€)',
-                hovermode='x unified',
-                height=500,
-                showlegend=True
+            fig.update_layout(
+                title="Revenue Forecasting - Next 30 Days",
+                xaxis_title="Date",
+                yaxis_title="Revenue (€)",
+                template="plotly_white",
+                height=500
             )
             
-            st.plotly_chart(fig_revenue, use_container_width=True)
+            # Calculate insights
+            current_avg = forecast_df['Revenue'].tail(30).mean()
+            forecast_avg = np.mean(future_predictions)
+            growth_prediction = ((forecast_avg - current_avg) / current_avg) * 100
             
-            # Business insights and recommendations
-            col1, col2 = st.columns(2)
+            return {
+                "model_performance": {"mae": mae, "r2_score": r2},
+                "forecast_chart": fig,
+                "insights": {
+                    "growth_prediction": growth_prediction,
+                    "forecast_avg": forecast_avg,
+                    "current_avg": current_avg,
+                    "confidence": "High" if r2 > 0.8 else "Medium" if r2 > 0.6 else "Low"
+                }
+            }
             
-            with col1:
-                st.markdown("### 💡 AI Business Insights")
-                
-                # Calculate insights
-                avg_daily_revenue = daily_revenue['Revenue'].mean()
-                revenue_volatility = daily_revenue['Revenue'].std() / avg_daily_revenue * 100
-                best_day = daily_revenue.loc[daily_revenue['Revenue'].idxmax()]
-                
-                forecast_trend = "Positive" if np.mean(forecast_values[-7:]) > np.mean(last_30_days[-7:]) else "Negative"
-                
-                st.markdown(f"""
-                **📊 Revenue Performance:**
-                - **Average Daily Revenue:** €{avg_daily_revenue:,.2f}
-                - **Best Performance Day:** €{best_day['Revenue']:,.2f} ({best_day['Date'].strftime('%Y-%m-%d')})
-                - **Revenue Volatility:** {revenue_volatility:.1f}%
-                - **30-Day Forecast Trend:** {forecast_trend}
-                
-                **🎯 AI Recommendations:**
-                - {"Focus on scaling successful patterns" if forecast_trend == "Positive" else "Investigate revenue decline factors"}
-                - {"Implement revenue smoothing strategies" if revenue_volatility > 20 else "Maintain current operational consistency"}
-                - Optimize for best-performing day patterns
-                - {"Consider seasonal inventory planning" if revenue_volatility > 15 else "Continue steady growth strategy"}
-                """)
-            
-            with col2:
-                # Customer segment analysis
-                st.markdown("### 👥 Customer Segment Performance")
-                
-                segment_revenue = data.groupby('CustomerSegment')['Revenue'].sum().reset_index()
-                
-                fig_segments = px.pie(
-                    segment_revenue,
-                    values='Revenue',
-                    names='CustomerSegment',
-                    title='Revenue by Customer Segment',
-                    color_discrete_sequence=px.colors.qualitative.Set3
-                )
-                
-                fig_segments.update_layout(height=350)
-                st.plotly_chart(fig_segments, use_container_width=True)
-                
-                # Top performing segment insights
-                top_segment = segment_revenue.loc[segment_revenue['Revenue'].idxmax(), 'CustomerSegment']
-                top_revenue = segment_revenue.loc[segment_revenue['Revenue'].idxmax(), 'Revenue']
-                
-                st.markdown(f"""
-                **🏆 Top Segment:** {top_segment}  
-                **💰 Revenue:** €{top_revenue:,.0f}  
-                **📈 Strategy:** Focus expansion efforts on {top_segment} segment
-                """)
-                
         except Exception as e:
-            logger.error(f"Error in advanced analytics: {str(e)}")
-            st.error(f"Error in advanced analytics: {str(e)}")
+            self.logger.error(f"Revenue forecasting error: {str(e)}")
+            return {"error": f"Forecasting error: {str(e)}"}
     
-    def render_sidebar_controls(self) -> None:
+    def perform_customer_segmentation(self, df: pd.DataFrame) -> Dict[str, Any]:
         """
-        Render comprehensive sidebar controls
-        Following Streamlit patterns and user experience guidelines
+        Perform customer segmentation using K-means clustering
+        Following ML best practices and SME context
         """
-        with st.sidebar:
-            st.markdown("## 🎯 DataSight AI Control Panel")
+        try:
+            # Identify relevant columns for segmentation
+            required_cols = ['Revenue', 'Customers']
+            available_cols = [col for col in required_cols if col in df.columns]
             
-            # Data Management Section
-            st.markdown("### 📊 Data Management")
+            if len(available_cols) < 2:
+                return {"error": "Insufficient data for customer segmentation"}
             
-            if st.button("📋 Load SME Demo Data", use_container_width=True, type="primary"):
-                with st.spinner("🔄 Generating comprehensive SME business data..."):
-                    st.session_state.business_data = self.generate_comprehensive_sme_data()
-                    st.session_state.data_processed = True
-                    st.session_state.activity_log.append({
-                        'timestamp': datetime.now(),
-                        'action': 'Demo data loaded',
-                        'details': f'{len(st.session_state.business_data)} records'
-                    })
-                st.success("✅ SME demo data loaded successfully!")
-                st.rerun()
+            # Prepare segmentation features
+            segment_features = ['Revenue', 'Customers']
+            if 'AvgOrderValue' in df.columns:
+                segment_features.append('AvgOrderValue')
+            if 'SatisfactionScore' in df.columns:
+                segment_features.append('SatisfactionScore')
             
-            # File upload with enhanced validation
-            st.markdown("#### 📤 Upload Your Business Data")
+            # Aggregate data by relevant dimensions
+            if 'Segment' in df.columns:
+                segment_data = df.groupby('Segment').agg({
+                    'Revenue': 'sum',
+                    'Customers': 'sum',
+                    'AvgOrderValue': 'mean' if 'AvgOrderValue' in df.columns else 'count',
+                    'SatisfactionScore': 'mean' if 'SatisfactionScore' in df.columns else 'count'
+                }).reset_index()
+            else:
+                # Create segments based on date periods
+                df_copy = df.copy()
+                df_copy['Period'] = pd.to_datetime(df_copy['Date']).dt.to_period('M')
+                segment_data = df_copy.groupby('Period').agg({
+                    'Revenue': 'sum',
+                    'Customers': 'sum',
+                    'AvgOrderValue': 'mean' if 'AvgOrderValue' in df.columns else 'count',
+                    'SatisfactionScore': 'mean' if 'SatisfactionScore' in df.columns else 'count'
+                }).reset_index()
+            
+            # Prepare features for clustering
+            features_for_clustering = segment_data[segment_features].fillna(0)
+            
+            # Normalize features
+            scaler = StandardScaler()
+            features_scaled = scaler.fit_transform(features_for_clustering)
+            
+            # Perform K-means clustering
+            optimal_clusters = min(4, len(features_scaled))
+            kmeans = KMeans(n_clusters=optimal_clusters, random_state=42)
+            clusters = kmeans.fit_predict(features_scaled)
+            
+            segment_data['Cluster'] = clusters
+            
+            # Create visualization
+            if len(segment_features) >= 2:
+                fig = px.scatter(
+                    segment_data,
+                    x=segment_features[0],
+                    y=segment_features[1],
+                    color='Cluster',
+                    size='Revenue' if 'Revenue' in segment_features else None,
+                    title="Customer Segmentation Analysis",
+                    template="plotly_white",
+                    height=500
+                )
+            else:
+                fig = px.bar(
+                    segment_data,
+                    x='Cluster',
+                    y='Revenue',
+                    title="Revenue by Customer Segment",
+                    template="plotly_white"
+                )
+            
+            # Generate insights
+            cluster_summary = segment_data.groupby('Cluster').agg({
+                'Revenue': ['sum', 'mean'],
+                'Customers': ['sum', 'mean']
+            }).round(2)
+            
+            return {
+                "segmentation_chart": fig,
+                "cluster_summary": cluster_summary,
+                "insights": {
+                    "total_segments": optimal_clusters,
+                    "high_value_segment": segment_data.loc[segment_data['Revenue'].idxmax(), 'Cluster'],
+                    "segment_distribution": segment_data['Cluster'].value_counts().to_dict()
+                }
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Customer segmentation error: {str(e)}")
+            return {"error": f"Segmentation error: {str(e)}"}
+    
+    def detect_anomalies(self, df: pd.DataFrame) -> Dict[str, Any]:
+        """
+        Detect anomalies in business data using Isolation Forest
+        Following anomaly detection best practices
+        """
+        try:
+            # Select numeric columns for anomaly detection
+            numeric_columns = df.select_dtypes(include=[np.number]).columns
+            if len(numeric_columns) == 0:
+                return {"error": "No numeric columns found for anomaly detection"}
+            
+            # Prepare data for anomaly detection
+            anomaly_data = df[numeric_columns].fillna(df[numeric_columns].median())
+            
+            # Apply Isolation Forest
+            isolation_forest = IsolationForest(contamination=0.1, random_state=42)
+            anomaly_predictions = isolation_forest.fit_predict(anomaly_data)
+            
+            # Add anomaly information to dataframe
+            df_with_anomalies = df.copy()
+            df_with_anomalies['Anomaly'] = anomaly_predictions
+            df_with_anomalies['IsAnomaly'] = df_with_anomalies['Anomaly'] == -1
+            
+            # Count anomalies
+            total_anomalies = sum(anomaly_predictions == -1)
+            anomaly_percentage = (total_anomalies / len(df)) * 100
+            
+            # Create visualization
+            if 'Date' in df.columns and 'Revenue' in df.columns:
+                fig = go.Figure()
+                
+                # Normal data points
+                normal_data = df_with_anomalies[df_with_anomalies['Anomaly'] == 1]
+                fig.add_trace(go.Scatter(
+                    x=normal_data['Date'],
+                    y=normal_data['Revenue'],
+                    mode='markers',
+                    name='Normal Data',
+                    marker=dict(color='#667eea', size=6)
+                ))
+                
+                # Anomaly data points
+                anomaly_data_points = df_with_anomalies[df_with_anomalies['Anomaly'] == -1]
+                if not anomaly_data_points.empty:
+                    fig.add_trace(go.Scatter(
+                        x=anomaly_data_points['Date'],
+                        y=anomaly_data_points['Revenue'],
+                        mode='markers',
+                        name='Anomalies',
+                        marker=dict(color='#f093fb', size=10, symbol='diamond')
+                    ))
+                
+                fig.update_layout(
+                    title="Anomaly Detection in Revenue Data",
+                    xaxis_title="Date",
+                    yaxis_title="Revenue",
+                    template="plotly_white",
+                    height=500
+                )
+            else:
+                # Alternative visualization for non-time series data
+                fig = px.histogram(
+                    df_with_anomalies,
+                    x='IsAnomaly',
+                    title="Anomaly Distribution",
+                    template="plotly_white"
+                )
+            
+            # Generate insights about anomalies
+            if total_anomalies > 0:
+                anomaly_details = df_with_anomalies[df_with_anomalies['IsAnomaly']]
+                if 'Revenue' in anomaly_details.columns:
+                    avg_anomaly_revenue = anomaly_details['Revenue'].mean()
+                    avg_normal_revenue = df_with_anomalies[~df_with_anomalies['IsAnomaly']]['Revenue'].mean()
+                    revenue_impact = ((avg_anomaly_revenue - avg_normal_revenue) / avg_normal_revenue) * 100
+                else:
+                    revenue_impact = 0
+            else:
+                revenue_impact = 0
+            
+            return {
+                "anomaly_chart": fig,
+                "anomaly_summary": {
+                    "total_anomalies": total_anomalies,
+                    "anomaly_percentage": round(anomaly_percentage, 2),
+                    "revenue_impact": round(revenue_impact, 2)
+                },
+                "anomaly_data": df_with_anomalies[df_with_anomalies['IsAnomaly']] if total_anomalies > 0 else pd.DataFrame()
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Anomaly detection error: {str(e)}")
+            return {"error": f"Anomaly detection error: {str(e)}"}
+
+def main():
+    """
+    Main application function following Streamlit best practices
+    """
+    # Initialize the platform
+    platform = AnalyticaCoreAI()
+    
+    # Header section following SME business branding
+    st.markdown("""
+    <div class="main-header">
+        <h1>🧠 AnalyticaCore AI</h1>
+        <h3>AI-Powered Company Data Analysis Platform</h3>
+        <p>Transform Your Business Data Into Strategic Insights</p>
+        <p><strong>Contact:</strong> founder@analyticacoreai.com | <strong>Platform:</strong> DataSight AI Engine</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Sidebar for data management
+    with st.sidebar:
+        st.header("📊 Data Management")
+        
+        # Data source selection
+        data_source = st.selectbox(
+            "Choose Data Source",
+            ["Generate Sample Data", "Upload CSV File"],
+            help="Select how to load your business data"
+        )
+        
+        # Initialize session state
+        if 'data_loaded' not in st.session_state:
+            st.session_state.data_loaded = False
+        if 'df' not in st.session_state:
+            st.session_state.df = pd.DataFrame()
+        
+        # Handle data loading
+        if data_source == "Generate Sample Data":
+            if st.button("🔄 Generate SME Demo Data", use_container_width=True):
+                with st.spinner("Generating realistic SME business data..."):
+                    st.session_state.df = platform.generate_sample_business_data()
+                    st.session_state.data_loaded = True
+                st.success("✅ Sample data generated successfully!")
+                
+        elif data_source == "Upload CSV File":
             uploaded_file = st.file_uploader(
-                "Choose file",
-                type=['csv', 'xlsx', 'json'],
-                help="Upload CSV, Excel, or JSON files. Max size: 50MB"
+                "Upload your business data",
+                type=['csv'],
+                help="Upload a CSV file with your business data"
             )
             
             if uploaded_file is not None:
                 try:
-                    with st.spinner("🔄 Processing your business data..."):
-                        # File validation and processing
-                        file_size = len(uploaded_file.getvalue())
-                        if file_size > 50 * 1024 * 1024:  # 50MB limit
-                            st.error("❌ File too large. Please upload files under 50MB.")
-                            return
-                        
-                        # Process different file types
-                        if uploaded_file.name.endswith('.csv'):
-                            data = pd.read_csv(uploaded_file)
-                        elif uploaded_file.name.endswith(('.xlsx', '.xls')):
-                            data = pd.read_excel(uploaded_file)
-                        elif uploaded_file.name.endswith('.json'):
-                            data = pd.read_json(uploaded_file)
-                        else:
-                            st.error("❌ Unsupported file format")
-                            return
-                        
-                        # Data validation
-                        if len(data) == 0:
-                            st.error("❌ Empty dataset uploaded")
-                            return
-                        
-                        if len(data) > 100000:  # 100k row limit
-                            st.warning("⚠️ Large dataset detected. Using first 100,000 rows.")
-                            data = data.head(100000)
-                        
-                        # Store processed data
-                        st.session_state.business_data = data
-                        st.session_state.data_processed = True
-                        st.session_state.activity_log.append({
-                            'timestamp': datetime.now(),
-                            'action': 'File uploaded',
-                            'details': f'{uploaded_file.name} - {len(data)} records'
-                        })
-                        
-                    st.success(f"✅ Data uploaded: {len(data)} records, {len(data.columns)} columns")
-                    st.rerun()
+                    df = pd.read_csv(uploaded_file)
+                    is_valid, message = platform.validate_uploaded_data(df)
                     
+                    if is_valid:
+                        st.session_state.df = platform.clean_data(df)
+                        st.session_state.data_loaded = True
+                        st.success(f"✅ {message}")
+                    else:
+                        st.error(f"❌ {message}")
+                        
                 except Exception as e:
-                    logger.error(f"File upload error: {str(e)}")
-                    st.error(f"❌ Upload error: {str(e)}")
+                    st.error(f"Error reading file: {str(e)}")
+        
+        # Analysis options
+        if st.session_state.data_loaded:
+            st.header("🤖 AI Analysis Options")
             
-            # AI Analysis Controls
-            if st.session_state.data_processed:
-                st.markdown("### 🤖 AI Analysis Suite")
-                
-                # Quick analysis buttons
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    if st.button("📈 Revenue Forecast", use_container_width=True):
-                        st.session_state.analysis_results['forecast'] = datetime.now()
-                        st.info("🚀 Revenue forecasting analysis activated!")
-                
-                with col2:
-                    if st.button("👥 Customer Insights", use_container_width=True):
-                        st.session_state.analysis_results['customer'] = datetime.now()
-                        st.info("🚀 Customer analytics activated!")
-                
-                # Advanced analytics
-                st.markdown("#### 🧠 Advanced Analytics")
-                
-                analytics_options = st.multiselect(
-                    "Select analysis types:",
-                    options=[
-                        "Trend Analysis", "Seasonal Patterns", "Anomaly Detection",
-                        "Customer Segmentation", "Churn Prediction", "ROI Analysis"
-                    ],
-                    default=["Trend Analysis", "Customer Segmentation"]
-                )
-                
-                if st.button("🚀 Run Advanced Analytics", use_container_width=True):
-                    with st.spinner("🔄 Running AI analysis..."):
-                        # Simulate analysis processing
-                        import time
-                        time.sleep(2)
-                        st.session_state.analysis_results['advanced'] = {
-                            'timestamp': datetime.now(),
-                            'types': analytics_options
-                        }
-                    st.success("✅ Advanced analytics completed!")
-            
-            # User Settings
-            st.markdown("### ⚙️ Settings")
-            
-            currency = st.selectbox(
-                "💱 Currency",
-                options=['EUR', 'USD', 'GBP', 'JPY', 'CAD', 'AUD'],
-                index=0
+            analysis_type = st.selectbox(
+                "Select Analysis Type",
+                [
+                    "Business Overview",
+                    "Revenue Forecasting",
+                    "Customer Segmentation", 
+                    "Anomaly Detection",
+                    "Comparative Analysis"
+                ]
             )
-            st.session_state.user_settings['currency'] = currency
             
-            auto_refresh = st.checkbox(
-                "🔄 Auto-refresh analytics",
-                value=st.session_state.user_settings['auto_refresh']
-            )
-            st.session_state.user_settings['auto_refresh'] = auto_refresh
-            
-            # Activity Log
-            if st.session_state.activity_log:
-                st.markdown("### 📈 Recent Activity")
-                for activity in st.session_state.activity_log[-3:]:  # Show last 3 activities
-                    st.markdown(f"**{activity['timestamp'].strftime('%H:%M')}** - {activity['action']}")
-                    if 'details' in activity:
-                        st.caption(activity['details'])
-            
-            # Platform Information
-            st.markdown("---")
-            st.markdown(f"**💼 {self.company_name}**")
-            st.markdown(f"📧 {self.contact_email}")
-            st.markdown(f"🌐 {self.website}")
-            st.caption(f"Platform: {self.platform_name}")
+            if st.button("🚀 Run Analysis", use_container_width=True):
+                st.session_state.selected_analysis = analysis_type
     
-    def render_welcome_experience(self) -> None:
-        """
-        Render comprehensive welcome experience
-        Following user onboarding and business value communication
-        """
-        st.markdown("""
-        ### 🎯 Welcome to DataSight AI Platform
+    # Main content area
+    if st.session_state.data_loaded:
+        df = st.session_state.df
         
-        **Transform Your SME Business Data Into Strategic Insights**
-        
-        DataSight AI is the premier AI-powered business analytics platform designed specifically for Small-Medium Enterprises. 
-        Our advanced machine learning algorithms automatically analyze your business data and provide actionable insights 
-        to drive growth, optimize operations, and increase profitability.
-        """)
-        
-        # Feature showcase
-        col1, col2, col3 = st.columns(3)
+        # Display basic data information
+        col1, col2, col3, col4 = st.columns(4)
         
         with col1:
             st.markdown("""
-            #### 🚀 AI-Powered Analytics
-            - **Revenue Forecasting** with machine learning
-            - **Customer Segmentation** using advanced algorithms
-            - **Trend Analysis** with predictive modeling
-            - **Anomaly Detection** for business insights
-            """)
-        
+            <div class="metric-card">
+                <h3>📊 Total Records</h3>
+                <h2>{:,}</h2>
+            </div>
+            """.format(len(df)), unsafe_allow_html=True)
+            
         with col2:
             st.markdown("""
-            #### 📊 Business Intelligence
-            - **Real-time Dashboards** with KPI monitoring
-            - **Executive Reports** for strategic planning
-            - **Financial Analysis** with profit optimization
-            - **Performance Tracking** across all metrics
-            """)
-        
+            <div class="metric-card">
+                <h3>📈 Data Columns</h3>
+                <h2>{}</h2>
+            </div>
+            """.format(len(df.columns)), unsafe_allow_html=True)
+            
         with col3:
-            st.markdown("""
-            #### 🎯 Growth Optimization
-            - **Market Opportunity** identification
-            - **Customer Lifetime Value** analysis
-            - **Operational Efficiency** recommendations
-            - **Strategic Planning** support
-            """)
-        
-        # Getting started section
-        st.markdown("---")
-        st.markdown("### 📋 Getting Started")
-        
-        tab1, tab2, tab3 = st.tabs(["🚀 Try Demo", "📤 Upload Data", "📚 Learn More"])
-        
-        with tab1:
-            st.markdown("""
-            #### Experience DataSight AI with Demo Data
-            
-            Try our comprehensive SME business dataset featuring:
-            - 18 months of realistic business data
-            - Multiple revenue streams and customer segments
-            - Advanced financial and operational metrics
-            - AI-ready data structure for immediate analysis
-            """)
-            
-            if st.button("🚀 Load Demo Data Now", use_container_width=True, type="primary"):
-                with st.spinner("Loading comprehensive demo data..."):
-                    st.session_state.business_data = self.generate_comprehensive_sme_data()
-                    st.session_state.data_processed = True
-                st.rerun()
-        
-        with tab2:
-            st.markdown("""
-            #### Upload Your Business Data
-            
-            **Supported Formats:**
-            - 📄 CSV files (comma-separated values)
-            - 📊 Excel files (.xlsx, .xls)
-            - 📋 JSON files (structured data)
-            
-            **Requirements:**
-            - Maximum file size: 50MB
-            - Maximum rows: 100,000
-            - Include date/time columns for time series analysis
-            - Revenue/sales data for financial analytics
-            """)
-            
-            st.info("💡 **Tip:** Use the sidebar upload feature to get started with your own data!")
-        
-        with tab3:
-            st.markdown("""
-            #### Business Value & ROI
-            
-            | Feature | Business Impact | Typical ROI |
-            |---------|----------------|-------------|
-            | **AI Revenue Forecasting** | Improve planning accuracy | 25-40% better forecasts |
-            | **Customer Segmentation** | Targeted marketing campaigns | 15-30% conversion increase |
-            | **Real-time Analytics** | Faster decision making | 50-80% time savings |
-            | **Growth Identification** | New revenue opportunities | 10-25% revenue increase |
-            | **Operational Optimization** | Cost reduction strategies | 15-20% cost savings |
-            
-            **Success Stories:**
-            - SME Tech Company: 35% revenue growth in 6 months
-            - E-commerce Business: 50% improvement in customer retention
-            - Service Provider: 40% reduction in customer acquisition costs
-            """)
-        
-        # Value proposition
-        st.markdown("---")
-        st.markdown("""
-        ### 💼 Why Choose DataSight AI?
-        
-        **🎯 SME-Focused:** Built specifically for small-medium enterprises  
-        **🚀 AI-Powered:** Advanced machine learning for superior insights  
-        **⚡ Fast Results:** Get actionable insights in minutes, not days  
-        **🔒 Secure:** Enterprise-grade security for your business data  
-        **📈 Scalable:** Grows with your business needs  
-        **💰 Affordable:** Fraction of the cost of traditional BI solutions  
-        """)
-    
-    def run_platform(self) -> None:
-        """
-        Main platform runner implementing comprehensive SME analytics
-        Following Streamlit patterns and business requirements
-        """
-        try:
-            # Render platform header
-            self.render_platform_header()
-            
-            # Render sidebar controls
-            self.render_sidebar_controls()
-            
-            # Main content area logic
-            if st.session_state.data_processed and st.session_state.business_data is not None:
-                data = st.session_state.business_data
-                
-                # Render comprehensive analytics dashboard
-                self.render_comprehensive_kpi_dashboard(data)
-                
-                # Advanced analytics tabs
-                tab1, tab2, tab3, tab4, tab5 = st.tabs([
-                    "📈 Revenue Analytics", 
-                    "👥 Customer Intelligence", 
-                    "💰 Financial Health", 
-                    "🚀 Growth Opportunities",
-                    "📊 Advanced Analytics"
-                ])
-                
-                with tab1:
-                    self.render_advanced_analytics(data)
-                
-                with tab2:
-                    st.subheader("👥 Customer Intelligence Dashboard")
-                    
-                    # Customer metrics overview
-                    col1, col2, col3 = st.columns(3)
-                    
-                    with col1:
-                        avg_cac = data['CustomerAcquisitionCost'].mean()
-                        st.metric("💵 Avg CAC", f"€{avg_cac:.2f}")
-                    
-                    with col2:
-                        avg_ltv = data['CustomerLifetimeValue'].mean()
-                        st.metric("💰 Avg LTV", f"€{avg_ltv:.2f}")
-                    
-                    with col3:
-                        avg_retention = data['RetentionRate'].mean()
-                        st.metric("🔒 Retention", f"{avg_retention:.1f}%")
-                    
-                    # Customer segment analysis
-                    segment_analysis = data.groupby('CustomerSegment').agg({
-                        'Revenue': 'sum',
-                        'Customers': 'sum',
-                        'CustomerSatisfaction': 'mean',
-                        'RetentionRate': 'mean'
-                    }).reset_index()
-                    
-                    fig_segment_revenue = px.bar(
-                        segment_analysis,
-                        x='CustomerSegment',
-                        y='Revenue',
-                        title='Revenue by Customer Segment',
-                        color='Revenue',
-                        color_continuous_scale='Blues'
-                    )
-                    
-                    st.plotly_chart(fig_segment_revenue, use_container_width=True)
-                    
-                    # Customer insights
-                    st.markdown("### 💡 Customer Intelligence Insights")
-                    top_segment = segment_analysis.loc[segment_analysis['Revenue'].idxmax()]
-                    
-                    st.markdown(f"""
-                    **🏆 Top Performing Segment:** {top_segment['CustomerSegment']}
-                    - **Revenue:** €{top_segment['Revenue']:,.0f}
-                    - **Customers:** {top_segment['Customers']:,.0f}
-                    - **Satisfaction:** {top_segment['CustomerSatisfaction']:.1f}/5.0
-                    - **Retention:** {top_segment['RetentionRate']:.1f}%
-                    
-                    **🎯 Strategic Recommendations:**
-                    - Focus marketing budget on {top_segment['CustomerSegment']} segment
-                    - Develop targeted retention programs
-                    - Optimize customer journey for high-value segments
-                    """)
-                
-                with tab3:
-                    st.subheader("💰 Financial Health Monitor")
-                    
-                    # Financial performance metrics
-                    col1, col2, col3, col4 = st.columns(4)
-                    
-                    with col1:
-                        total_revenue = data['Revenue'].sum()
-                        st.metric("💰 Total Revenue", f"€{total_revenue:,.0f}")
-                    
-                    with col2:
-                        total_profit = data['NetProfit'].sum()
-                        st.metric("💎 Net Profit", f"€{total_profit:,.0f}")
-                    
-                    with col3:
-                        avg_margin = data['NetMargin'].mean()
-                        st.metric("📊 Avg Net Margin", f"{avg_margin:.1f}%")
-                    
-                    with col4:
-                        avg_roi = data['ROI'].mean()
-                        st.metric("🎯 Avg ROI", f"{avg_roi:.1f}%")
-                    
-                    # Monthly financial trend
-                    data['Date'] = pd.to_datetime(data['Date'])
-                    monthly_financial = data.groupby(data['Date'].dt.to_period('M')).agg({
-                        'Revenue': 'sum',
-                        'NetProfit': 'sum',
-                        'MarketingSpend': 'sum',
-                        'OperationalCosts': 'sum'
-                    }).reset_index()
-                    
-                    monthly_financial['Month'] = monthly_financial['Date'].astype(str)
-                    
-                    fig_financial = go.Figure()
-                    
-                    fig_financial.add_trace(go.Scatter(
-                        x=monthly_financial['Month'],
-                        y=monthly_financial['Revenue'],
-                        mode='lines+markers',
-                        name='Revenue',
-                        line=dict(color='blue', width=3)
-                    ))
-                    
-                    fig_financial.add_trace(go.Scatter(
-                        x=monthly_financial['Month'],
-                        y=monthly_financial['NetProfit'],
-                        mode='lines+markers',
-                        name='Net Profit',
-                        line=dict(color='green', width=3)
-                    ))
-                    
-                    fig_financial.add_trace(go.Scatter(
-                        x=monthly_financial['Month'],
-                        y=monthly_financial['MarketingSpend'],
-                        mode='lines+markers',
-                        name='Marketing Spend',
-                        line=dict(color='orange', width=2)
-                    ))
-                    
-                    fig_financial.update_layout(
-                        title='Monthly Financial Performance Trend',
-                        xaxis_title='Month',
-                        yaxis_title='Amount (€)',
-                        hovermode='x unified',
-                        height=500
-                    )
-                    
-                    st.plotly_chart(fig_financial, use_container_width=True)
-                
-                with tab4:
-                    st.subheader("🚀 AI-Powered Growth Opportunities")
-                    
-                    # Growth opportunity analysis
-                    st.markdown("### 💡 AI-Identified Growth Opportunities")
-                    
-                    # Calculate growth metrics
-                    monthly_revenue = data.groupby(data['Date'].dt.to_period('M'))['Revenue'].sum()
-                    revenue_growth = ((monthly_revenue.iloc[-1] - monthly_revenue.iloc[0]) / monthly_revenue.iloc[0] * 100) if len(monthly_revenue) > 1 else 0
-                    
-                    # Growth opportunities based on data analysis
-                    opportunities = [
-                        {
-                            "title": "Customer Segment Expansion",
-                            "impact": "High",
-                            "effort": "Medium",
-                            "potential": f"€{total_revenue * 0.15:,.0f}",
-                            "description": f"Focus on expanding {segment_analysis.loc[segment_analysis['Revenue'].idxmax(), 'CustomerSegment']} segment",
-                            "timeframe": "3-6 months"
-                        },
-                        {
-                            "title": "Revenue Stream Optimization",
-                            "impact": "High", 
-                            "effort": "Low",
-                            "potential": f"€{total_revenue * 0.12:,.0f}",
-                            "description": "Optimize pricing strategy for high-margin products",
-                            "timeframe": "1-3 months"
-                        },
-                        {
-                            "title": "Customer Retention Enhancement",
-                            "impact": "Medium",
-                            "effort": "Medium",
-                            "potential": f"€{total_revenue * 0.08:,.0f}",
-                            "description": "Implement loyalty programs for high-value customers",
-                            "timeframe": "2-4 months"
-                        }
-                    ]
-                    
-                    for i, opp in enumerate(opportunities):
-                        with st.expander(f"💡 Opportunity {i+1}: {opp['title']} (Impact: {opp['impact']})"):
-                            col1, col2 = st.columns(2)
-                            
-                            with col1:
-                                st.markdown(f"""
-                                **📈 Revenue Potential:** {opp['potential']}  
-                                **⏱️ Implementation Time:** {opp['timeframe']}  
-                                **🎯 Effort Required:** {opp['effort']}  
-                                """)
-                            
-                            with col2:
-                                st.markdown(f"""
-                                **📋 Description:**  
-                                {opp['description']}
-                                
-                                **🚀 Next Steps:**  
-                                Contact our AI consulting team for detailed implementation roadmap.
-                                """)
-                
-                with tab5:
-                    st.subheader("📊 Advanced Analytics & AI Insights")
-                    
-                    # Advanced analytics summary
-                    if 'advanced' in st.session_state.analysis_results:
-                        analysis_info = st.session_state.analysis_results['advanced']
-                        st.success(f"✅ Advanced analytics completed at {analysis_info['timestamp'].strftime('%H:%M:%S')}")
-                        st.info(f"📊 Analysis types: {', '.join(analysis_info['types'])}")
-                    
-                    # Correlation analysis
-                    st.markdown("### 🔗 Business Metrics Correlation Analysis")
-                    
-                    # Select numeric columns for correlation
-                    numeric_cols = ['Revenue', 'NetProfit', 'Customers', 'AvgOrderValue', 
-                                  'CustomerSatisfaction', 'ConversionRate', 'RetentionRate']
-                    
-                    correlation_data = data[numeric_cols].corr()
-                    
-                    fig_corr = px.imshow(
-                        correlation_data,
-                        color_continuous_scale='RdBu',
-                        aspect='auto',
-                        title='Business Metrics Correlation Matrix'
-                    )
-                    
-                    st.plotly_chart(fig_corr, use_container_width=True)
-                    
-                    # Key insights from correlation
-                    st.markdown("### 💡 Correlation Insights")
-                    revenue_corr = correlation_data['Revenue'].abs().sort_values(ascending=False)
-                    top_correlations = revenue_corr.drop('Revenue').head(3)
-                    
-                    st.markdown(f"""
-                    **🎯 Strongest Revenue Correlations:**
-                    - **{top_correlations.index[0]}:** {top_correlations.iloc[0]:.2f} correlation
-                    - **{top_correlations.index[1]}:** {top_correlations.iloc[1]:.2f} correlation
-                    - **{top_correlations.index[2]}:** {top_correlations.iloc[2]:.2f} correlation
-                    
-                    **📈 Strategic Implications:**
-                    Focus optimization efforts on metrics with strongest revenue correlation for maximum impact.
-                    """)
+            if 'Revenue' in df.columns:
+                total_revenue = df['Revenue'].sum()
+                st.markdown("""
+                <div class="metric-card">
+                    <h3>💰 Total Revenue</h3>
+                    <h2>€{:,.0f}</h2>
+                </div>
+                """.format(total_revenue), unsafe_allow_html=True)
             else:
-                # Render welcome experience
-                self.render_welcome_experience()
-            
-        except Exception as e:
-            logger.error(f"Platform runtime error: {str(e)}")
-            st.error(f"Platform error: {str(e)}")
-            
-            # Emergency fallback
-            st.markdown("### 🆘 Technical Support")
-            st.markdown(f"📧 **Contact:** {self.contact_email}")
-            st.markdown(f"🏢 **Company:** {self.company_name}")
-            st.markdown("🔧 **Status:** Please try refreshing the page or contact support")
-
-def main() -> None:
-    """
-    Main application entry point
-    Following project coding instructions and platform architecture
-    """
-    try:
-        # Initialize platform
-        platform = DataSightAIPlatform()
+                st.markdown("""
+                <div class="metric-card">
+                    <h3>📊 Data Quality</h3>
+                    <h2>✅ Clean</h2>
+                </div>
+                """, unsafe_allow_html=True)
+                
+        with col4:
+            if 'Date' in df.columns:
+                date_range = df['Date'].max() - df['Date'].min()
+                st.markdown("""
+                <div class="metric-card">
+                    <h3>📅 Date Range</h3>
+                    <h2>{} Days</h2>
+                </div>
+                """.format(date_range.days), unsafe_allow_html=True)
+            else:
+                st.markdown("""
+                <div class="metric-card">
+                    <h3>🎯 Analysis Ready</h3>
+                    <h2>✅ Yes</h2>
+                </div>
+                """, unsafe_allow_html=True)
         
-        # Run comprehensive platform
-        platform.run_platform()
+        # Data preview
+        st.subheader("📋 Data Preview")
+        st.dataframe(df.head(10), use_container_width=True)
         
-    except Exception as e:
-        logger.error(f"Critical platform error: {str(e)}")
-        st.error("Critical platform error occurred. Please contact technical support.")
-        st.markdown("📧 **Emergency Contact:** founder@analyticacoreai.com")
+        # Analysis results
+        if 'selected_analysis' in st.session_state:
+            analysis_type = st.session_state.selected_analysis
+            
+            st.subheader(f"🔍 {analysis_type} Results")
+            
+            if analysis_type == "Business Overview":
+                # Basic statistical overview
+                st.subheader("📊 Statistical Summary")
+                st.dataframe(df.describe(), use_container_width=True)
+                
+                # Correlation matrix if applicable
+                numeric_df = df.select_dtypes(include=[np.number])
+                if len(numeric_df.columns) > 1:
+                    st.subheader("🔗 Correlation Analysis")
+                    corr_matrix = numeric_df.corr()
+                    fig = px.imshow(
+                        corr_matrix,
+                        text_auto=True,
+                        aspect="auto",
+                        title="Feature Correlation Matrix",
+                        template="plotly_white"
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                
+            elif analysis_type == "Revenue Forecasting":
+                with st.spinner("🔮 Generating revenue forecast..."):
+                    forecast_results = platform.perform_revenue_forecast(df)
+                
+                if "error" in forecast_results:
+                    st.error(forecast_results["error"])
+                else:
+                    # Display forecast chart
+                    st.plotly_chart(forecast_results["forecast_chart"], use_container_width=True)
+                    
+                    # Display insights
+                    insights = forecast_results["insights"]
+                    st.markdown(f"""
+                    <div class="insight-box">
+                        <h3>🎯 AI Forecast Insights</h3>
+                        <p><strong>Growth Prediction:</strong> {insights['growth_prediction']:.1f}% over next 30 days</p>
+                        <p><strong>Forecast Confidence:</strong> {insights['confidence']}</p>
+                        <p><strong>Expected Avg Revenue:</strong> €{insights['forecast_avg']:,.0f}/day</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Model performance
+                    perf = forecast_results["model_performance"]
+                    st.info(f"Model Performance: R² Score = {perf['r2_score']:.3f}, MAE = €{perf['mae']:,.0f}")
+            
+            elif analysis_type == "Customer Segmentation":
+                with st.spinner("🎯 Analyzing customer segments..."):
+                    segmentation_results = platform.perform_customer_segmentation(df)
+                
+                if "error" in segmentation_results:
+                    st.error(segmentation_results["error"])
+                else:
+                    # Display segmentation chart
+                    st.plotly_chart(segmentation_results["segmentation_chart"], use_container_width=True)
+                    
+                    # Display insights
+                    insights = segmentation_results["insights"]
+                    st.markdown(f"""
+                    <div class="insight-box">
+                        <h3>👥 Customer Segmentation Insights</h3>
+                        <p><strong>Total Segments Identified:</strong> {insights['total_segments']}</p>
+                        <p><strong>Highest Value Segment:</strong> Cluster {insights['high_value_segment']}</p>
+                        <p><strong>Recommendation:</strong> Focus marketing efforts on high-value segments for maximum ROI</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Cluster summary
+                    st.subheader("📊 Segment Summary")
+                    st.dataframe(segmentation_results["cluster_summary"], use_container_width=True)
+            
+            elif analysis_type == "Anomaly Detection":
+                with st.spinner("🔍 Detecting anomalies in your data..."):
+                    anomaly_results = platform.detect_anomalies(df)
+                
+                if "error" in anomaly_results:
+                    st.error(anomaly_results["error"])
+                else:
+                    # Display anomaly chart
+                    st.plotly_chart(anomaly_results["anomaly_chart"], use_container_width=True)
+                    
+                    # Display summary
+                    summary = anomaly_results["anomaly_summary"]
+                    st.markdown(f"""
+                    <div class="insight-box">
+                        <h3>⚠️ Anomaly Detection Results</h3>
+                        <p><strong>Anomalies Detected:</strong> {summary['total_anomalies']} ({summary['anomaly_percentage']:.1f}% of data)</p>
+                        <p><strong>Revenue Impact:</strong> {summary['revenue_impact']:+.1f}% vs normal data</p>
+                        <p><strong>Recommendation:</strong> Investigate anomalies for potential issues or opportunities</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Show anomaly details if any
+                    if not anomaly_results["anomaly_data"].empty:
+                        st.subheader("🔍 Anomaly Details")
+                        st.dataframe(anomaly_results["anomaly_data"], use_container_width=True)
+            
+            elif analysis_type == "Comparative Analysis":
+                st.subheader("📊 Comparative Business Analysis")
+                
+                # Revenue by different dimensions
+                if 'Revenue' in df.columns:
+                    for col in ['Region', 'Product', 'Channel', 'Segment']:
+                        if col in df.columns:
+                            st.subheader(f"💰 Revenue by {col}")
+                            revenue_by_category = df.groupby(col)['Revenue'].sum().reset_index()
+                            fig = px.bar(
+                                revenue_by_category,
+                                x=col,
+                                y='Revenue',
+                                title=f"Revenue by {col}",
+                                template="plotly_white"
+                            )
+                            st.plotly_chart(fig, use_container_width=True)
+            
+            # Reset analysis selection
+            st.session_state.selected_analysis = None
 
 if __name__ == "__main__":
     main()
 
-[
-    {
-        "type": "command",
-        "details": {
-            "key": "python.execInTerminal-icon"
+"""
+AnalyticaCore AI - Revised Pricing Strategy
+Following project coding instructions and SME business context
+Minimum €99/month positioning for professional AI analytics
+"""
+
+from typing import Dict, Any
+import logging
+
+logger = logging.getLogger(__name__)
+
+class AnalyticaCoreAIPricing:
+    """
+    Pricing strategy class following project guidelines
+    SME-focused AI analytics with professional positioning
+    """
+    
+    def __init__(self):
+        self.company_name = "AnalyticaCore AI"
+        self.minimum_price = 99
+        self.target_market = "SME businesses"
+        
+    def get_pricing_tiers(self) -> Dict[str, Any]:
+        """
+        Returns pricing tiers with €99 minimum entry point
+        Following SME business context and competitive positioning
+        """
+        return {
+            "essential": {
+                "price": "€99/month",
+                "annual_discount": "€999/year (2 months free)",
+                "target": "Small businesses (5-25 employees)",
+                "positioning": "Professional AI analytics entry level",
+                "features": [
+                    "AI-powered data analysis (up to 50k rows)",
+                    "Revenue forecasting (3-month predictions)",
+                    "Customer segmentation analysis", 
+                    "Basic anomaly detection",
+                    "Monthly business reports",
+                    "Email support",
+                    "GDPR compliant processing"
+                ],
+                "data_limit": "50,000 rows/month",
+                "forecast_horizon": "3 months",
+                "support": "Email (48h response)"
+            },
+            
+            "professional": {
+                "price": "€199/month", 
+                "annual_discount": "€1,990/year (2 months free)",
+                "target": "Growing SMEs (25-100 employees)",
+                "positioning": "Main target - comprehensive SME solution",
+                "features": [
+                    "All Essential features",
+                    "Advanced ML forecasting (12-month predictions)",
+                    "Real-time anomaly alerts",
+                    "Custom business dashboards",
+                    "API access for integrations",
+                    "Weekly automated reports",
+                    "Priority email + chat support",
+                    "Advanced customer lifetime value analysis"
+                ],
+                "data_limit": "500,000 rows/month", 
+                "forecast_horizon": "12 months",
+                "support": "Email + Chat (24h response)"
+            },
+            
+            "business": {
+                "price": "€399/month",
+                "annual_discount": "€3,990/year (2 months free)", 
+                "target": "Established SMEs (100-500 employees)",
+                "positioning": "Premium SME/lower mid-market",
+                "features": [
+                    "All Professional features",
+                    "Multi-location data analysis",
+                    "Custom AI model training",
+                    "White-label reporting",
+                    "Dedicated account manager",
+                    "Phone support",
+                    "On-demand consulting (2h/month included)",
+                    "Advanced predictive analytics"
+                ],
+                "data_limit": "2,000,000 rows/month",
+                "forecast_horizon": "18 months", 
+                "support": "Phone + Email + Chat (12h response)"
+            },
+            
+            "enterprise": {
+                "price": "€799/month",
+                "annual_discount": "€7,990/year (2 months free)",
+                "target": "Mid-market companies (500+ employees)",
+                "positioning": "Enterprise-lite solution",
+                "features": [
+                    "All Business features", 
+                    "Unlimited data processing",
+                    "Custom integrations development",
+                    "On-premise deployment option",
+                    "24/7 dedicated support",
+                    "Monthly strategy consultations",
+                    "Custom AI model development",
+                    "SLA guarantees"
+                ],
+                "data_limit": "Unlimited",
+                "forecast_horizon": "24 months",
+                "support": "24/7 dedicated support team"
+            }
         }
-    }
-]
+    
+    def get_value_justification(self) -> Dict[str, str]:
+        """
+        Returns value justification for €99+ pricing
+        Following business context and competitive positioning
+        """
+        return {
+            "market_comparison": "Traditional BI tools: €200-500/month per user",
+            "consultant_alternative": "Business analyst: €500-1000/day", 
+            "enterprise_alternative": "Enterprise analytics: €5000-20000/month",
+            "roi_calculation": "Typical 300-500% ROI within 6 months",
+            "time_savings": "50-80 hours/month of manual analysis eliminated",
+            "decision_speed": "Reduce decision-making time by 60-80%"
+        }
