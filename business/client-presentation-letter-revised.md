@@ -71,7 +71,7 @@ We transform your business data into strategic insights using professional-grade
 
 ## 🇮🇪 **Irish Business, Global Technology**
 
-As a proudly Irish company (launching at **analyticacore.ie**), we understand the unique challenges facing Irish SMEs:
+As a proudly Irish company (launching at **analyticacoreai.ie**), we understand the unique challenges facing Irish SMEs:
 - Limited resources for data expertise
 - Need for quick, actionable insights
 - Pressure to compete with larger organizations
@@ -125,7 +125,7 @@ Founder & CEO
 
 ---
 
-**AnalyticaCore AI** | Dublin, Ireland | analyticacore.ie
+**AnalyticaCore AI** | Dublin, Ireland | analyticacoreai.ie
 *Starting at €99/month - Professional analytics without the enterprise complexity*
 
 ---

@@ -9,6 +9,8 @@ import os
 from pathlib import Path
 import logging
 from datetime import datetime
+import pandas as pd
+import numpy as np
 
 # Configure logging following project guidelines
 logging.basicConfig(
@@ -343,4 +345,3 @@ Python Path: {sys.executable}
 Working Directory: {os.getcwd()}
 Error: {str(e)}
         """)
-        
