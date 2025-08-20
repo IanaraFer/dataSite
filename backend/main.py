@@ -301,20 +301,20 @@ async def get_pricing():
     """Get current pricing plans following SME business context"""
     return {
         "plans": {
-            "essential": {
-                "price": 99,
+            "professional": {
+                "price": 199,
                 "currency": "EUR",
                 "billing": "monthly",
                 "features": [
-                    "AI-powered data analysis (50k rows/month)",
-                    "3-month revenue forecasting",
+                    "AI-powered data analysis (100k rows/month)",
+                    "6-month revenue forecasting",
                     "Customer segmentation insights",
-                    "Monthly business reports",
-                    "Email support (48h response)"
+                    "Weekly business reports",
+                    "Priority email support (24h response)"
                 ]
             },
-            "professional": {
-                "price": 199,
+            "business": {
+                "price": 399,
                 "currency": "EUR", 
                 "billing": "monthly",
                 "features": [
@@ -322,12 +322,12 @@ async def get_pricing():
                     "Real-time anomaly detection",
                     "Custom business dashboards", 
                     "API integrations",
-                    "Weekly automated reports",
-                    "Priority support (24h response)"
+                    "Daily automated reports",
+                    "Phone support (4h response)"
                 ]
             },
-            "business": {
-                "price": 399,
+            "enterprise": {
+                "price": 799,
                 "currency": "EUR",
                 "billing": "monthly",
                 "features": [
@@ -335,7 +335,7 @@ async def get_pricing():
                     "Custom AI model training",
                     "White-label reporting",
                     "Dedicated account manager",
-                    "Phone support + consulting"
+                    "24/7 phone support + consulting"
                 ]
             }
         }
