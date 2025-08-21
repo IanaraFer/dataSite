@@ -162,9 +162,13 @@
                     
                     console.log('📊 Form data:', data);
                     
-                    // Submit to backend API
-                    console.log('🔄 Sending request to backend...');
-                    const response = await fetch('http://localhost:8001/api/trial/submit', {
+                    // Submit to backend API with dynamic URL
+                    const API_BASE = window.location.hostname === 'localhost' ? 
+                        'http://localhost:8001' : 
+                        `https://${window.location.hostname}/api`;
+                    
+                    console.log('🔄 Sending request to backend...', API_BASE);
+                    const response = await fetch(`${API_BASE}/trial/submit`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
