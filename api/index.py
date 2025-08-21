@@ -25,6 +25,7 @@ STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "pk_test_placeholde
 # Initialize SendGrid
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 FROM_EMAIL = os.getenv("FROM_EMAIL", "contact@analyticacoreai.ie")
+FROM_NAME = os.getenv("FROM_NAME", "AnalyticaCore AI")
 
 # Configure CORS
 app.add_middleware(
@@ -207,7 +208,7 @@ async def send_trial_confirmation_email(submission: TrialSubmission):
         sg = SendGridAPIClient(api_key=SENDGRID_API_KEY)
         
         message = Mail(
-            from_email=FROM_EMAIL,
+            from_email=(FROM_EMAIL, FROM_NAME),
             to_emails=submission.email,
             subject=f"🚀 Welcome to AnalyticaCore AI - Trial Activated!",
             html_content=f"""
@@ -266,7 +267,7 @@ async def send_welcome_email(customer_email: str, plan: str):
         sg = SendGridAPIClient(api_key=SENDGRID_API_KEY)
         
         message = Mail(
-            from_email=FROM_EMAIL,
+            from_email=(FROM_EMAIL, FROM_NAME),
             to_emails=customer_email,
             subject=f"🎉 Welcome to AnalyticaCore AI {plan.title()} Plan!",
             html_content=f"""
