@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataSiteAI - Free Trial (Simple Test)</title>
+    <title>AnalyticaCore AI - Free Trial</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        page_title: 'Free Trial Form - AnalyticaCore AI',
+        page_location: window.location.href
+      });
+      
+      // Track trial form view
+      gtag('event', 'page_view', {
+        page_title: 'Trial Form',
+        page_location: window.location.href
+      });
+    </script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
         .form-container { background: white; border-radius: 15px; padding: 30px; max-width: 600px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
@@ -161,6 +179,16 @@
                     }
                     
                     console.log('📊 Form data:', data);
+                    
+                    // Track trial form submission attempt
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'trial_form_submit', {
+                            event_category: 'engagement',
+                            event_label: 'form_submission',
+                            company: data.company,
+                            industry: data.industry
+                        });
+                    }
                     
                     // Submit to backend API with dynamic URL
                     const API_BASE = window.location.hostname === 'localhost' ? 

@@ -6,6 +6,24 @@
     <title>AnalyticaCore AI - Choose Your Plan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        page_title: 'Pricing Page - AnalyticaCore AI',
+        page_location: window.location.href
+      });
+      
+      // Track pricing page view
+      gtag('event', 'page_view', {
+        page_title: 'Pricing Page',
+        page_location: window.location.href
+      });
+    </script>
     <style>
         body { 
             font-family: 'Inter', sans-serif; 
@@ -242,9 +260,19 @@
         console.log('💰 AnalyticaCore AI pricing page loaded');
         console.log('🎯 All plans include 7-day free trial');
         
-        // Payment subscription function
+        // Payment subscription function with Stripe integration
         async function subscribeToPlan(planName, price) {
             console.log(`🚀 Subscribe to ${planName} plan - €${price}/month`);
+            
+            // Track payment start event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'begin_checkout', {
+                    event_category: 'ecommerce',
+                    event_label: planName,
+                    value: price,
+                    currency: 'EUR'
+                });
+            }
             
             try {
                 // Get API base URL
@@ -258,7 +286,15 @@
                 button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
                 button.disabled = true;
                 
-                // Call payment endpoint
+                // Get customer email (you might want to collect this in a form)
+                const customerEmail = prompt('Please enter your email address:');
+                if (!customerEmail) {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    return;
+                }
+                
+                // Call Stripe checkout endpoint
                 const response = await fetch(`${API_BASE}/payment/subscribe`, {
                     method: 'POST',
                     headers: {
@@ -267,7 +303,9 @@
                     body: JSON.stringify({
                         plan: planName,
                         amount: price,
-                        currency: 'EUR'
+                        currency: 'EUR',
+                        customer_email: customerEmail,
+                        customer_name: 'Customer' // You can collect this too
                     })
                 });
                 
@@ -276,21 +314,31 @@
                 }
                 
                 const result = await response.json();
-                console.log('✅ Payment response:', result);
+                console.log('✅ Stripe response:', result);
                 
-                // Redirect to payment URL or show success
-                if (result.paymentUrl) {
-                    window.location.href = result.paymentUrl;
+                // Redirect to Stripe Checkout
+                if (result.checkout_url) {
+                    window.location.href = result.checkout_url;
                 } else {
-                    alert(`✅ Success! You've subscribed to the ${planName} plan.`);
+                    throw new Error('No checkout URL received');
                 }
                 
             } catch (error) {
                 console.error('❌ Payment error:', error);
                 
                 // Reset button
+                const button = event.target;
                 button.innerHTML = originalText;
                 button.disabled = false;
+                
+                // Track error
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'checkout_error', {
+                        event_category: 'ecommerce',
+                        event_label: planName,
+                        error_message: error.message
+                    });
+                }
                 
                 // Fallback - redirect to trial form with plan info
                 alert(`Payment system temporarily unavailable. Starting with free trial for ${planName} plan.`);
