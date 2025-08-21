@@ -3,10 +3,9 @@ Vercel Entry Point for AnalyticaCore AI
 Simplified FastAPI handler for serverless deployment
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-import os
 
 # Create FastAPI app
 app = FastAPI(title="AnalyticaCore AI API", version="1.0.0")
@@ -14,7 +13,7 @@ app = FastAPI(title="AnalyticaCore AI API", version="1.0.0")
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure for production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,16 +35,9 @@ async def status():
     return {
         "service": "AnalyticaCore AI",
         "status": "operational",
-        "environment": os.getenv("ENVIRONMENT", "development"),
-        "domain": os.getenv("DOMAIN", "localhost")
+        "environment": "production"
     }
 
-# Vercel handler
+# Export the app for Vercel
 def handler(request):
-    """Vercel serverless handler"""
     return app
-
-# For local development
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
