@@ -128,32 +128,100 @@
             }
         }
 
-        // Form submission handler
-        document.getElementById('simpleForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            console.log('🚀 Form submitted');
+        // Form submission handler - Updated to use backend API
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('simpleForm');
             
-            // Show loading state
-            const submitButton = this.querySelector('button[type="submit"]');
-            const originalText = submitButton.innerHTML;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
-            submitButton.disabled = true;
-            
-            // Get form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Add file info if uploaded
-            if (window.uploadedDataset) {
-                data.datasetName = window.uploadedDataset.name;
-                data.datasetSize = Math.round(window.uploadedDataset.size / 1024) + 'KB';
+            if (!form) {
+                console.error('❌ Form not found!');
+                return;
             }
             
-            console.log('📊 Form data:', data);
+            console.log('✅ Form found, attaching event listener');
             
-            // Create email content
-            const emailSubject = `🚀 URGENT: New DataSight AI Lead - ${data.firstName} from ${data.company}`;
-            const emailBody = `
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                console.log('🚀 Form submitted - preventDefault called');
+                
+                // Show loading state
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                submitButton.disabled = true;
+                
+                try {
+                    // Get form data
+                    const formData = new FormData(this);
+                    const data = Object.fromEntries(formData);
+                    
+                    // Add file info if uploaded
+                    if (window.uploadedDataset) {
+                        data.datasetName = window.uploadedDataset.name;
+                        data.datasetSize = Math.round(window.uploadedDataset.size / 1024) + 'KB';
+                    }
+                    
+                    console.log('📊 Form data:', data);
+                    
+                    // Submit to backend API
+                    console.log('🔄 Sending request to backend...');
+                    const response = await fetch('http://localhost:8001/api/trial/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    console.log('📡 Response received:', response.status);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const result = await response.json();
+                    console.log('✅ Backend response:', result);
+                    
+                    // Reset button
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                    
+                    // Show success message
+                    const datasetMessage = window.uploadedDataset ? 
+                        ` Your ${window.uploadedDataset.name} file has been received and will be analyzed within 2 hours.` : 
+                        '';
+                    
+                    alert(`✅ SUCCESS! Your free AI business health check request has been submitted.${datasetMessage}
+
+${result.message}
+
+You'll receive your comprehensive report at ${data.email}.`);
+                    
+                    // Redirect to thank you page
+                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}&hasDataset=${!!window.uploadedDataset}&customerId=${encodeURIComponent(result.customer_id || '')}`;
+                    
+                } catch (error) {
+                    console.error('❌ Submission error:', error);
+                    
+                    // Reset button
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                    
+                    // Fallback to email method if API fails
+                    console.log('🔄 Falling back to email method...');
+                    
+                    // Get form data for fallback
+                    const formData = new FormData(this);
+                    const data = Object.fromEntries(formData);
+                    
+                    // Add file info if uploaded
+                    if (window.uploadedDataset) {
+                        data.datasetName = window.uploadedDataset.name;
+                        data.datasetSize = Math.round(window.uploadedDataset.size / 1024) + 'KB';
+                    }
+                    
+                    // Create email content for fallback
+                    const emailSubject = `🚀 URGENT: New DataSight AI Lead - ${data.firstName} from ${data.company}`;
+                    const emailBody = `
 🚀 NEW DATASIGHT AI LEAD ALERT!
 ${window.uploadedDataset ? '📊 INCLUDES DATASET FOR ANALYSIS!' : ''}
 
@@ -189,31 +257,49 @@ ${window.uploadedDataset ?
 ---
 ⚡ RESPOND IMMEDIATELY for highest conversion rates!
 This lead was generated from your DataSight AI free trial page.
-            `.trim();
+                    `.trim();
 
-            // Wait 2 seconds to simulate processing
-            setTimeout(() => {
-                // Reset button
-                submitButton.innerHTML = originalText;
-                submitButton.disabled = false;
-                
-                // Open email client with lead notification
-                const mailtoLink = `mailto:founder@analyticacoreai.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-                window.open(mailtoLink);
-                
-                // Show success message
-                const datasetMessage = window.uploadedDataset ? 
-                    ` Your ${window.uploadedDataset.name} file has been received and will be analyzed within 2 hours.` : 
-                    '';
-                
-                alert(`✅ SUCCESS! Your free AI business health check request has been submitted.${datasetMessage} 
+                    // Open email client with lead notification
+                    const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                    window.open(mailtoLink);
+                    
+                    // Show fallback message
+                    const datasetMessage = window.uploadedDataset ? 
+                        ` Your ${window.uploadedDataset.name} file has been received and will be analyzed within 2 hours.` : 
+                        '';
+                    
+                    alert(`⚠️ Connection issue detected, but don't worry!${datasetMessage} 
 
 📧 IMPORTANT: An email will open now - please click SEND to notify our team immediately.
-You'll receive your comprehensive report within 15 minutes at ${data.email}.`);
+You'll receive your comprehensive report within ${window.uploadedDataset ? '2 hours' : '24 hours'} at ${data.email}.`);
+                    
+                    // Redirect to thank you page
+                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}&hasDataset=${!!window.uploadedDataset}`;
+                }
+            });
+            
+            console.log('✅ All event listeners attached successfully');
+        });
+3. 💼 Offer to analyze their data
+4. 🎯 Schedule demo call`}
+
+---
+⚡ RESPOND IMMEDIATELY for highest conversion rates!
+This lead was generated from your DataSight AI free trial page.
+                `.trim();
+                
+                // Open email client as fallback
+                const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                window.open(mailtoLink);
+                
+                alert(`⚠️ Submission processed with fallback method. 
+
+📧 IMPORTANT: An email will open now - please click SEND to notify our team immediately.
+You'll receive your comprehensive report within 24 hours at ${data.email}.`);
                 
                 // Redirect to thank you page
                 window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}&hasDataset=${!!window.uploadedDataset}`;
-            }, 2000);
+            }
         });
 
         console.log('✅ All event listeners attached successfully');
