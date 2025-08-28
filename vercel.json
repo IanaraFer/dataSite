@@ -13,11 +13,46 @@
     },
     {
       "src": "/",
-      "dest": "website/index.html"
+      "dest": "public/index.html"
+    },
+    {
+      "src": "/index.html",
+      "dest": "public/index.html"
+    },
+    {
+      "src": "/pricing.html",
+      "dest": "public/pricing.html"
+    },
+    {
+      "src": "/platform.html",
+      "dest": "public/platform.html"
+    },
+    {
+      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
+      "dest": "public/$1"
     },
     {
       "src": "/((?!api).+)",
-      "dest": "website/$1"
+      "dest": "public/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "X-Requested-With, Content-Type, Authorization"
+        }
+      ]
     }
   ]
 }

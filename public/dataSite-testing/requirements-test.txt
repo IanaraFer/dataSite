@@ -1,0 +1,17 @@
+# DataSight AI - Company Data Analyzer Testing Requirements
+
+pytest
+pandas
+numpy
+scikit-learn
+plotly
+streamlit
+pytest-cov
+tox
+pytest-asyncio
+selenium
+requests
+pytest-mock
+pytest-xdist
+coverage
+pytest-html

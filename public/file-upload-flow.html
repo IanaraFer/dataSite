@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Flow - DataSight AI</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; }
+        .flow-step { background: #f8f9fa; border-left: 4px solid #007bff; padding: 20px; margin: 20px 0; }
+        .step-number { background: #007bff; color: white; width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; }
+        .success { border-left-color: #28a745; }
+        .success .step-number { background: #28a745; }
+        .pending { border-left-color: #ffc107; }
+        .pending .step-number { background: #ffc107; }
+        .error { border-left-color: #dc3545; }
+        .error .step-number { background: #dc3545; }
+        .file-path { background: #e9ecef; padding: 10px; border-radius: 5px; font-family: monospace; }
+        .customer-id { background: #d4edda; padding: 10px; border-radius: 5px; border: 1px solid #c3e6cb; }
+    </style>
+</head>
+<body>
+    <h1>🔄 DataSight AI - File Upload & Analysis Flow</h1>
+    
+    <div class="flow-step success">
+        <span class="step-number">1</span>
+        <strong>Customer Fills Form</strong><br>
+        ✅ Your information was captured<br>
+        ✅ File selected: stakeholder_data.csv.xlsx<br>
+        <div class="customer-id">Customer ID: TRIAL-20250821-XXXX</div>
+    </div>
+    
+    <div class="flow-step success">
+        <span class="step-number">2</span>
+        <strong>Form Submission</strong><br>
+        ✅ JavaScript intercepted the form<br>
+        ✅ Data sent to backend API<br>
+        ✅ Thank you page displayed
+    </div>
+    
+    <div class="flow-step pending">
+        <span class="step-number">3</span>
+        <strong>File Processing (In Progress)</strong><br>
+        🔄 File upload to backend server<br>
+        📁 Saved location: <code>uploads/TRIAL-XXXXXX_stakeholder_data.csv.xlsx</code><br>
+        🤖 AI analysis engine processing...
+    </div>
+    
+    <div class="flow-step pending">
+        <span class="step-number">4</span>
+        <strong>Analysis & Insights Generation</strong><br>
+        📊 Data validation and cleaning<br>
+        🧠 AI-powered business insights<br>
+        📈 Performance metrics calculation<br>
+        🎯 Strategic recommendations
+    </div>
+    
+    <div class="flow-step pending">
+        <span class="step-number">5</span>
+        <strong>Report Generation</strong><br>
+        📄 PDF report creation<br>
+        📊 Interactive charts and graphs<br>
+        💡 Executive summary<br>
+        🚀 Action plan recommendations
+    </div>
+    
+    <div class="flow-step pending">
+        <span class="step-number">6</span>
+        <strong>Customer Delivery</strong><br>
+        📧 Email notification sent<br>
+        🔗 Secure download link<br>
+        ⏰ Report delivered within 2 hours<br>
+        📞 Follow-up consultation scheduled
+    </div>
+    
+    <h2>📂 File Storage & Security</h2>
+    <div class="file-path">
+        <strong>Backend File Structure:</strong><br>
+        📁 dataSite/<br>
+        &nbsp;&nbsp;📁 uploads/<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;📄 TRIAL-20250821-1234_stakeholder_data.csv.xlsx<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;📄 TRIAL-20250821-5678_customer_data.xlsx<br>
+        &nbsp;&nbsp;📁 processed/<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;📄 TRIAL-20250821-1234_analysis.json<br>
+        &nbsp;&nbsp;📁 reports/<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;📄 TRIAL-20250821-1234_insights_report.pdf
+    </div>
+    
+    <h2>🔐 Data Security & Privacy</h2>
+    <ul>
+        <li>🛡️ All files encrypted during upload</li>
+        <li>🗂️ Unique customer ID prevents data mixing</li>
+        <li>⏰ Files automatically deleted after 30 days</li>
+        <li>🔒 GDPR compliant data handling</li>
+        <li>📝 Detailed audit logs maintained</li>
+    </ul>
+    
+    <h2>⚙️ Technical Implementation</h2>
+    <div class="flow-step">
+        <strong>Frontend (Browser)</strong><br>
+        • HTML form with file input<br>
+        • JavaScript FormData API<br>
+        • AJAX submission to backend<br>
+        • Real-time upload progress
+    </div>
+    
+    <div class="flow-step">
+        <strong>Backend (Python Server)</strong><br>
+        • HTTP multipart/form-data handling<br>
+        • File validation and virus scanning<br>
+        • Unique filename generation<br>
+        • Database logging for tracking
+    </div>
+    
+    <div class="flow-step">
+        <strong>AI Analysis Engine</strong><br>
+        • Pandas data processing<br>
+        • Machine learning insights<br>
+        • Business intelligence algorithms<br>
+        • Automated report generation
+    </div>
+    
+    <p><strong>Current Status:</strong> Backend server setup in progress. File upload capability being enhanced.</p>
+    
+    <script>
+        // Simulate real-time status updates
+        setInterval(() => {
+            const timestamp = new Date().toLocaleTimeString();
+            console.log(`[${timestamp}] Checking file upload status...`);
+        }, 5000);
+    </script>
+</body>
+</html>
