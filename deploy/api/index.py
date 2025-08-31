@@ -316,6 +316,5 @@ async def get_config():
         "environment": os.getenv("ENVIRONMENT", "development")
     }
 
-# Export the app for Vercel
-def handler(request):
-    return app
+# Export the app for Vercel - Vercel Python automatically handles FastAPI
+# No handler needed for @vercel/python runtime
