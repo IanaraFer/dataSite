@@ -179,7 +179,7 @@
                         <li><i class="fas fa-check text-success me-2"></i>Unlimited data processing</li>
                     </ul>
                     
-                    <a href="#" onclick="subscribeToPlan('business', 399)" class="btn btn-plan mb-2">
+                    <a href="#" onclick="subscribeToPlan('professional', 399)" class="btn btn-plan mb-2">
                         <i class="fas fa-credit-card me-2"></i>Subscribe Now
                     </a>
                     <a href="free-trial-simple.html" class="btn btn-plan btn-trial mb-2">
@@ -289,24 +289,17 @@
                     return;
                 }
                 
-                // Simulate processing time
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Reset button
-                button.innerHTML = originalText;
-                button.disabled = false;
-                
-                // Show success and redirect to Stripe (simulation)
-                alert(`✅ Payment Setup Complete!\\n\\nPlan: ${planName.toUpperCase()}\\nAmount: €${price}/month\\nEmail: ${customerEmail}\\n\\n🔄 Redirecting to Stripe Checkout...\\n\\n(In production: Real Stripe payment processing)`);
-                
-                // Simulate Stripe redirect - in production this would be real
-                const stripeUrl = `https://checkout.stripe.com/demo?plan=${planName}&amount=${price}&email=${encodeURIComponent(customerEmail)}`;
-                
-                // For demo, show what would happen
-                if (confirm('🚀 Open Stripe Checkout Demo?\\n\\n(In production, this would process real payments)')) {
-                    // Redirect to a demo page or show success
-                    showPaymentSuccess(planName, price, customerEmail);
-                }
+                // Call Netlify function to create Stripe Checkout session
+                const resp = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ plan: planName, email: customerEmail })
+                });
+                const data = await resp.json();
+                if (!resp.ok) throw new Error(data.error || 'Checkout failed');
+
+                // Redirect to Stripe Checkout
+                window.location.href = data.url;
                 
             } catch (error) {
                 console.error('❌ Payment error:', error);

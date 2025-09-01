@@ -906,6 +906,42 @@
             const loadTime = performance.now();
             console.log(`⚡ Page loaded in ${Math.round(loadTime)}ms`);
         });
+
+        // Contact form submission to Netlify Function
+        document.addEventListener('submit', async function(e) {
+            const form = e.target;
+            if (form && form.id === 'contactForm') {
+                e.preventDefault();
+                const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('.btn-primary');
+                const original = submitBtn ? submitBtn.innerHTML : '';
+                if (submitBtn) {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+                    submitBtn.disabled = true;
+                }
+                try {
+                    const payload = Object.fromEntries(new FormData(form).entries());
+                    const resp = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: payload.name || payload.fullName || '',
+                            email: payload.email || '',
+                            message: payload.message || payload.notes || 'Website enquiry'
+                        })
+                    });
+                    if (!resp.ok) throw new Error('Send failed');
+                    alert('✅ Thanks! We will be in touch shortly.');
+                    form.reset();
+                } catch (err) {
+                    alert('❌ Failed to send. Please email contact@analyticacoreai.ie');
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.innerHTML = original;
+                        submitBtn.disabled = false;
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>
