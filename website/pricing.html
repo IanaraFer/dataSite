@@ -415,8 +415,14 @@
             });
         }
     </script>
-            });
-        }
+    <script>
+    function subscribeToPlan(planName, price) {
+        console.log('Subscribe clicked:', planName, price);
+        let planType = 'starter';
+        if (planName === 'professional') planType = 'professional';
+        if (planName === 'business' || planName === 'enterprise') planType = 'enterprise';
+        window.location.href = 'subscribe.htm?plan=' + planType;
+    }
     </script>
 </body>
 </html>
