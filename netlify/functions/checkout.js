@@ -14,10 +14,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2024-06-20',
 });
 
+// Support both naming schemes: STRIPE_PRICE_* and STRIPE_PRICE_ID_*
 const PLAN_TO_PRICE_ENV = {
-  starter: 'STRIPE_PRICE_STARTER',
-  professional: 'STRIPE_PRICE_PROFESSIONAL',
-  enterprise: 'STRIPE_PRICE_ENTERPRISE',
+  starter: ['STRIPE_PRICE_STARTER', 'STRIPE_PRICE_ID_STARTER'],
+  professional: ['STRIPE_PRICE_PROFESSIONAL', 'STRIPE_PRICE_ID_PROFESSIONAL'],
+  enterprise: ['STRIPE_PRICE_ENTERPRISE', 'STRIPE_PRICE_ID_ENTERPRISE'],
 };
 
 const PLAN_TO_AMOUNT_EUR = {
@@ -51,8 +52,8 @@ exports.handler = async (event) => {
     const siteUrl = process.env.SITE_URL || 'https://analyticacoreai.netlify.app';
 
     // Prefer static Price IDs if provided; fallback to dynamic price_data
-    const priceEnvKey = PLAN_TO_PRICE_ENV[plan];
-    const priceId = process.env[priceEnvKey];
+    const priceEnvKeys = PLAN_TO_PRICE_ENV[plan] || [];
+    const priceId = priceEnvKeys.map((k) => process.env[k]).find(Boolean);
 
     const lineItem = priceId
       ? { price: priceId, quantity: 1 }
