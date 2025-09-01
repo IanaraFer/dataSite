@@ -17,6 +17,7 @@
         .price { font-size: 2.25rem; font-weight: 800; color: #4f46e5; }
         .muted { color: #6c757d; }
     </style>
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
         const PLAN_INFO = {
             starter: { label: 'Starter', amount: 199, css: 'starter' },
@@ -50,6 +51,22 @@
             }
             planSelect.addEventListener('change', function() { applyPlan(this.value); });
             const form = document.getElementById('subscribeForm');
+            const cardContainer = document.getElementById('card-element');
+            const cardErrors = document.getElementById('card-errors');
+
+            // Load publishable key
+            let stripe, elements, card;
+            fetch('/api/config').then(r=>r.json()).then(cfg=>{
+                if (cfg.publishableKey) {
+                    stripe = Stripe(cfg.publishableKey);
+                    elements = stripe.elements();
+                    card = elements.create('card', { hidePostalCode: true });
+                    card.mount('#card-element');
+                    card.on('change', (event) => {
+                        cardErrors.textContent = event.error ? event.error.message : '';
+                    });
+                }
+            }).catch(()=>{});
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const submitBtn = document.getElementById('subscribeBtn');
@@ -63,6 +80,7 @@
                         name: document.getElementById('name').value.trim()
                     };
                     if (!payload.email) { throw new Error('Email is required'); }
+                    // Server creates the Checkout Session using Price IDs
                     const resp = await fetch('/api/checkout', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -70,7 +88,13 @@
                     });
                     const data = await resp.json();
                     if (!resp.ok) { throw new Error(data.error || 'Checkout failed'); }
-                    window.location.href = data.url;
+                    // Prefer redirect via Stripe if JS key loaded, else fallback
+                    if (stripe && data.sessionId) {
+                        const { error } = await stripe.redirectToCheckout({ sessionId: data.sessionId });
+                        if (error) throw new Error(error.message);
+                    } else {
+                        window.location.href = data.url;
+                    }
                 } catch (err) {
                     alert('Payment setup failed: ' + (err.message || 'Please try again'));
                 } finally {
@@ -111,6 +135,11 @@
                         <label for="email" class="form-label">Email address</label>
                         <input type="email" class="form-control" id="email" placeholder="you@company.com" required>
                     </div>
+                </div>
+                <div class="mt-4">
+                    <label class="form-label">Card details</label>
+                    <div id="card-element" style="padding: 12px; border: 2px solid #eee; border-radius: 8px; background: #fff;"></div>
+                    <div id="card-errors" class="text-danger mt-2" role="alert"></div>
                 </div>
                 <div class="mt-4 d-grid">
                     <button id="subscribeBtn" type="submit" class="btn btn-primary btn-lg">
