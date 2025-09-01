@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe - AnalyticaCore AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .container-small { max-width: 680px; }
+        .card { border: none; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        .plan-pill { display: inline-block; padding: 6px 12px; border-radius: 999px; font-weight: 600; }
+        .plan-pill.starter { background: #e6f2ff; color: #0d6efd; }
+        .plan-pill.professional { background: #eaf0ff; color: #4f46e5; }
+        .plan-pill.enterprise { background: #fff0ea; color: #e06b2d; }
+        .price { font-size: 2.25rem; font-weight: 800; color: #4f46e5; }
+        .muted { color: #6c757d; }
+    </style>
+    <script>
+        const PLAN_INFO = {
+            starter: { label: 'Starter', amount: 199, css: 'starter' },
+            professional: { label: 'Professional', amount: 399, css: 'professional' },
+            enterprise: { label: 'Enterprise', amount: 799, css: 'enterprise' }
+        };
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const planFromQuery = (getQueryParam('plan') || '').toLowerCase();
+            const planSelect = document.getElementById('plan');
+            const planBadge = document.getElementById('planBadge');
+            const planPrice = document.getElementById('planPrice');
+            const planSummary = document.getElementById('planSummary');
+            function applyPlan(planKey) {
+                const info = PLAN_INFO[planKey] || PLAN_INFO.starter;
+                planSelect.value = planKey;
+                planBadge.textContent = info.label + ' Plan';
+                planBadge.className = 'plan-pill ' + info.css;
+                planPrice.textContent = `€${info.amount}/month`;
+                planSummary.textContent = `Billed monthly • Cancel anytime`;
+            }
+            if (PLAN_INFO[planFromQuery]) {
+                applyPlan(planFromQuery);
+            } else {
+                applyPlan(planSelect.value);
+            }
+            planSelect.addEventListener('change', function() { applyPlan(this.value); });
+            const form = document.getElementById('subscribeForm');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const submitBtn = document.getElementById('subscribeBtn');
+                const original = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating checkout…';
+                submitBtn.disabled = true;
+                try {
+                    const payload = {
+                        plan: planSelect.value,
+                        email: document.getElementById('email').value.trim(),
+                        name: document.getElementById('name').value.trim()
+                    };
+                    if (!payload.email) { throw new Error('Email is required'); }
+                    const resp = await fetch('/api/checkout', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await resp.json();
+                    if (!resp.ok) { throw new Error(data.error || 'Checkout failed'); }
+                    window.location.href = data.url;
+                } catch (err) {
+                    alert('Payment setup failed: ' + (err.message || 'Please try again'));
+                } finally {
+                    submitBtn.innerHTML = original;
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+    </head>
+<body>
+    <div class="container container-small py-5">
+        <div class="text-center text-white mb-4">
+            <h1 class="fw-bold">Subscribe to AnalyticaCore AI</h1>
+            <p class="opacity-75">Secure checkout powered by Stripe</p>
+        </div>
+        <div class="card p-4 p-md-5 mx-auto">
+            <form id="subscribeForm">
+                <div class="mb-3">
+                    <label class="form-label">Choose Plan</label>
+                    <select id="plan" class="form-select">
+                        <option value="professional">Professional — €399/month</option>
+                        <option value="starter">Starter — €199/month</option>
+                        <option value="enterprise">Enterprise — €799/month</option>
+                    </select>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <span id="planBadge" class="plan-pill professional">Professional Plan</span>
+                    <span id="planPrice" class="price">€399/month</span>
+                </div>
+                <div class="mb-4 muted" id="planSummary">Billed monthly • Cancel anytime</div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Full name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Jane Doe">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="you@company.com" required>
+                    </div>
+                </div>
+                <div class="mt-4 d-grid">
+                    <button id="subscribeBtn" type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-lock me-2"></i>Proceed to Secure Checkout
+                    </button>
+                </div>
+                <div class="text-center mt-3 text-muted" style="font-size: 0.9rem;">
+                    Your payment is processed by Stripe. We do not store card details.
+                </div>
+            </form>
+        </div>
+        <div class="text-center text-white mt-4">
+            <a href="/pricing.html" class="text-white text-decoration-underline">Back to Pricing</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
+
