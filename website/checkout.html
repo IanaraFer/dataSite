@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - AnalyticaCore AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .container-small { max-width: 820px; }
+        .card { border: none; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        .plan-badge { display: inline-block; padding: 6px 12px; border-radius: 999px; font-weight: 600; }
+        .starter { background: #e6f2ff; color: #0d6efd; }
+        .professional { background: #eaf0ff; color: #4f46e5; }
+        .enterprise { background: #fff0ea; color: #e06b2d; }
+        .price { font-size: 2rem; font-weight: 800; color: #4f46e5; }
+        .muted { color: #6c757d; }
+    </style>
+    <script>
+        const PLAN_INFO = {
+            starter: { label: 'Starter', amount: 199, css: 'starter' },
+            professional: { label: 'Professional', amount: 399, css: 'professional' },
+            enterprise: { label: 'Enterprise', amount: 799, css: 'enterprise' }
+        };
+        function qp(name){const u=new URLSearchParams(window.location.search);return u.get(name);}    
+        document.addEventListener('DOMContentLoaded', function() {
+            const planKey = (qp('plan')||'professional').toLowerCase();
+            const info = PLAN_INFO[planKey] || PLAN_INFO.professional;
+            document.getElementById('plan').value = planKey;
+            document.getElementById('planBadge').textContent = info.label + ' Plan';
+            document.getElementById('planBadge').classList.add(info.css);
+            document.getElementById('planPrice').textContent = `€${info.amount}/month`;
+            document.getElementById('planSummary').textContent = 'Billed monthly • Cancel anytime';
+            document.getElementById('plan').addEventListener('change', e => {
+                const p = PLAN_INFO[e.target.value];
+                document.getElementById('planBadge').textContent = p.label + ' Plan';
+                document.getElementById('planBadge').className = 'plan-badge ' + p.css;
+                document.getElementById('planPrice').textContent = `€${p.amount}/month`;
+            });
+            const form = document.getElementById('checkoutForm');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('payBtn');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing…';
+                btn.disabled = true;
+                try {
+                    const payload = {
+                        plan: document.getElementById('plan').value,
+                        name: document.getElementById('name').value.trim(),
+                        email: document.getElementById('email').value.trim(),
+                        company: document.getElementById('company').value.trim()
+                    };
+                    if (!payload.email) throw new Error('Email is required');
+                    if (!document.getElementById('agree').checked) throw new Error('Please accept terms');
+                    const resp = await fetch('/api/checkout', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                    });
+                    const data = await resp.json();
+                    if (!resp.ok) throw new Error(data.error || 'Checkout failed');
+                    window.location.href = data.url;
+                } catch (err) {
+                    alert('Payment setup failed: ' + (err.message || 'Please try again'));
+                } finally {
+                    btn.innerHTML = original; btn.disabled = false;
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container container-small py-5">
+        <div class="text-center text-white mb-4">
+            <h1 class="fw-bold">Checkout</h1>
+            <p class="opacity-75">Complete your details to proceed to secure Stripe payment</p>
+        </div>
+        <div class="card p-4 p-md-5 mx-auto">
+            <form id="checkoutForm">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Plan</label>
+                        <select id="plan" class="form-select">
+                            <option value="professional">Professional — €399/month</option>
+                            <option value="starter">Starter — €199/month</option>
+                            <option value="enterprise">Enterprise — €799/month</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end justify-content-between">
+                        <span id="planBadge" class="plan-badge professional">Professional Plan</span>
+                        <span id="planPrice" class="price">€399/month</span>
+                    </div>
+                </div>
+                <div class="mt-4 row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Full name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Jane Doe">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" id="email" class="form-control" placeholder="you@company.com" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="company" class="form-label">Company</label>
+                        <input type="text" id="company" class="form-control" placeholder="Your Company Ltd.">
+                    </div>
+                </div>
+                <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" value="1" id="agree">
+                    <label class="form-check-label" for="agree">
+                        I agree to the Terms of Service and Privacy Policy
+                    </label>
+                </div>
+                <div class="d-grid mt-4">
+                    <button id="payBtn" type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-lock me-2"></i>Proceed to Secure Payment
+                    </button>
+                </div>
+                <div class="text-center mt-3 text-muted" style="font-size: 0.9rem;">
+                    Your payment is processed by Stripe. We do not store card details.
+                </div>
+            </form>
+        </div>
+        <div class="text-center text-white mt-4">
+            <a href="/pricing.html" class="text-white text-decoration-underline">Back to Pricing</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
+
