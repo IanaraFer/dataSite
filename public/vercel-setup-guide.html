@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vercel Hosting Setup - AnalyticaCore AI</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
+        .container { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { color: #667eea; font-size: 2.5rem; margin-bottom: 10px; }
+        .step { background: #f8f9ff; border-left: 5px solid #667eea; padding: 25px; margin: 25px 0; border-radius: 0 10px 10px 0; }
+        .step h3 { color: #333; margin-bottom: 15px; font-size: 1.3rem; }
+        .highlight { background: #fff3cd; padding: 15px; border-radius: 8px; border: 1px solid #ffeaa7; margin: 15px 0; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        .warning { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .code { background: #f4f4f4; padding: 15px; border-radius: 5px; font-family: 'Courier New', monospace; border-left: 4px solid #667eea; margin: 10px 0; }
+        .btn { display: inline-block; padding: 15px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 8px; margin: 10px 5px; font-weight: bold; text-align: center; }
+        .btn:hover { background: #5a67d8; transform: translateY(-2px); }
+        .github-setup { background: #f6f8fa; border: 2px solid #24292e; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .domain-config { background: #e8f5e8; border: 2px solid #4caf50; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .deployment { background: #fff5f5; border: 2px solid #ff6b6b; padding: 20px; border-radius: 8px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Vercel Hosting Setup</h1>
+            <p>Deploy AnalyticaCore AI to the cloud in minutes</p>
+        </div>
+
+        <div class="step">
+            <h3>🎯 Why Vercel is Perfect for Your SaaS</h3>
+            <div class="success">
+                <strong>✅ Benefits for AnalyticaCore AI:</strong><br>
+                • FREE hosting for your project size<br>
+                • Automatic HTTPS/SSL certificates<br>
+                • Global CDN (fast worldwide)<br>
+                • Perfect for Python/FastAPI apps<br>
+                • Easy custom domain setup<br>
+                • Automatic deployments from GitHub<br>
+                • 99.9% uptime guarantee
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>📁 Step 1: Prepare Your Repository</h3>
+            <div class="github-setup">
+                <strong>🔧 First, let's prepare your project for Vercel:</strong><br><br>
+                
+                <strong>1. Create these files in your project root:</strong><br><br>
+                
+                <strong>📄 vercel.json (deployment configuration):</strong><br>
+                <div class="code">
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/main.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "website/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/main.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "website/$1"
+    }
+  ],
+  "env": {
+    "PYTHONPATH": "."
+  }
+}
+                </div>
+                
+                <strong>📄 requirements.txt (Python dependencies):</strong><br>
+                <div class="code">
+fastapi==0.104.1
+uvicorn==0.24.0
+stripe==7.8.0
+python-multipart==0.0.6
+pydantic[email]==2.5.0
+python-dotenv==1.0.0
+streamlit==1.28.1
+pandas==2.1.3
+plotly==5.17.0
+                </div>
+                
+                <strong>📄 runtime.txt (Python version):</strong><br>
+                <div class="code">
+python-3.11.6
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🔗 Step 2: Connect to Vercel</h3>
+            <div class="info">
+                <strong>🚀 Deployment Process:</strong><br><br>
+                
+                <strong>1. Sign up at Vercel:</strong><br>
+                • Go to <a href="https://vercel.com" target="_blank" rel="noopener">vercel.com</a><br>
+                • Click "Sign up" → "Continue with GitHub"<br>
+                • Authorize Vercel to access your repositories<br><br>
+                
+                <strong>2. Import your project:</strong><br>
+                • Click "New Project"<br>
+                • Select your "dataSite" repository<br>
+                • Click "Import"<br><br>
+                
+                <strong>3. Configure deployment:</strong><br>
+                • Project Name: <code>analyticacore-ai</code><br>
+                • Framework Preset: Other<br>
+                • Root Directory: <code>./</code><br>
+                • Build Command: (leave empty)<br>
+                • Output Directory: <code>website</code><br>
+                • Install Command: <code>pip install -r requirements.txt</code>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🌐 Step 3: Configure Custom Domain</h3>
+            <div class="domain-config">
+                <strong>🎯 Domain Setup Options:</strong><br><br>
+                
+                <strong>Option A: Use analyticacoreai.ie (when approved)</strong><br>
+                1. In Vercel dashboard, go to your project<br>
+                2. Click "Settings" → "Domains"<br>
+                3. Add domain: <code>analyticacoreai.ie</code><br>
+                4. Add domain: <code>www.analyticacoreai.ie</code><br>
+                5. Vercel will show you DNS records to add<br><br>
+                
+                <strong>Option B: Use free Vercel subdomain for now</strong><br>
+                • You'll get: <code>analyticacore-ai.vercel.app</code><br>
+                • Works immediately<br>
+                • Change to custom domain later<br><br>
+                
+                <strong>DNS Records for analyticacoreai.ie (when ready):</strong><br>
+                <div class="code">
+Type: CNAME
+Name: @
+Target: cname.vercel-dns.com
+
+Type: CNAME  
+Name: www
+Target: cname.vercel-dns.com
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🔧 Step 4: Environment Variables</h3>
+            <div class="warning">
+                <strong>🔐 Set up your production environment:</strong><br><br>
+                
+                <strong>In Vercel Dashboard:</strong><br>
+                1. Go to Project Settings → Environment Variables<br>
+                2. Add these variables:<br><br>
+                
+                <div class="code">
+STRIPE_PUBLISHABLE_KEY=pk_test_51RyYQACsG7kLS0L9...
+STRIPE_SECRET_KEY=sk_test_51RyYQACsG7kLS0L9...
+STRIPE_PRICE_STARTER=price_1RyYmsCsG7kLS0L9IukaQMDl
+STRIPE_PRICE_PROFESSIONAL=price_1RyYo0CsG7kLS0L9ewWXfqnf
+STRIPE_PRICE_ENTERPRISE=price_1RyYpmCsG7kLS0L9PEzBRHFE
+ENVIRONMENT=production
+DOMAIN=analyticacoreai.ie
+                </div>
+                
+                <strong>⚠️ Security Note:</strong><br>
+                • Never commit API keys to GitHub<br>
+                • Use Vercel environment variables<br>
+                • Different keys for production vs development
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🚀 Step 5: Deploy and Test</h3>
+            <div class="deployment">
+                <strong>📋 Deployment Checklist:</strong><br><br>
+                
+                <strong>1. First deployment:</strong><br>
+                • Vercel automatically builds your project<br>
+                • Check build logs for errors<br>
+                • Test your vercel.app URL<br><br>
+                
+                <strong>2. Test these features:</strong><br>
+                ✅ Homepage loads correctly<br>
+                ✅ Trial form submission works<br>
+                ✅ File upload functionality<br>
+                ✅ Payment system integration<br>
+                ✅ AI platform access<br><br>
+                
+                <strong>3. Monitor deployment:</strong><br>
+                • Check Vercel dashboard for errors<br>
+                • Test from different devices<br>
+                • Verify SSL certificate works<br>
+                • Check loading speed
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🔄 Step 6: Automatic Deployments</h3>
+            <div class="success">
+                <strong>🎯 Set up continuous deployment:</strong><br><br>
+                
+                <strong>✅ Every time you push to GitHub:</strong><br>
+                • Vercel automatically detects changes<br>
+                • Builds and deploys new version<br>
+                • Usually takes 1-3 minutes<br>
+                • Zero downtime deployments<br><br>
+                
+                <strong>🔧 Branch configuration:</strong><br>
+                • Production: <code>main</code> branch → analyticacoreai.ie<br>
+                • Preview: Other branches → preview URLs<br>
+                • Test changes safely before going live
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>📊 Step 7: Analytics & Monitoring</h3>
+            <div class="info">
+                <strong>📈 Built-in Vercel Analytics:</strong><br>
+                • Page views and visitor stats<br>
+                • Performance metrics<br>
+                • Geographic distribution<br>
+                • Core Web Vitals<br><br>
+                
+                <strong>🔍 Additional monitoring:</strong><br>
+                • Set up Google Analytics<br>
+                • Monitor payment conversions<br>
+                • Track trial signup rates<br>
+                • Customer usage analytics
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>📞 Next Steps</h3>
+            <div class="highlight">
+                <strong>🚀 Tell me when you've:</strong><br>
+                1. Created your Vercel account<br>
+                2. Connected your GitHub repository<br>
+                3. Got your .vercel.app URL working<br>
+                4. Need help with domain configuration<br>
+                5. Want to test the payment system<br><br>
+                
+                <strong>I can help you:</strong><br>
+                ✅ Create the required configuration files<br>
+                ✅ Debug any deployment issues<br>
+                ✅ Set up custom domain when .ie is approved<br>
+                ✅ Configure production environment<br>
+                ✅ Test all platform features<br>
+                ✅ Optimize performance and security
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="https://vercel.com/signup" class="btn" target="_blank" rel="noopener">🚀 Sign Up for Vercel</a>
+            <a href="https://github.com" class="btn" target="_blank" rel="noopener">📁 Push to GitHub</a>
+        </div>
+    </div>
+
+    <script>
+        console.log('🚀 Vercel hosting setup guide loaded');
+        console.log('📋 Next: Create vercel.json and requirements.txt');
+        console.log('🌐 Domain: analyticacoreai.ie (pending) + .vercel.app (immediate)');
+    </script>
+</body>
+</html>

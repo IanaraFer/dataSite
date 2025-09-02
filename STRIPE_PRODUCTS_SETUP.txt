@@ -1,0 +1,59 @@
+📋 **STRIPE PRODUCT SETUP CHECKLIST**
+
+🔗 **Go to Stripe Products:** https://dashboard.stripe.com/test/products
+
+## Step 1: Create Starter Plan
+1. Click **"+ Add product"**
+2. Fill in:
+   - **Name:** DataSight AI Starter
+   - **Description:** Perfect for small businesses - Up to 1,000 data points, 5 reports/month, Email support
+3. Click **"Add pricing"**
+4. Set:
+   - **Price:** 199.00
+   - **Currency:** EUR (Euro)
+   - **Billing period:** Monthly
+5. Click **"Save product"**
+6. **COPY THE PRICE ID** (starts with `price_`) - You'll need this!
+
+## Step 2: Create Professional Plan
+1. Click **"+ Add product"**
+2. Fill in:
+   - **Name:** DataSight AI Professional
+   - **Description:** For growing companies - Up to 10,000 data points, Unlimited reports, AI forecasting, Priority support
+3. Click **"Add pricing"**
+4. Set:
+   - **Price:** 399.00
+   - **Currency:** EUR (Euro)
+   - **Billing period:** Monthly
+5. Click **"Save product"**
+6. **COPY THE PRICE ID** (starts with `price_`) - You'll need this!
+
+## Step 3: Create Enterprise Plan
+1. Click **"+ Add product"**
+2. Fill in:
+   - **Name:** DataSight AI Enterprise
+   - **Description:** For large organizations - Unlimited data points, Custom AI models, API access, Dedicated support
+3. Click **"Add pricing"**
+4. Set:
+   - **Price:** 799.00
+   - **Currency:** EUR (Euro)
+   - **Billing period:** Monthly
+5. Click **"Save product"**
+6. **COPY THE PRICE ID** (starts with `price_`) - You'll need this!
+
+## Step 4: Update Your System
+After creating all products, give me the 3 Price IDs like this:
+
+```
+Starter Price ID: price_1234567890abcdef
+Professional Price ID: price_0987654321fedcba
+Enterprise Price ID: price_abcdef1234567890
+```
+
+## ✅ Current Status:
+- ✅ Stripe Account Created
+- ✅ API Keys Configured
+- ✅ Payment Page Ready
+- ⏳ **Need to create products and get Price IDs**
+
+🚀 **After this setup, customers can immediately start subscribing and paying!**

@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe - AnalyticaCore AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .subscription-container { max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .plan-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 16px; }
+        .submit-btn { width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">AnalyticaCore AI</a></div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="platform.html">Platform</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="subscription-container">
+        <div class="plan-header">
+            <h2 id="planName">Subscription Plan</h2>
+            <div class="price">€<span id="planPrice">199</span>/month</div>
+        </div>
+
+        <form id="subscriptionForm">
+            <div class="form-group">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="company">Company Name (Optional)</label>
+                <input type="text" id="company" name="company">
+            </div>
+            <div class="form-group">
+                <label for="address">Address *</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="city">City *</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Complete Subscription - €<span id="submitPrice">199</span>/month
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedPlan = urlParams.get('plan') || 'starter';
+        const plans = {
+            starter: { name: 'Starter Plan', price: 199 },
+            professional: { name: 'Professional Plan', price: 399 },
+            enterprise: { name: 'Enterprise Plan', price: 799 }
+        };
+        const plan = plans[selectedPlan];
+        if (plan) {
+            document.getElementById('planName').textContent = plan.name;
+            document.getElementById('planPrice').textContent = plan.price;
+            document.getElementById('submitPrice').textContent = plan.price;
+        }
+        document.getElementById('subscriptionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Subscription form submitted for ' + plan.name + ' - €' + plan.price + '/month. Payment integration coming soon!');
+        });
+    </script>
+</body>
+</html>
