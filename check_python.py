@@ -128,7 +128,7 @@ def main():
 echo ========================================
 echo DataSight AI - Python Installation Fix
 echo Company: AnalyticaCore AI
-echo Contact: founder@analyticacoreai.com
+echo Contact: analyticacoreai@outlook.com
 echo ========================================
 
 echo.
@@ -226,7 +226,7 @@ echo 1. venv\Scripts\activate
 echo 2. streamlit run app_test.py
 echo.
 echo 🌐 The application will open at: http://localhost:8501
-echo 📧 Support: founder@analyticacoreai.com
+echo 📧 Support: analyticacoreai@outlook.com
 echo.
 pause
 """

@@ -18,4 +18,4 @@ Would this week or next week work better for a brief call?
 Best regards,  
 [Your Name]  
 AnalyticaCore AI  
-founder@analyticacoreai.com
+analyticacoreai@outlook.com
