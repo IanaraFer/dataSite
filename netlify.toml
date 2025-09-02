@@ -4,9 +4,6 @@
 [build.environment]
   NODE_VERSION = "18"
 
-[context.production]
-  publish = "website"
-
 [[redirects]]
   from = "/*"
   to = "/index.html"
