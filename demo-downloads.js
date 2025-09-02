@@ -273,3 +273,136 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+// File upload handler
+function handleFileUpload(input) {
+    const files = input.files;
+    const status = document.getElementById('uploadStatus');
+    
+    if (files.length > 0) {
+        status.innerHTML = `<i class="fas fa-check-circle"></i> ${files.length} file(s) selected! Processing...`;
+        
+        // Simulate processing
+        setTimeout(() => {
+            status.innerHTML = `<i class="fas fa-sparkles"></i> Analysis complete! See results below.`;
+        }, 2000);
+    }
+}
+
+// Show download message
+function showDownloadMessage(type) {
+    const messages = {
+        'full-report': 'Full Business Analysis Report downloaded!',
+        'forecast': 'Forecast Data CSV downloaded!',
+        'insights': 'AI Insights Report downloaded!'
+    };
+    
+    // Create a temporary message
+    const msg = document.createElement('div');
+    msg.style.cssText = `
+        position: fixed; top: 20px; right: 20px; 
+        background: #4CAF50; color: white; 
+        padding: 15px 20px; border-radius: 5px; 
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        z-index: 1000; font-weight: bold;
+    `;
+    msg.innerHTML = `<i class="fas fa-check-circle"></i> ${messages[type]}`;
+    
+    document.body.appendChild(msg);
+    
+    setTimeout(() => {
+        document.body.removeChild(msg);
+    }, 3000);
+}
+
+
+// Enhanced download function with proper file types
+function downloadReportEnhanced(type) {
+    let content, filename, mimeType;
+
+    if (type === 'full-report') {
+        content = generateFullReport();
+        filename = 'AnalyticaCore_Business_Analysis_Report.txt';
+        mimeType = 'text/plain';
+    } else if (type === 'forecast') {
+        content = generateForecastCSV();
+        filename = 'AnalyticaCore_Forecast_Data.csv';
+        mimeType = 'text/csv';
+    } else if (type === 'insights') {
+        content = generateInsights();
+        filename = 'AnalyticaCore_AI_Insights.json';
+        mimeType = 'application/json';
+    }
+
+    // Create proper blob with correct MIME type
+    const blob = new Blob([content], { type: mimeType });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+
+    // Show download message
+    showDownloadMessage(type);
+}
+
+// Generate proper CSV format for forecast data
+function generateForecastCSV() {
+    return `Month,Revenue_Forecast,Growth_Rate,Confidence_Level
+Jan 2025,€285000,12.5%,92%
+Feb 2025,€298000,14.2%,89%
+Mar 2025,€312000,16.8%,91%
+Apr 2025,€328000,18.3%,88%
+May 2025,€342000,19.7%,90%
+Jun 2025,€356000,21.2%,87%
+Jul 2025,€371000,22.8%,89%
+Aug 2025,€386000,24.1%,91%
+Sep 2025,€402000,25.6%,88%
+Oct 2025,€418000,27.2%,90%
+Nov 2025,€435000,28.8%,92%
+Dec 2025,€453000,30.4%,89%`;
+}
+
+// Generate JSON format for insights
+function generateInsightsJSON() {
+    const insights = {
+        "analysis_date": new Date().toISOString(),
+        "dataset": "E-commerce Business Data",
+        "total_transactions": 50000,
+        "key_insights": [
+            {
+                "category": "Revenue Optimization",
+                "insight": "Asia region shows 67% growth but only 18% market share",
+                "recommendation": "Increase marketing budget by €50K in Asia",
+                "potential_impact": "€300K additional revenue",
+                "confidence": 92
+            },
+            {
+                "category": "Risk Management",
+                "insight": "Electronics category has 15% higher return rate in Q2",
+                "recommendation": "Implement seasonal inventory adjustments",
+                "potential_impact": "€75K cost reduction annually",
+                "confidence": 88
+            },
+            {
+                "category": "Customer Retention",
+                "insight": "Book customers have highest LTV (€203) but lowest acquisition",
+                "recommendation": "Cross-sell books to Electronics customers",
+                "potential_impact": "12% revenue increase",
+                "confidence": 94
+            }
+        ],
+        "performance_metrics": {
+            "total_revenue": "€2,400,000",
+            "growth_rate": "18%",
+            "customer_base": 23847,
+            "average_order_value": "€48.50"
+        }
+    };
+    
+    return JSON.stringify(insights, null, 2);
+}
+

@@ -47,24 +47,7 @@
             <h1><i class="fas fa-chart-bar"></i> Business Dataset Analysis Demo</h1>
             <p><strong>Sample Analysis:</strong> E-commerce Sales Data - 50,000 transactions</p>
             <p><em>See how AnalyticaCore AI transforms raw business data into actionable insights</em></p>
-        </div>        <!-- File Upload Demo Section -->
-        <div class="chart-container">
-            <h3><i class="fas fa-upload"></i> Upload Your Business Data</h3>
-            <div style="border: 2px dashed #4CAF50; border-radius: 10px; padding: 30px; text-align: center; background: #f9f9f9; margin: 20px 0;">
-                <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #4CAF50; margin-bottom: 15px;"></i>
-                <h4 style="margin: 10px 0; color: #333;">Drag & Drop Your Files Here</h4>
-                <p style="color: #666; margin: 10px 0;">Supports CSV, Excel, JSON files up to 100MB</p>
-                <button class="cta-button" style="margin-top: 15px; background: #4CAF50;" onclick="document.getElementById('fileInput').click()">
-                    <i class="fas fa-folder-open"></i> Choose Files
-                </button>
-                <input type="file" id="fileInput" accept=".csv,.xlsx,.json" multiple style="display: none;" onchange="handleFileUpload(this)">
-                <div id="uploadStatus" style="margin-top: 15px; font-weight: bold; color: #4CAF50;"></div>
-            </div>
-            <p style="color: #666; font-style: italic; margin-top: 15px;">
-                <i class="fas fa-info-circle"></i> This is a demo - files are processed locally for privacy. Try uploading a CSV file to see the interface!
-            </p>
         </div>
-
 
         <!-- Dataset Preview -->
         <div class="chart-container">
@@ -285,15 +268,15 @@ TXN_005,2024-08-15,CUST_5672,Books,24.99,3,Online,North America
             <h3><i class="fas fa-download"></i> Download Demo Reports</h3>
             <p style="margin-bottom: 30px; color: #666;">Get these sample reports to see the depth of analysis AnalyticaCore AI provides</p>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                <button class="cta-button" onclick="downloadReportEnhanced('full-report')" style="display: block; width: 100%;">
+                <button class="cta-button" onclick="downloadReport('full-report')" style="display: block; width: 100%;">
                     <i class="fas fa-file-pdf"></i> Full Analysis Report
                     <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Complete 15-page business analysis</div>
                 </button>
-                <button class="cta-button" onclick="downloadReportEnhanced('forecast')" style="display: block; width: 100%;">
+                <button class="cta-button" onclick="downloadReport('forecast')" style="display: block; width: 100%;">
                     <i class="fas fa-chart-line"></i> Forecast Data (CSV)
                     <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">6-month revenue predictions</div>
                 </button>
-                <button class="cta-button" onclick="downloadReportEnhanced('insights')" style="display: block; width: 100%;">
+                <button class="cta-button" onclick="downloadReport('insights')" style="display: block; width: 100%;">
                     <i class="fas fa-lightbulb"></i> AI Insights Report
                     <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Actionable recommendations</div>
                 </button>
@@ -346,5 +329,4 @@ TXN_005,2024-08-15,CUST_5672,Books,24.99,3,Online,North America
     </script>
 <script src="demo-downloads.js"></script></body>
 </html>
-
 
