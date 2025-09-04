@@ -1,20 +1,234 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscribe - AnalyticaCore AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
-        .subscription-container { max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .plan-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
-        .form-group input { width: 100%; padding: 12px; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 16px; }
-        .submit-btn { width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+        
+        .subscription-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .plan-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .plan-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        .subscription-form {
+            padding: 40px 30px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .config-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 30px auto;
+            max-width: 500px;
+            font-size: 14px;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .nav-logo a {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            .subscription-container {
+                margin: 20px;
+                max-width: none;
+            }
+            
+            .plan-header {
+                padding: 25px 20px;
+            }
+            
+            .subscription-form {
+                padding: 30px 20px 20px;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-menu {
+                gap: 20px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!--
+    IMPORTANT: For the full subscription and payment flow to work,
+    ensure the backend .env file is configured with:
+    - STRIPE_SECRET_KEY: Your Stripe secret key
+    - STRIPE_PRICE_STARTER: Stripe price ID for starter plan
+    - STRIPE_PRICE_PROFESSIONAL: Stripe price ID for professional plan  
+    - STRIPE_PRICE_ENTERPRISE: Stripe price ID for enterprise plan
+    - SITE_URL: Your website URL for success/cancel redirects
+    
+    Also configure SendGrid for email notifications if needed.
+    -->
+    
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo"><a href="index.html">AnalyticaCore AI</a></div>
@@ -28,58 +242,146 @@
 
     <div class="subscription-container">
         <div class="plan-header">
-            <h2 id="planName">Subscription Plan</h2>
-            <div class="price">€<span id="planPrice">199</span>/month</div>
+            <h2 id="planName">Starter Plan</h2>
+            <div class="price" style="font-size: 2.5rem; font-weight: 700; margin-top: 10px;">
+                €<span id="planPrice">199</span><small style="font-size: 1rem; opacity: 0.8;">/month</small>
+            </div>
         </div>
 
-        <form id="subscriptionForm">
-            <div class="form-group">
-                <label for="fullName">Full Name *</label>
-                <input type="text" id="fullName" name="fullName" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address *</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number *</label>
-                <input type="tel" id="phone" name="phone" required>
-            </div>
-            <div class="form-group">
-                <label for="company">Company Name (Optional)</label>
-                <input type="text" id="company" name="company">
-            </div>
-            <div class="form-group">
-                <label for="address">Address *</label>
-                <input type="text" id="address" name="address" required>
-            </div>
-            <div class="form-group">
-                <label for="city">City *</label>
-                <input type="text" id="city" name="city" required>
-            </div>
-            <button type="submit" class="submit-btn" id="submitBtn">
-                Complete Subscription - €<span id="submitPrice">199</span>/month
-            </button>
-        </form>
+        <div class="subscription-form">
+            <form id="subscriptionForm">
+                <div class="form-group">
+                    <label for="fullName">
+                        <i class="fas fa-user" style="margin-right: 8px; color: #667eea;"></i>
+                        Full Name *
+                    </label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope" style="margin-right: 8px; color: #667eea;"></i>
+                        Email Address *
+                    </label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">
+                        <i class="fas fa-building" style="margin-right: 8px; color: #667eea;"></i>
+                        Company Name (Optional)
+                    </label>
+                    <input type="text" id="company" name="company" placeholder="Enter your company name">
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="loading-spinner" id="loadingSpinner"></span>
+                    <span id="submitText">Complete Subscription - €<span id="submitPrice">199</span>/month</span>
+                </button>
+                
+                <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="config-note">
+        <i class="fas fa-info-circle" style="margin-right: 8px;"></i>
+        <strong>Note:</strong> For the payment flow to work completely, ensure your backend .env file is configured with Stripe keys and SendGrid credentials.
     </div>
 
     <script>
+        // Get plan from URL parameter, default to 'starter'
         const urlParams = new URLSearchParams(window.location.search);
         const selectedPlan = urlParams.get('plan') || 'starter';
+        
+        // Plan configuration matching the backend
         const plans = {
             starter: { name: 'Starter Plan', price: 199 },
             professional: { name: 'Professional Plan', price: 399 },
             enterprise: { name: 'Enterprise Plan', price: 799 }
         };
-        const plan = plans[selectedPlan];
-        if (plan) {
-            document.getElementById('planName').textContent = plan.name;
-            document.getElementById('planPrice').textContent = plan.price;
-            document.getElementById('submitPrice').textContent = plan.price;
-        }
-        document.getElementById('subscriptionForm').addEventListener('submit', function(e) {
+        
+        // Update UI with selected plan
+        const plan = plans[selectedPlan] || plans.starter;
+        document.getElementById('planName').textContent = plan.name;
+        document.getElementById('planPrice').textContent = plan.price;
+        document.getElementById('submitPrice').textContent = plan.price;
+        
+        // Form submission handler
+        document.getElementById('subscriptionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            alert('Subscription form submitted for ' + plan.name + ' - €' + plan.price + '/month. Payment integration coming soon!');
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Get form data
+            const formData = {
+                plan: selectedPlan,
+                name: document.getElementById('fullName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                company: document.getElementById('company').value.trim()
+            };
+            
+            // Validate required fields
+            if (!formData.name || !formData.email) {
+                showError('Please fill in all required fields.');
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            loadingSpinner.style.display = 'inline-block';
+            submitText.textContent = 'Processing...';
+            errorMessage.style.display = 'none';
+            
+            try {
+                // Call Netlify function for checkout
+                const response = await fetch('/.netlify/functions/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.url) {
+                    // Success - redirect to Stripe checkout
+                    window.location.href = result.url;
+                } else {
+                    // Error from backend
+                    throw new Error(result.error || 'Failed to create checkout session');
+                }
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                showError(error.message || 'Payment processing failed. Please try again.');
+                
+                // Reset button state
+                submitBtn.disabled = false;
+                loadingSpinner.style.display = 'none';
+                submitText.innerHTML = `Complete Subscription - €<span id="submitPrice">${plan.price}</span>/month`;
+            }
+        });
+        
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        // Auto-hide any existing error when user starts typing
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                const errorMessage = document.getElementById('errorMessage');
+                if (errorMessage.style.display !== 'none') {
+                    errorMessage.style.display = 'none';
+                }
+            });
         });
     </script>
 </body>
