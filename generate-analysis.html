@@ -68,6 +68,21 @@
                     </select>
                 </div>
             </div>
+
+            <!-- Dataset Upload Section -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Upload Your Dataset (CSV or Excel)</label>
+                    <input type="file" id="datasetFile" class="form-control" accept=".csv,.xlsx,.xls">
+                    <small class="text-muted">Supported formats: CSV, Excel. Max file size: 20MB</small>
+                </div>
+            </div>
+            <div class="text-center mb-4">
+                <button onclick="handleDatasetUpload()" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-upload me-2"></i>Upload & Preview Dataset
+                </button>
+            </div>
+            <div id="datasetPreview" style="display:none;"></div>
             
             <div class="text-center mb-4">
                 <button onclick="generateAnalysis()" class="btn btn-primary-custom btn-lg">
