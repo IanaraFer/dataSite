@@ -1,8 +1,8 @@
 # DataSight AI Platform - Azure Container
 # Following Azure deployment best practices
 
-# Use Python 3.11 slim image
-FROM python:3.11-slim
+# Use Python 3.9 slim image
+FROM python:3.9-slim
 
 # Set working directory
 WORKDIR /app
