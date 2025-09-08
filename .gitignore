@@ -3,6 +3,7 @@
 *.xlsx
 *.xls
 *.json
+!package.json
 data/
 datasets/
 
