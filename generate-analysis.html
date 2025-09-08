@@ -137,8 +137,17 @@
                 </div>
                 
                 <div class="text-center mt-4">
-                    <button onclick="sendAnalysisEmail()" class="btn btn-primary-custom btn-lg">
+                    <button onclick="sendAnalysisEmail()" class="btn btn-primary-custom btn-lg me-2">
                         <i class="fas fa-envelope me-2"></i>Send Analysis to My Email
+                    </button>
+                    <button onclick="downloadReport()" class="btn btn-success btn-lg me-2">
+                        <i class="fas fa-download me-2"></i>Download Full Report
+                    </button>
+                    <button onclick="downloadInsights()" class="btn btn-info btn-lg me-2">
+                        <i class="fas fa-download me-2"></i>Download Insights
+                    </button>
+                    <button onclick="downloadForecast()" class="btn btn-warning btn-lg">
+                        <i class="fas fa-download me-2"></i>Download Forecast
                     </button>
                 </div>
             </div>
@@ -438,6 +447,53 @@ You'll receive your complete AI business health check with:
         }
         
         // Auto-load with saved data if available
+        // Download functions
+        function downloadReport() {
+            const company = document.getElementById('companyName').value;
+            const industry = document.getElementById('industry').value;
+            const overallScore = document.getElementById('overallScore').textContent;
+            const growthScore = document.getElementById('growthScore').textContent;
+            const efficiencyScore = document.getElementById('efficiencyScore').textContent;
+            const riskScore = document.getElementById('riskScore').textContent;
+            const keyInsights = document.getElementById('keyInsights').innerText;
+            const recommendations = document.getElementById('recommendations').innerText;
+            const opportunities = document.getElementById('opportunities').innerText;
+            const reportContent = `Business Analysis Report\n\nCompany: ${company}\nIndustry: ${industry}\n\nScores:\n- Overall: ${overallScore}\n- Growth: ${growthScore}\n- Efficiency: ${efficiencyScore}\n- Risk: ${riskScore}\n\nKey Insights:\n${keyInsights}\n\nRecommendations:\n${recommendations}\n\nGrowth Opportunities:\n${opportunities}`;
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${company}_Business_Analysis_Report.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadInsights() {
+            const company = document.getElementById('companyName').value;
+            const keyInsights = document.getElementById('keyInsights').innerText;
+            const insightsContent = `Business Insights for ${company}\n\n${keyInsights}`;
+            const blob = new Blob([insightsContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${company}_Insights.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadForecast() {
+            const company = document.getElementById('companyName').value;
+            const recommendations = document.getElementById('recommendations').innerText;
+            const opportunities = document.getElementById('opportunities').innerText;
+            const forecastContent = `Forecast & Recommendations for ${company}\n\nRecommendations:\n${recommendations}\n\nGrowth Opportunities:\n${opportunities}`;
+            const blob = new Blob([forecastContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${company}_Forecast.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
         window.addEventListener('load', function() {
             // Try to load saved lead data
             const leads = JSON.parse(localStorage.getItem('datasight_leads') || '[]');
