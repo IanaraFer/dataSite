@@ -13,6 +13,9 @@
         .analysis-section { background: #f8f9fa; border-left: 4px solid #007bff; padding: 20px; margin: 20px 0; border-radius: 5px; }
         .metric-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px; margin: 10px 0; text-align: center; }
         .recommendation { background: #e8f5e8; border: 1px solid #28a745; border-radius: 10px; padding: 15px; margin: 10px 0; }
+        #datasetPreview { display: none; }
+        #analysisResult { display: none; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -37,7 +40,7 @@
             <div class="row mb-4">
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Industry</label>
-                    <select id="industry" class="form-select">
+                    <select id="industry" class="form-select" title="Industry">
                         <option value="technology">Technology</option>
                         <option value="retail">Retail</option>
                         <option value="healthcare">Healthcare</option>
@@ -49,7 +52,7 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Revenue Range</label>
-                    <select id="revenue" class="form-select">
+                    <select id="revenue" class="form-select" title="Revenue Range">
                         <option value="under-500k">Under €500k</option>
                         <option value="500k-1m">€500k - €1M</option>
                         <option value="1m-5m">€1M - €5M</option>
@@ -59,7 +62,7 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Company Size</label>
-                    <select id="companySize" class="form-select">
+                    <select id="companySize" class="form-select" title="Company Size">
                         <option value="1-10">1-10 employees</option>
                         <option value="11-50">11-50 employees</option>
                         <option value="51-200">51-200 employees</option>
@@ -81,16 +84,16 @@
                 <button onclick="handleDatasetUpload()" class="btn btn-secondary btn-lg">
                     <i class="fas fa-upload me-2"></i>Upload & Preview Dataset
                 </button>
-            </div>
-            <div id="datasetPreview" style="display:none;"></div>
+            <div id="datasetPreview"></div>
+            <div id="datasetPreview"></div>
             
             <div class="text-center mb-4">
                 <button onclick="generateAnalysis()" class="btn btn-primary-custom btn-lg">
                     <i class="fas fa-robot me-2"></i>Generate My AI Business Analysis
                 </button>
             </div>
-            
-            <div id="analysisResult" style="display: none;">
+            <div id="analysisResult" class="hidden">
+            <div id="analysisResult" class="hidden">
                 <div class="analysis-section">
                     <h4><i class="fas fa-chart-bar me-2"></i>Business Health Score</h4>
                     <div class="row">
