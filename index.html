@@ -43,8 +43,8 @@
         /* Navigation */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0,0,0,0.1);
             padding: 1rem 0;
             transition: all 0.3s ease;
@@ -527,7 +527,7 @@
                     <div class="card p-4 shadow-sm">
                         <form id="subCalcForm">
                             <div class="mb-3">
-                                <label class="form-label">Business Size</label>
+                                <label class="form-label" for="businessSize">Business Size</label>
                                 <select class="form-select" id="businessSize" required>
                                     <option value="">Select...</option>
                                     <option value="small">Small (1-10 employees)</option>
@@ -536,7 +536,7 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Monthly Data Volume</label>
+                                <label class="form-label" for="dataVolume">Monthly Data Volume</label>
                                 <select class="form-select" id="dataVolume" required>
                                     <option value="">Select...</option>
                                     <option value="low">Up to 100k rows</option>
@@ -546,7 +546,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Analysis Needs</label>
-                                <select class="form-select" id="analysisNeeds" required>
+                                <select class="form-select" id="analysisNeeds" required title="Analysis Needs">
                                     <option value="">Select...</option>
                                     <option value="basic">Basic (Forecasting, Segmentation)</option>
                                     <option value="advanced">Advanced (Custom Dashboards, API)</option>

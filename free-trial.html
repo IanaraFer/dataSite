@@ -14,6 +14,10 @@
             --danger-color: #dc3545;
         }
 
+        .hidden-file-input {
+            display: none;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -89,6 +93,10 @@
             font-weight: bold;
             display: inline-block;
             margin-bottom: 20px;
+        }
+
+        .uploaded-file-name {
+            display: none;
         }
 
         .urgency-banner {
@@ -322,18 +330,18 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">First Name *</label>
-                                        <input type="text" class="form-control form-control-lg" id="firstName" name="firstName" required>
+                                        <input type="text" class="form-control form-control-lg" id="firstName" name="firstName" required placeholder="Enter your first name" title="First Name">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Last Name *</label>
-                                        <input type="text" class="form-control form-control-lg" id="lastName" name="lastName" required>
+                                        <input type="text" class="form-control form-control-lg" id="lastName" name="lastName" required title="Last Name" placeholder="Enter your last name">
                                     </div>
                                 </div>
                                 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Business Email *</label>
-                                        <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+                                        <input type="email" class="form-control form-control-lg" id="email" name="email" required title="Business Email" placeholder="Enter your business email">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Phone Number *</label>
@@ -348,7 +356,7 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Industry *</label>
-                                        <select class="form-select form-select-lg" id="industry" name="industry" required>
+                                        <select class="form-select form-select-lg" id="industry" name="industry" required title="Industry">
                                             <option value="">Select Industry</option>
                                             <option value="retail">Retail/E-commerce</option>
                                             <option value="restaurant">Restaurant/Food Service</option>
@@ -364,7 +372,7 @@
                                 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Approximate Annual Revenue *</label>
-                                    <select class="form-select form-select-lg" id="revenue" name="revenue" required>
+                                    <select class="form-select form-select-lg" id="revenue" name="revenue" required title="Approximate Annual Revenue">
                                         <option value="">Select Revenue Range</option>
                                         <option value="under-500k">Under €500K</option>
                                         <option value="500k-1m">€500K - €1M</option>
@@ -383,11 +391,11 @@
                                 <!-- Dataset Upload Section -->
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Upload Your Business Data (Optional)</label>
-                                    <div class="upload-area-small" onclick="document.getElementById('datasetFile').click()" style="border: 2px dashed #1f77b4; border-radius: 10px; padding: 2rem; text-align: center; background: rgba(31, 119, 180, 0.05); cursor: pointer; transition: all 0.3s ease;">
-                                        <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
-                                        <h6>Upload CSV, Excel, or Data File</h6>
-                                        <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
-                                        <input type="file" id="datasetFile" name="datasetFile" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="handleDatasetUpload(this)">
+                                        <input type="file" id="datasetFile" name="datasetFile" class="hidden-file-input" accept=".csv,.xlsx,.xls,.json" onchange="handleDatasetUpload(this)">
+                                        <div id="uploadedFileName" class="mt-2 text-success uploaded-file-name">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            <span id="fileName"></span>
+                                        </div>
                                         <div id="uploadedFileName" class="mt-2 text-success" style="display: none;">
                                             <i class="fas fa-check-circle me-1"></i>
                                             <span id="fileName"></span>

@@ -29,6 +29,7 @@
         .form-container { background: white; border-radius: 15px; padding: 30px; max-width: 600px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .btn-primary-custom { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 15px 30px; border-radius: 25px; font-weight: 600; width: 100%; }
         .upload-area { border: 2px dashed #1f77b4; border-radius: 10px; padding: 20px; text-align: center; background: rgba(31, 119, 180, 0.05); cursor: pointer; margin: 10px 0; }
+        #businessData { display: none; }
     </style>
 </head>
 <body>
@@ -43,22 +44,22 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">First Name *</label>
-                        <input type="text" class="form-control" name="firstName" required>
+                        <input type="text" class="form-control" name="firstName" required placeholder="Enter your first name" title="First Name">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Last Name *</label>
-                        <input type="text" class="form-control" name="lastName" required>
+                        <input type="text" class="form-control" name="lastName" required placeholder="Enter your last name" title="Last Name">
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <label class="form-label">Business Email *</label>
-                    <input type="email" class="form-control" name="email" required>
+                    <input type="email" class="form-control" name="email" required title="Business Email" placeholder="Enter your business email">
                 </div>
                 
                 <div class="mb-3">
                     <label class="form-label">Phone Number *</label>
-                    <input type="tel" class="form-control" name="phone" required>
+                    <input type="tel" class="form-control" name="phone" required title="Phone Number" placeholder="Enter your phone number">
                 </div>
                 
                 <div class="mb-3">
@@ -101,8 +102,8 @@
                     <div class="upload-area" onclick="document.getElementById('businessData').click()">
                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                         <h6>Upload CSV, Excel, or Data File</h6>
-                        <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
-                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
+                        <input type="file" id="businessData" name="businessData" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
+                        <input type="file" id="businessData" name="businessData" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
                         <div id="uploadedFile" class="mt-2 text-success" style="display: none;">
                             <i class="fas fa-check-circle me-1"></i>
                             <span id="fileName"></span>
