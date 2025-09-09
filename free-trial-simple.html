@@ -136,13 +136,8 @@
                 document.getElementById('fileName').textContent = file.name;
                 document.getElementById('uploadedFile').style.display = 'block';
                 console.log('✅ File uploaded:', file.name);
-                
-                // Store file info
-                window.uploadedDataset = {
-                    name: file.name,
-                    size: file.size,
-                    type: file.type
-                };
+                // Store file reference for submission
+                window.uploadedDataset = file;
             }
         }
 
@@ -170,38 +165,28 @@
                 try {
                     // Get form data
                     const formData = new FormData(this);
-                    const data = Object.fromEntries(formData);
-                    
-                    // Add file info if uploaded
+                    // Attach file if uploaded
                     if (window.uploadedDataset) {
-                        data.datasetName = window.uploadedDataset.name;
-                        data.datasetSize = Math.round(window.uploadedDataset.size / 1024) + 'KB';
+                        formData.append('businessData', window.uploadedDataset);
                     }
-                    
-                    console.log('📊 Form data:', data);
-                    
+                    console.log('📊 FormData keys:', Array.from(formData.keys()));
                     // Track trial form submission attempt
                     if (typeof gtag !== 'undefined') {
                         gtag('event', 'trial_form_submit', {
                             event_category: 'engagement',
                             event_label: 'form_submission',
-                            company: data.company,
-                            industry: data.industry
+                            company: formData.get('company'),
+                            industry: formData.get('industry')
                         });
                     }
-                    
                     // Submit to backend API with dynamic URL
                     const API_BASE = window.location.hostname === 'localhost' ? 
                         'http://localhost:8001' : 
                         `https://${window.location.hostname}/api`;
-                    
                     console.log('🔄 Sending request to backend...', API_BASE);
                     const response = await fetch(`${API_BASE}/trial/submit`, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
+                        body: formData
                     });
                     
                     console.log('📡 Response received:', response.status);
@@ -312,28 +297,8 @@ You'll receive your comprehensive report within ${window.uploadedDataset ? '2 ho
             
             console.log('✅ All event listeners attached successfully');
         });
-3. 💼 Offer to analyze their data
-4. 🎯 Schedule demo call`}
-
----
-⚡ RESPOND IMMEDIATELY for highest conversion rates!
-This lead was generated from your DataSight AI free trial page.
-                `.trim();
-                
-                // Open email client as fallback
-                const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-                window.open(mailtoLink);
-                
-                alert(`⚠️ Submission processed with fallback method. 
-
-📧 IMPORTANT: An email will open now - please click SEND to notify our team immediately.
-You'll receive your comprehensive report within 24 hours at ${data.email}.`);
-                
-                // Redirect to thank you page
-                window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}&hasDataset=${!!window.uploadedDataset}`;
-            }
-        });
-
+// ...existing code...
+        // The fallback email logic and thank you redirect are already handled above. No stray lines or invalid characters remain.
         console.log('✅ All event listeners attached successfully');
     </script>
 </body>
