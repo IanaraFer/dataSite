@@ -402,6 +402,192 @@
             </div>
         </div>
     </section>
+        <!-- One-Time Data Analysis Subscription Section -->
+        <section id="one-time-analysis" class="pricing">
+                <div class="container">
+                        <div class="row justify-content-center">
+                                <div class="col-lg-6 text-center">
+                                        <div class="card p-4 shadow-sm mb-4">
+                                                <h3 class="fw-bold mb-3">One-Time Data Analysis</h3>
+                                                <p class="text-muted mb-3">Get a complete, custom data analysis for a single project. No subscription required.</p>
+                                                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#oneTimeModal">
+                                                        Request One-Time Analysis
+                                                </button>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </section>
+
+        <!-- One-Time Analysis Modal -->
+        <div class="modal fade" id="oneTimeModal" tabindex="-1" aria-labelledby="oneTimeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="oneTimeForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="oneTimeModalLabel">Request One-Time Data Analysis</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" name="fullName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Company (optional)</label>
+                                <input type="text" class="form-control" name="company">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Upload Data File (CSV, PDF, DOC, XLSX, etc.)</label>
+                                <input type="file" class="form-control" name="dataFile" accept=".csv,.pdf,.doc,.docx,.xlsx,.xls,.json,.txt" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Select Analysis Types</label>
+                                <select class="form-select" name="analysisTypes" multiple required>
+                                    <option value="business-overview">Business Overview</option>
+                                    <option value="revenue-forecasting">Revenue Forecasting</option>
+                                    <option value="customer-segmentation">Customer Segmentation</option>
+                                    <option value="anomaly-detection">Anomaly Detection</option>
+                                    <option value="comparative-analysis">Comparative Analysis</option>
+                                    <option value="churn-prediction">Churn Prediction</option>
+                                    <option value="rfm-analysis">RFM Analysis</option>
+                                    <option value="custom-dashboard">Custom Dashboard</option>
+                                    <option value="api-integration">API Integration</option>
+                                    <option value="white-label-reporting">White-label Reporting</option>
+                                    <option value="other">Other (describe in message)</option>
+                                </select>
+                                <small class="text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple options.</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Additional Message (optional)</label>
+                                <textarea class="form-control" name="message" rows="3" placeholder="Describe your project or specific needs..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        // One-Time Analysis Form Submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const oneTimeForm = document.getElementById('oneTimeForm');
+            if (oneTimeForm) {
+                oneTimeForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(oneTimeForm);
+                    // Collect selected analysis types
+                    const selectedOptions = Array.from(oneTimeForm.querySelector('[name="analysisTypes"]').selectedOptions).map(opt => opt.value);
+                    formData.set('analysisTypes', selectedOptions.join(', '));
+                    // Show loading state
+                    const submitBtn = oneTimeForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Submitting...';
+                    submitBtn.disabled = true;
+                    // Send to backend (replace with your API endpoint)
+                    fetch('/api/one-time-analysis', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        if (response.ok) {
+                            alert('✅ Your request has been submitted! You will receive a quote by email. After payment, your analysis will be delivered.');
+                            var modal = bootstrap.Modal.getInstance(document.getElementById('oneTimeModal'));
+                            modal.hide();
+                            oneTimeForm.reset();
+                        } else {
+                            alert('❌ There was an error submitting your request. Please try again or contact support.');
+                        }
+                    }).catch(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        alert('❌ There was an error submitting your request. Please try again or contact support.');
+                    });
+                });
+            }
+        });
+    <!-- Subscription Calculator Section -->
+    <section id="calculator" class="pricing">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="display-5 fw-bold mb-3">Subscription Calculator</h2>
+                    <p class="lead text-muted">Find the best plan for your business in seconds.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card p-4 shadow-sm">
+                        <form id="subCalcForm">
+                            <div class="mb-3">
+                                <label class="form-label">Business Size</label>
+                                <select class="form-select" id="businessSize" required>
+                                    <option value="">Select...</option>
+                                    <option value="small">Small (1-10 employees)</option>
+                                    <option value="medium">Medium (11-100 employees)</option>
+                                    <option value="large">Large (100+ employees)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Monthly Data Volume</label>
+                                <select class="form-select" id="dataVolume" required>
+                                    <option value="">Select...</option>
+                                    <option value="low">Up to 100k rows</option>
+                                    <option value="medium">100k - 1M rows</option>
+                                    <option value="high">Over 1M rows</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Analysis Needs</label>
+                                <select class="form-select" id="analysisNeeds" required>
+                                    <option value="">Select...</option>
+                                    <option value="basic">Basic (Forecasting, Segmentation)</option>
+                                    <option value="advanced">Advanced (Custom Dashboards, API)</option>
+                                    <option value="enterprise">Enterprise (Custom AI, Unlimited Data)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Calculate Best Plan</button>
+                        </form>
+                        <div id="calcResult" class="mt-4" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        // Subscription Calculator Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('subCalcForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const size = document.getElementById('businessSize').value;
+                    const volume = document.getElementById('dataVolume').value;
+                    const needs = document.getElementById('analysisNeeds').value;
+                    let plan = '';
+                    let price = '';
+                    if (needs === 'enterprise' || size === 'large' || volume === 'high') {
+                        plan = 'Enterprise';
+                        price = '€799/month';
+                    } else if (needs === 'advanced' || size === 'medium' || volume === 'medium') {
+                        plan = 'Business';
+                        price = '€399/month';
+                    } else {
+                        plan = 'Professional';
+                        price = '€199/month';
+                    }
+                    const resultDiv = document.getElementById('calcResult');
+                    resultDiv.innerHTML = `<div class='alert alert-success'><strong>Recommended Plan:</strong> ${plan}<br><strong>Estimated Cost:</strong> ${price}</div>`;
+                    resultDiv.style.display = 'block';
+                });
+            }
+        });
 
     <!-- Stats Section -->
     <section class="stats">
