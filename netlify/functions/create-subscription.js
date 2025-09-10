@@ -138,7 +138,7 @@ async function sendConfirmationEmails(customer, subscription, plan, customerData
     // Email to customer
     const customerEmail = {
       to: customer.email,
-      from: 'billing@analyticacoreai.ie',
+  from: 'information@analyticacoreai.ie',
       subject: 'Welcome to AnalyticaCore AI - Subscription Confirmed!',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -173,8 +173,8 @@ async function sendConfirmationEmails(customer, subscription, plan, customerData
 
     // Email to admin
     const adminEmail = {
-      to: 'billing@analyticacoreai.ie',
-      from: 'noreply@analyticacoreai.ie',
+  to: 'information@analyticacoreai.ie',
+  from: 'information@analyticacoreai.ie',
       subject: `New Subscription: ${plan.name} - ${customer.email}`,
       html: `
         <h2>New Subscription Created</h2>

@@ -1119,7 +1119,7 @@ This lead was generated from your DataSight AI platform.
         
         # In production, use Azure Communication Services:
         # await send_email_via_azure_communication_services(
-        #     to="datasightai.founders@gmail.com",
+        #     to="information@analyticacoreai.ie",
         #     subject=subject,
         #     body=email_body
         # )
@@ -1184,7 +1184,7 @@ Thank you for choosing DataSight AI for your business analytics needs!
 🔒 Your data is secure and GDPR compliant
 
 ❓ Questions? 
-📧 Email: datasightai.founders@gmail.com
+📧 Email: information@analyticacoreai.ie
 📞 Phone: +353 874502058
 
 Best regards,

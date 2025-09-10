@@ -33,7 +33,7 @@ class SystemDiagnostics:
     def __init__(self):
         """Initialize diagnostics with proper error handling"""
         self.company_name = "AnalyticaCore AI"
-        self.contact_email = "founder@analyticacoreai.com"
+    self.contact_email = "information@analyticacoreai.ie"
         self.platform_name = "DataSight AI"
         
     def check_python_environment(self) -> dict:
@@ -120,7 +120,7 @@ def render_header():
             Testing AI-Powered Company Data Analysis Platform
         </p>
         <p style="color: white; margin: 0; text-align: center; font-size: 0.9rem;">
-            📧 Contact: founder@analyticacoreai.com | 🏢 AnalyticaCore AI
+            📧 Contact: information@analyticacoreai.ie | 🏢 AnalyticaCore AI
         </p>
     </div>
     """, unsafe_allow_html=True)

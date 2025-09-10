@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
     // Email to admin
     const adminEmail = {
   to: 'analyticacoreai@outlook.com',
-      from: 'noreply@analyticacoreai.ie',
+  from: 'information@analyticacoreai.ie',
       subject: 'New Contact Form Submission',
       html: 
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -80,7 +80,7 @@ exports.handler = async (event, context) => {
     // Confirmation email to user
     const userEmail = {
       to: email,
-      from: 'noreply@analyticacoreai.ie',
+  from: 'information@analyticacoreai.ie',
       subject: 'Thank you for contacting AnalyticaCore AI',
       html: 
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
