@@ -28,7 +28,7 @@ class DataSightInstaller:
         """Initialize installer with comprehensive package list"""
         self.company_name = "AnalyticaCore AI"
         self.platform_name = "DataSight AI"
-    self.contact_email = "analyticacoreai@outlook.com"
+    self.contact_email = "information@analyticacoreai.ie"
         
         # Core packages following project technology stack
         self.core_packages = {
@@ -415,10 +415,10 @@ def main() -> None:
         
     except KeyboardInterrupt:
         print(f"\n\n⚠️ Installation cancelled by user")
-    print(f"📧 Contact support if you need assistance: analyticacoreai@outlook.com")
+    print(f"📧 Contact support if you need assistance: information@analyticacoreai.ie")
     except Exception as e:
         print(f"\n❌ Critical installation error: {str(e)}")
-    print(f"📧 Contact support: analyticacoreai@outlook.com")
+    print(f"📧 Contact support: information@analyticacoreai.ie")
         logger.error(f"Critical installation error: {str(e)}")
 
 if __name__ == "__main__":

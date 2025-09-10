@@ -143,7 +143,7 @@
 Since Namecheap hosting didn't work, for email:
 
 ### Option 1: **Google Workspace** (€5/month)
-- **Professional email**: analyticacoreai@outlook.com
+- **Professional email**: information@analyticacoreai.ie
 - **Gmail interface**
 - **Calendar, Drive included**
 - **Setup**: https://workspace.google.com
@@ -168,7 +168,7 @@ Since Namecheap hosting didn't work, for email:
 3. **Domain**: Keep with Namecheap
 4. **Total cost**: €0-1/month instead of €10+/month
 
-**Result**: analyticacoreai.com fully working with analyticacoreai@outlook.com email!
+**Result**: analyticacoreai.com fully working with information@analyticacoreai.ie email!
 
 ---
 

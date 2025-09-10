@@ -48,7 +48,7 @@ Go to your project settings and add these environment variables:
 
 #### Required SendGrid Variables:
 - `SENDGRID_API_KEY` = `SG.your_actual_sendgrid_api_key`
-- `FROM_EMAIL` = `contact@analyticacoreai.ie`
+- `FROM_EMAIL` = `information@analyticacoreai.ie`
 - `FROM_NAME` = `AnalyticaCore AI`
 
 #### Optional Variables:

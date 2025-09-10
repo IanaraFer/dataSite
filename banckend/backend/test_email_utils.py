@@ -7,10 +7,10 @@ def test_send_payment_email():
     subject = "Test Payment Confirmation"
     body = "This is a test email for payment confirmation."
     recipient_email = "your_test_email@example.com"  # Change to your email for testing
-    admin_email = "analyticacoreai@outlook.com"
+    admin_email = "information@analyticacoreai.ie"
     smtp_server = "smtp.office365.com"
     smtp_port = 587
-    username = "analyticacoreai@outlook.com"
+    username = "information@analyticacoreai.ie"
     password = "Maiaemolly22"
 
     print("Attempting to send payment confirmation email...")

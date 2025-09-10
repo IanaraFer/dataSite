@@ -5,9 +5,9 @@ from email.mime.multipart import MIMEMultipart
 # --- SMTP CONFIGURATION (Outlook) ---
 SMTP_SERVER = "smtp.office365.com"  # Outlook/Office365 SMTP server
 SMTP_PORT = 587  # TLS port for Outlook
-SMTP_USERNAME = "analyticacoreai@outlook.com"  # Your Outlook email address
+SMTP_USERNAME = "information@analyticacoreai.ie"  # Your Outlook email address
 SMTP_PASSWORD = "YOUR_EMAIL_PASSWORD"  # Set this securely, e.g., with environment variables
-FROM_EMAIL = "analyticacoreai@outlook.com"
+FROM_EMAIL = "information@analyticacoreai.ie"
 
 def send_confirmation_email(to_email: str, customer_id: str):
     subject = "Your Analytica Core AI Trial Submission"
@@ -17,7 +17,7 @@ def send_confirmation_email(to_email: str, customer_id: str):
     Thank you for trying Analytica Core AI! Your trial request (ID: {customer_id}) has been received.
     Our AI is processing your data and you will receive your insights soon.
 
-    If you have any questions, reply to this email: analyticacoreai@outlook.com
+    If you have any questions, reply to this email: information@analyticacoreai.ie
 
     Best regards,
     Analytica Core AI Team

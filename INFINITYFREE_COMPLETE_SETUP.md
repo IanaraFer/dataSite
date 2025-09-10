@@ -95,7 +95,7 @@ I've opened InfinityFree for you. Here's exactly what to do:
 ### ✅ After DNS Update (24-48 hours):
 - [ ] analyticacoreai.com shows your website
 - [ ] All forms work properly
-- [ ] analyticacoreai@outlook.com email configured
+- [ ] information@analyticacoreai.ie email configured
 - [ ] SSL certificate active
 
 ---
@@ -113,7 +113,7 @@ I've opened InfinityFree for you. Here's exactly what to do:
 - **analyticacoreai.com** → Your Analytica Core AI platform
 - **Professional domain** for customer trust
 - **SSL certificate** (https://)
-- **Email setup** ready for analyticacoreai@outlook.com
+- **Email setup** ready for information@analyticacoreai.ie
 
 ---
 
@@ -130,7 +130,7 @@ Once live, your customers will access:
 ### 📝 **Free Trial**: analyticacoreai.com/free-trial-simple.html
 - Lead capture form
 - Dataset upload capability
-- Automatic email notifications to analyticacoreai@outlook.com
+- Automatic email notifications to information@analyticacoreai.ie
 
 ### 🔬 **Platform Demo**: analyticacoreai.com/platform.html
 - 16+ AI analysis types
@@ -164,7 +164,7 @@ Once live, your customers will access:
 2. **Test temporary URL** when files are uploaded
 3. **Wait for DNS** propagation (24-48 hours)
 4. **Test analyticacoreai.com** 
-5. **Set up email** (analyticacoreai@outlook.com)
+5. **Set up email** (information@analyticacoreai.ie)
 6. **Launch your business!** 🚀
 
 ---
@@ -189,7 +189,7 @@ Once live, your customers will access:
 - **Website files**: c:\Users\35387\Desktop\dataSite\website\
 - **Upload to**: public_html folder
 - **Domain**: analyticacoreai.com
-- **Email**: analyticacoreai@outlook.com
+- **Email**: information@analyticacoreai.ie
 - **Hosting**: 100% free forever
 
 **Your Analytica Core AI business launches today!** ✨

@@ -41,7 +41,7 @@ Quick setup with ProtonMail or Gmail:
 
 When `analyticacoreai.ie` is ready:
 1. Update SendGrid domain authentication
-2. Change environment variable: `FROM_EMAIL=contact@analyticacoreai.ie`
+2. Change environment variable: `FROM_EMAIL=information@analyticacoreai.ie`
 3. Customers won't notice the change!
 
 ## ✅ Test Email Sending

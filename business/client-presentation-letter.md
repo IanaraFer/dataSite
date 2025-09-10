@@ -106,7 +106,7 @@ I'd love to show you how AnalyticaCore AI can transform your business data into 
 
 **Ready to get started?**
 
-📧 **Email**: analyticacoreai@outlook.com  
+📧 **Email**: information@analyticacoreai.ie  
 🌐 **Platform**: analyticacoreai.com (launching analyticacoreai.ie soon)  
 📍 **Location**: Dublin, Ireland  
 
@@ -125,7 +125,7 @@ Best regards,
 **[Your Name]**  
 Founder & CEO  
 **AnalyticaCore AI**  
-📧 analyticacoreai@outlook.com  
+📧 information@analyticacoreai.ie  
 🧠 *"Making AI Analytics Accessible for Every Business"*
 
 ---

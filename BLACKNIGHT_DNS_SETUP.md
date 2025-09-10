@@ -94,7 +94,7 @@ TTL: 3600
 ### Step 2: Update Your Environment Variables
 ```env
 # Update your .env file
-SENDGRID_FROM_EMAIL=contact@analyticacoreai.ie
+SENDGRID_FROM_EMAIL=information@analyticacoreai.ie
 SENDGRID_FROM_NAME=AnalyticaCore AI
 DOMAIN_NAME=analyticacoreai.ie
 ```
@@ -116,7 +116,7 @@ After DNS propagates (usually within hours), you'll have:
 - **Professional**: Custom domain
 
 ### ✅ Professional Email
-- **From**: contact@analyticacoreai.ie
+- **From**: information@analyticacoreai.ie
 - **Domain authenticated**: Better deliverability
 - **Professional signatures**: Full branding
 

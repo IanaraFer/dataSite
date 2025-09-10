@@ -56,7 +56,7 @@ All your website files are prepared:
 ### ✅ Business Ready
 - **Domain**: analyticacoreai.com ✅
 - **Hosting**: Activating now ✅  
-- **Email**: analyticacoreai@outlook.com ✅
+- **Email**: information@analyticacoreai.ie ✅
 - **Platform**: Complete AI analytics suite ✅
 - **Branding**: Professional Analytica Core AI ✅
 

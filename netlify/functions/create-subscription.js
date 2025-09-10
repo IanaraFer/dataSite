@@ -161,7 +161,7 @@ async function sendConfirmationEmails(customer, subscription, plan, customerData
             <li>Access your dashboard at: <a href="https://analyticacoreai.netlify.app/platform.html">Dashboard</a></li>
             <li>Upload your data files for AI analysis</li>
             <li>Generate powerful business insights</li>
-            <li>Contact support if you need help: analyticacoreai@outlook.com</li>
+            <li>Contact support if you need help: information@analyticacoreai.ie</li>
           </ul>
           
           <p>You can manage your subscription anytime in your account dashboard.</p>

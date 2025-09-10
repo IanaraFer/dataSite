@@ -53,7 +53,7 @@ exports.handler = async (event, context) => {
 
     // Email to admin
     const adminEmail = {
-  to: 'analyticacoreai@outlook.com',
+  to: 'information@analyticacoreai.ie',
   from: 'information@analyticacoreai.ie',
       subject: 'New Contact Form Submission',
       html: 

@@ -17,9 +17,9 @@ DataSite Team
 """
     smtp_server = "smtp.office365.com"
     smtp_port = 587
-    username = "analyticacoreai@outlook.com"
+    username = "information@analyticacoreai.ie"
     password = "Maiaemolly22"
     recipient_email = payment_info.get('user_email')
-    admin_email = "analyticacoreai@outlook.com"
+    admin_email = "information@analyticacoreai.ie"
 
     send_payment_email(subject, body, recipient_email, admin_email, smtp_server, smtp_port, username, password)

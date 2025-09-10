@@ -27,7 +27,7 @@ Working Domain: https://data-site-zucu.vercel.app
 
 ### Option A: Use Vercel Subdomain (Immediate)
 
-Instead of `contact@analyticacoreai.ie`, use:
+Instead of `information@analyticacoreai.ie`, use:
 ```
 FROM_EMAIL=contact@data-site-zucu.vercel.app
 ```
@@ -82,7 +82,7 @@ GA_MEASUREMENT_ID=G-your_id_here
 
 ### Week 2-3:
 - ⏳ .ie domain verification completes
-- ✅ Switch to contact@analyticacoreai.ie
+- ✅ Switch to information@analyticacoreai.ie
 - ✅ Add proper DNS records
 
 ### Week 4:

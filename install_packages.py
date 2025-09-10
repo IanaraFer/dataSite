@@ -27,8 +27,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-    'Get Help': 'mailto:analyticacoreai@outlook.com',
-    'Report a bug': 'mailto:analyticacoreai@outlook.com',
+    'Get Help': 'mailto:information@analyticacoreai.ie',
+    'Report a bug': 'mailto:information@analyticacoreai.ie',
         'About': 'DataSight AI - AI-powered SME business analysis by AnalyticaCore AI'
     }
 )
@@ -43,7 +43,7 @@ class DataSightAISME:
         """Initialize DataSight AI with SME focus"""
         self.company_name = "AnalyticaCore AI"
         self.platform_name = "DataSight AI"
-    self.contact_email = "analyticacoreai@outlook.com"
+    self.contact_email = "information@analyticacoreai.ie"
         self.website = "https://analyticacoreai.com"
         
         # Initialize session state following Streamlit patterns
@@ -71,7 +71,7 @@ class DataSightAISME:
             </p>
             <div style="color: white; margin: 1rem 0; opacity: 0.9;">
                 <span style="margin: 0 1rem;">🏢 AnalyticaCore AI</span>
-                <span style="margin: 0 1rem;">📧 analyticacoreai@outlook.com</span>
+                <span style="margin: 0 1rem;">📧 information@analyticacoreai.ie</span>
                 <span style="margin: 0 1rem;">🌐 analyticacoreai.com</span>
             </div>
         </div>
@@ -664,7 +664,7 @@ def main() -> None:
     except Exception as e:
         logger.error(f"Critical application error: {str(e)}")
         st.error("Critical application error occurred. Please contact support.")
-    st.markdown("📧 **Emergency Contact:** analyticacoreai@outlook.com")
+    st.markdown("📧 **Emergency Contact:** information@analyticacoreai.ie")
 
 if __name__ == "__main__":
     main()

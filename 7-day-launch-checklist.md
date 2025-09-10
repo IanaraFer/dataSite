@@ -12,7 +12,7 @@ This checklist will help you implement all our customer acquisition strategies a
 - [ ] Upload `free-trial.html` to your hosting platform
 - [ ] Test all forms and links work correctly
 - [ ] Set up Google Analytics tracking
-- [ ] Connect contact forms to your email (analyticacoreai@outlook.com)
+- [ ] Connect contact forms to your email (information@analyticacoreai.ie)
 - [ ] Create basic thank-you pages
 
 ### ✅ Email Setup

@@ -28,7 +28,7 @@ ns4.blacknightdns.com
 
 ### Phase 3: Professional Email Setup
 - [ ] Configure SendGrid domain authentication  
-- [ ] Set up contact@analyticacoreai.ie
+- [ ] Set up information@analyticacoreai.ie
 - [ ] Test email delivery
 - [ ] Update all email templates
 
@@ -97,7 +97,7 @@ After DNS records are added:
 
 Within 2-4 hours you'll have:
 - ✅ **Website**: https://analyticacoreai.ie
-- ✅ **Professional Email**: contact@analyticacoreai.ie
+- ✅ **Professional Email**: information@analyticacoreai.ie
 - ✅ **SSL Certificate**: Automatic
 - ✅ **Global Performance**: CDN enabled
 - ✅ **Revenue Ready**: Payments working
