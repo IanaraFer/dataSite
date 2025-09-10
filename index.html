@@ -523,33 +523,6 @@
             </div>
         </div>
     </section>
-        // Subscription Calculator Logic
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('subCalcForm');
-            if (form) {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const size = document.getElementById('businessSize').value;
-                    const volume = document.getElementById('dataVolume').value;
-                    const needs = document.getElementById('analysisNeeds').value;
-                    let plan = '';
-                    let price = '';
-                    if (needs === 'enterprise' || size === 'large' || volume === 'high') {
-                        plan = 'Enterprise';
-                        price = '€799/month';
-                    } else if (needs === 'advanced' || size === 'medium' || volume === 'medium') {
-                        plan = 'Business';
-                        price = '€399/month';
-                    } else {
-                        plan = 'Professional';
-                        price = '€199/month';
-                    }
-                    const resultDiv = document.getElementById('calcResult');
-                    resultDiv.innerHTML = `<div class='alert alert-success'><strong>Recommended Plan:</strong> ${plan}<br><strong>Estimated Cost:</strong> ${price}</div>`;
-                    resultDiv.style.display = 'block';
-                });
-            }
-        });
 
     <!-- Stats Section -->
     <section class="stats">
