@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Data Analyzer - Server Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .status-card { background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .server-working { color: #28a745; }
+        .server-issue { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="status-card p-5">
+                    <h1 class="text-center text-primary mb-4">
+                        <i class="fas fa-server me-3"></i>AI Data Analyzer - Server Status
+                    </h1>
+                    
+                    <div class="alert alert-success">
+                        <h5><i class="fas fa-check-circle me-2"></i>Platform is Running!</h5>
+                        <p class="mb-0">Your AI Data Analyzer platform is accessible on multiple ports.</p>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card border-success">
+                                <div class="card-header bg-success text-white">
+                                    <h6 class="mb-0"><i class="fas fa-check me-2"></i>Working Servers</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2">
+                                            <span class="server-working">✅ Port 8001:</span> 
+                                            <a href="http://localhost:8001/platform.html" target="_blank">http://localhost:8001</a>
+                                        </li>
+                                        <li class="mb-2">
+                                            <span class="server-working">✅ Port 9001:</span> 
+                                            <a href="http://localhost:9001/platform.html" target="_blank">http://localhost:9001</a>
+                                        </li>
+                                        <li class="mb-2">
+                                            <span class="server-working">✅ Streamlit:</span> 
+                                            <a href="http://localhost:8502" target="_blank">http://localhost:8502</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card border-warning">
+                                <div class="card-header bg-warning text-dark">
+                                    <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Server Issues</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2">
+                                            <span class="server-issue">❌ Port 9000:</span> 
+                                            Wrong directory - files not found
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h5>🏠 Homepage</h5>
+                                <a href="http://localhost:8001/index.html" class="btn btn-primary btn-sm">Port 8001</a>
+                                <a href="http://localhost:9001/index.html" class="btn btn-outline-primary btn-sm">Port 9001</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h5>🚀 Platform</h5>
+                                <a href="http://localhost:8001/platform.html" class="btn btn-success btn-sm">Port 8001</a>
+                                <a href="http://localhost:9001/platform.html" class="btn btn-outline-success btn-sm">Port 9001</a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h5>🎯 Free Trial</h5>
+                                <a href="http://localhost:8001/free-trial.html" class="btn btn-warning btn-sm">Port 8001</a>
+                                <a href="http://localhost:9001/free-trial.html" class="btn btn-outline-warning btn-sm">Port 9001</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle me-2"></i>Updated Pricing (No prices below €99)</h6>
+                        <ul class="mb-0">
+                            <li><strong>Professional:</strong> €199/month</li>
+                            <li><strong>Business:</strong> €399/month (Most Popular)</li>
+                            <li><strong>Enterprise:</strong> €799/month</li>
+                        </ul>
+                    </div>
+
+                    <div class="text-center">
+                        <h5>🔧 Fixed Issues:</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span class="badge bg-success">✅ File Upload Working</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="badge bg-success">✅ Pricing Updated</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="badge bg-success">✅ Platform Running</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh status every 30 seconds
+        setTimeout(() => {
+            location.reload();
+        }, 30000);
+        
+        // Test all links
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ AI Data Analyzer Status Page Loaded');
+            console.log('🚀 Platform URLs:');
+            console.log('   - http://localhost:8001/platform.html');
+            console.log('   - http://localhost:9001/platform.html');
+            console.log('   - http://localhost:8502 (Streamlit)');
+        });
+    </script>
+</body>
+</html>

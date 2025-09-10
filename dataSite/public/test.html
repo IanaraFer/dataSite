@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Platform Status Check</title>
+</head>
+<body>
+    <h1>✅ AI Data Analyzer Platform is Running!</h1>
+    <p>If you can see this page, your web server is working correctly.</p>
+    
+    <h2>Available Pages:</h2>
+    <ul>
+        <li><a href="platform.html">Main Platform (Fixed Upload)</a></li>
+        <li><a href="index.html">Homepage</a></li>
+        <li><a href="free-trial.html">Free Trial</a></li>
+        <li><a href="diagnostic.html">Diagnostic Test</a></li>
+        <li><a href="critical-fix.html">Critical Fix Tool</a></li>
+    </ul>
+    
+    <h2>Alternative Access:</h2>
+    <p><strong>Streamlit App:</strong> <a href="http://localhost:8502" target="_blank">http://localhost:8502</a></p>
+    
+    <script>
+        // Auto-redirect to platform after 3 seconds
+        setTimeout(() => {
+            window.location.href = 'platform.html';
+        }, 3000);
+        
+        console.log('✅ Web server is running correctly!');
+    </script>
+</body>
+</html>

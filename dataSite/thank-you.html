@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - AnalyticaCore AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+      
+      // Track trial signup conversion
+      gtag('event', 'trial_start', {
+        event_category: 'engagement',
+        event_label: 'free_trial_completed'
+      });
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .thank-you-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 3rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 2rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .timeline-icon {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="thank-you-card">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        
+        <h1 class="h2 mb-3">Thank You!</h1>
+        <h3 class="text-muted mb-4">Your Free AI Business Health Check is Being Generated</h3>
+        
+        <div class="alert alert-success border-0 mb-4">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Success!</strong> We've received your information and started analyzing your business profile.
+        </div>
+
+        <div class="mb-4">
+            <h5 class="mb-3">What Happens Next:</h5>
+            
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>
+                    <strong>AI Analysis (5-10 minutes)</strong><br>
+                    <small class="text-muted">Our AI is preparing your personalized business insights</small>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                    <strong>Email Delivery (Within 15 minutes)</strong><br>
+                    <small class="text-muted">Complete report sent to your email address</small>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div>
+                    <strong>Optional Strategy Call (Next 24 hours)</strong><br>
+                    <small class="text-muted">We'll reach out to discuss your results</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h6 class="text-muted mb-3">Your Report Will Include:</h6>
+            <div class="row text-start">
+                <div class="col-6">
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Revenue Forecast</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Customer Segments</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Growth Opportunities</li>
+                    </ul>
+                </div>
+                <div class="col-6">
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Action Plan</li>
+                        <li><i class="fas fa-check text-success me-2"></i>ROI Estimates</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Executive Summary</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <a href="platform.html" class="btn btn-primary-custom me-md-2">
+                <i class="fas fa-eye me-2"></i>Try Live Demo
+            </a>
+            <a href="index.html" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+        </div>
+
+        <div class="mt-4 pt-3 border-top">
+            <p class="text-muted small mb-0">
+                <i class="fas fa-lock me-1"></i>Your data is secure and GDPR compliant<br>
+                Questions? Email us: <strong>datasightai.founders@gmail.com</strong><br>
+                Or call: <strong>+353 874502058</strong>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Extract form data from URL parameters if available
+        const urlParams = new URLSearchParams(window.location.search);
+        const firstName = urlParams.get('firstName');
+        const company = urlParams.get('company');
+        const hasDataset = urlParams.get('hasDataset') === 'true';
+        
+        if (firstName) {
+            document.querySelector('h1').textContent = `Thank You, ${firstName}!`;
+        }
+        
+        if (company) {
+            const titleText = hasDataset ? 
+                `Your ${company} Dataset is Being Analyzed by Our AI` :
+                `Your Free AI Business Health Check for ${company} is Being Generated`;
+            document.querySelector('h3').textContent = titleText;
+        }
+
+        // Update timeline based on whether dataset was uploaded
+        if (hasDataset) {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            // Update first timeline item for dataset analysis
+            timelineItems[0].querySelector('strong').textContent = 'Dataset Analysis (10-15 minutes)';
+            timelineItems[0].querySelector('small').textContent = 'Our AI is analyzing your uploaded data for personalized insights';
+            
+            // Update second timeline item
+            timelineItems[1].querySelector('strong').textContent = 'Custom Report Delivery (Within 2 hours)';
+            timelineItems[1].querySelector('small').textContent = 'Detailed analysis of YOUR data sent to your email';
+            
+            // Update third timeline item
+            timelineItems[2].querySelector('strong').textContent = 'Priority Strategy Call (Within 4 hours)';
+            timelineItems[2].querySelector('small').textContent = 'We\'ll call to discuss your specific data insights';
+            
+            // Add special notice for dataset uploads
+            const alertDiv = document.querySelector('.alert-success');
+            alertDiv.innerHTML = `
+                <i class="fas fa-chart-line me-2"></i>
+                <strong>Priority Processing!</strong> We've received your dataset and started analyzing your actual business data. 
+                You'll receive a comprehensive report within 2 hours.
+            `;
+        }
+
+        // Simulate progress for user experience
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 10;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(progressInterval);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

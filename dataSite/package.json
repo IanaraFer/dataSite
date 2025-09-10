@@ -1,0 +1,21 @@
+{
+  "name": "dataSite-functions",
+  "version": "1.0.0",
+  "description": "Netlify functions for dataSite platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "netlify dev"
+  },
+  "dependencies": {
+  "@netlify/functions": "^2.0.0",
+  "stripe": "^12.0.0",
+  "aws-sdk": "^2.1481.0",
+  "parse-multipart-data": "^1.0.4",
+  "csv-parse": "^5.4.1",
+  "xlsx": "^0.18.5",
+  "@sendgrid/mail": "^7.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
