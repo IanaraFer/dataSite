@@ -1,3 +1,32 @@
+@app.route("/api/payment/subscribe", methods=["POST"])
+def payment_subscribe():
+    try:
+        data = request.get_json()
+        plan_name = data.get("plan", "Starter Plan")
+        price = data.get("price", 199)
+        email = data.get("email")
+        # Map plan name to Stripe price ID
+        price_ids = {
+            "Starter Plan": "price_1S2Ne8EPS0ev8tkiBKZzV4pS",      # €199
+            "Professional Plan": "price_1S2NfWEPS0ev8tkiwao10uJ0", # €399
+            "Enterprise Plan": "price_1S2NgSEPS0ev8tkiRuu9Xbtb"    # €799
+        }
+        price_id = price_ids.get(plan_name, "price_1S2Ne8EPS0ev8tkiBKZzV4pS")
+
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price": price_id,
+                "quantity": 1,
+            }],
+            mode="subscription",
+            customer_email=email,
+            success_url="https://analyticacoreai.netlify.app/success.html",
+            cancel_url="https://analyticacoreai.netlify.app/pricing.html",
+        )
+        return jsonify({"success": True, "checkout_url": checkout_session.url})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 400
 from flask import Flask, request, jsonify, render_template_string
 from flask_cors import CORS
 import stripe
