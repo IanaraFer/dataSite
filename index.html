@@ -475,44 +475,6 @@
                 </div>
             </div>
         </div>
-        // One-Time Analysis Form Submission
-        document.addEventListener('DOMContentLoaded', function() {
-            const oneTimeForm = document.getElementById('oneTimeForm');
-            if (oneTimeForm) {
-                oneTimeForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const formData = new FormData(oneTimeForm);
-                    // Collect selected analysis types
-                    const selectedOptions = Array.from(oneTimeForm.querySelector('[name="analysisTypes"]').selectedOptions).map(opt => opt.value);
-                    formData.set('analysisTypes', selectedOptions.join(', '));
-                    // Show loading state
-                    const submitBtn = oneTimeForm.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.textContent;
-                    submitBtn.textContent = 'Submitting...';
-                    submitBtn.disabled = true;
-                    // Send to backend (replace with your API endpoint)
-                    fetch('/api/one-time-analysis', {
-                        method: 'POST',
-                        body: formData
-                    }).then(response => {
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
-                        if (response.ok) {
-                            alert('✅ Your request has been submitted! You will receive a quote by email. After payment, your analysis will be delivered.');
-                            var modal = bootstrap.Modal.getInstance(document.getElementById('oneTimeModal'));
-                            modal.hide();
-                            oneTimeForm.reset();
-                        } else {
-                            alert('❌ There was an error submitting your request. Please try again or contact support.');
-                        }
-                    }).catch(() => {
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
-                        alert('❌ There was an error submitting your request. Please try again or contact support.');
-                    });
-                });
-            }
-        });
     <!-- Subscription Calculator Section -->
     <section id="calculator" class="pricing">
         <div class="container">
