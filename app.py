@@ -339,7 +339,7 @@ class AnalyticaCoreAI:
         self.logger = logging.getLogger(__name__)
         self.company_name = "AnalyticaCore AI"
         self.platform_name = "DataSight AI Engine"
-    self.contact_email = "information@analyticacoreai.ie"
+        self.contact_email = "information@analyticacoreai.ie"
         self.version = "2.0.0"
         self.pdf_generator = PDFReportGenerator()
         
