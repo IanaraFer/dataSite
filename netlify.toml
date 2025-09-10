@@ -1,0 +1,13 @@
+[build]
+  publish = "."
+  command = "echo Skipping build"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18.20.4"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
