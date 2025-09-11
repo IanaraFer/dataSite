@@ -93,8 +93,35 @@ def handle_upload():
 def handle_contact():
     try:
         data = request.get_json()
-        # Send email (simplified - in production use SendGrid)
-        return jsonify({"message": "Thank you! We'll contact you within 24 hours."})
+        name = data.get('name', 'No Name')
+        email = data.get('email', 'No Email')
+        message = data.get('message', '')
+
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+
+        smtp_server = "smtp.office365.com"
+        smtp_port = 587
+        username = "information@analyticacoreai.ie"
+        password = "Maiaemolly22"  # Replace with your actual password or use environment variable
+        recipient_email = "information@analyticacoreai.ie"
+
+        subject = f"New Analysis/Orcamento Request from {name}"
+        body = f"Name: {name}\nEmail: {email}\nMessage: {message}"
+
+        msg = MIMEMultipart()
+        msg['From'] = username
+        msg['To'] = recipient_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(username, password)
+            server.sendmail(username, recipient_email, msg.as_string())
+
+        return jsonify({"message": "Thank you! Your request has been sent and you will be contacted soon."})
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
