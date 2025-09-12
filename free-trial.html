@@ -383,11 +383,11 @@
                                 <!-- Dataset Upload Section -->
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Upload Your Business Data (Optional)</label>
-                                    <div class="upload-area-small" onclick="document.getElementById('datasetFile').click()" style="border: 2px dashed #1f77b4; border-radius: 10px; padding: 2rem; text-align: center; background: rgba(31, 119, 180, 0.05); cursor: pointer; transition: all 0.3s ease;">
+                                    <div class="upload-area-small" onclick="console.log('Upload area clicked'); document.getElementById('datasetFile').click()" style="border: 2px dashed #1f77b4; border-radius: 10px; padding: 2rem; text-align: center; background: rgba(31, 119, 180, 0.05); cursor: pointer; transition: all 0.3s ease;">
                                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                                         <h6>Upload CSV, Excel, or Data File</h6>
                                         <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
-                                        <input type="file" id="datasetFile" name="datasetFile" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="handleDatasetUpload(this)">
+                                        <input type="file" id="datasetFile" name="datasetFile" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="console.log('File input changed'); handleDatasetUpload(this)">
                                         <div id="uploadedFileName" class="mt-2 text-success" style="display: none;">
                                             <i class="fas fa-check-circle me-1"></i>
                                             <span id="fileName"></span>
@@ -504,10 +504,17 @@
 
         // Handle dataset file upload with client-side processing
         function handleDatasetUpload(input) {
+            console.log('🔍 handleDatasetUpload called');
+            console.log('📁 Input files:', input.files);
+            
             const file = input.files[0];
             if (file) {
+                console.log('📄 File selected:', file.name, file.size, file.type);
+                
                 // Validate file
                 const validation = validateFile(file);
+                console.log('✅ Validation result:', validation);
+                
                 if (!validation.valid) {
                     alert(validation.message);
                     input.value = '';
@@ -515,11 +522,25 @@
                 }
                 
                 // Show file info
-                document.getElementById('fileName').textContent = file.name;
-                document.getElementById('uploadedFileName').style.display = 'block';
+                const fileNameElement = document.getElementById('fileName');
+                const uploadedFileNameElement = document.getElementById('uploadedFileName');
+                
+                if (fileNameElement) {
+                    fileNameElement.textContent = file.name;
+                } else {
+                    console.error('❌ fileName element not found');
+                }
+                
+                if (uploadedFileNameElement) {
+                    uploadedFileNameElement.style.display = 'block';
+                } else {
+                    console.error('❌ uploadedFileName element not found');
+                }
                 
                 // Process file client-side
                 processFileClientSide(file);
+            } else {
+                console.log('❌ No file selected');
             }
         }
         

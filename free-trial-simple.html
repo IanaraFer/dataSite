@@ -98,11 +98,11 @@
                 
                 <div class="mb-4">
                     <label class="form-label">Upload Your Business Data (Optional)</label>
-                    <div class="upload-area" onclick="document.getElementById('businessData').click()">
+                    <div class="upload-area" onclick="console.log('Upload area clicked'); document.getElementById('businessData').click()">
                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                         <h6>Upload CSV, Excel, or Data File</h6>
                         <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
-                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
+                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="console.log('File input changed'); handleFileUpload(this)">
                         <div id="uploadedFile" class="mt-2 text-success" style="display: none;">
                             <i class="fas fa-check-circle me-1"></i>
                             <span id="fileName"></span>
@@ -131,22 +131,44 @@
 
         // File upload handler with client-side processing
         function handleFileUpload(input) {
+            console.log('🔍 handleFileUpload called');
+            console.log('📁 Input files:', input.files);
+            
             const file = input.files[0];
             if (file) {
+                console.log('📄 File selected:', file.name, file.size, file.type);
+                
                 // Validate file
                 const validation = validateFile(file);
+                console.log('✅ Validation result:', validation);
+                
                 if (!validation.valid) {
                     alert(validation.message);
                     input.value = '';
                     return;
                 }
                 
-                document.getElementById('fileName').textContent = file.name;
-                document.getElementById('uploadedFile').style.display = 'block';
+                const fileNameElement = document.getElementById('fileName');
+                const uploadedFileElement = document.getElementById('uploadedFile');
+                
+                if (fileNameElement) {
+                    fileNameElement.textContent = file.name;
+                } else {
+                    console.error('❌ fileName element not found');
+                }
+                
+                if (uploadedFileElement) {
+                    uploadedFileElement.style.display = 'block';
+                } else {
+                    console.error('❌ uploadedFile element not found');
+                }
+                
                 console.log('✅ File uploaded:', file.name);
                 
                 // Process file client-side
                 processFileClientSide(file);
+            } else {
+                console.log('❌ No file selected');
             }
         }
         
