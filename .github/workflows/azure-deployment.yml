@@ -31,7 +31,7 @@ jobs:
           output_location: "/website"
           skip_app_build: true
           skip_api_build: true
-          skip_deploy_on_missing_secrets: false
+          skip_deploy_on_missing_secrets: true
           
   # Deploy Infrastructure (if needed)
   infrastructure:
