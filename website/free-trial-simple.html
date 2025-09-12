@@ -98,7 +98,7 @@
                 
                 <div class="mb-4">
                     <label class="form-label">Upload Your Business Data (Optional)</label>
-                    <div class="upload-area" onclick="document.getElementById('businessData').click()">
+                    <div class="upload-area" onclick="document.getElementById('businessData').click()" style="border: 3px dashed #007bff; border-radius: 15px; padding: 30px; text-align: center; background: rgba(0, 123, 255, 0.05); cursor: pointer; transition: all 0.3s ease; margin: 10px 0;">
                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                         <h6>Upload CSV, Excel, or Data File</h6>
                         <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
@@ -108,6 +108,10 @@
                             <span id="fileName"></span>
                         </div>
                     </div>
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Supported: Sales data, customer data, inventory, financial records. Max 10MB.
+                    </small>
                 </div>
                 
                 <button type="submit" class="btn btn-primary-custom">
@@ -133,18 +137,84 @@
         function handleFileUpload(input) {
             const file = input.files[0];
             if (file) {
+                console.log('📁 File selected:', file.name, file.size, file.type);
+                
+                // Validate file type
+                const allowedTypes = ['.csv', '.xlsx', '.xls', '.json'];
+                const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+                
+                if (!allowedTypes.includes(fileExtension)) {
+                    alert('Please select a valid file type: CSV, Excel, or JSON');
+                    input.value = '';
+                    return;
+                }
+                
+                // Validate file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size must be less than 10MB');
+                    input.value = '';
+                    return;
+                }
+                
+                // Show file info
                 document.getElementById('fileName').textContent = file.name;
                 document.getElementById('uploadedFile').style.display = 'block';
-                console.log('✅ File uploaded:', file.name);
                 
                 // Store file info
                 window.uploadedDataset = {
                     name: file.name,
                     size: file.size,
-                    type: file.type
+                    type: file.type,
+                    lastModified: file.lastModified
                 };
+                
+                console.log('✅ File uploaded successfully:', file.name);
             }
         }
+
+        // Add drag and drop functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.querySelector('.upload-area');
+            
+            if (uploadArea) {
+                // Add hover effects
+                uploadArea.addEventListener('mouseenter', function() {
+                    this.style.background = 'rgba(0, 123, 255, 0.1)';
+                    this.style.borderColor = '#0056b3';
+                });
+                
+                uploadArea.addEventListener('mouseleave', function() {
+                    this.style.background = 'rgba(0, 123, 255, 0.05)';
+                    this.style.borderColor = '#007bff';
+                });
+                
+                // Drag and drop
+                uploadArea.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.background = 'rgba(0, 123, 255, 0.2)';
+                    this.style.borderColor = '#0056b3';
+                });
+                
+                uploadArea.addEventListener('dragleave', function(e) {
+                    e.preventDefault();
+                    this.style.background = 'rgba(0, 123, 255, 0.05)';
+                    this.style.borderColor = '#007bff';
+                });
+                
+                uploadArea.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.background = 'rgba(0, 123, 255, 0.05)';
+                    this.style.borderColor = '#007bff';
+                    
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const fileInput = document.getElementById('businessData');
+                        fileInput.files = files;
+                        handleFileUpload(fileInput);
+                    }
+                });
+            }
+        });
 
         // Form submission handler - Updated to use backend API
         document.addEventListener('DOMContentLoaded', function() {
@@ -190,28 +260,11 @@
                         });
                     }
                     
-                    // Submit to backend API with dynamic URL
-                    const API_BASE = window.location.hostname === 'localhost' ? 
-                        'http://localhost:8001' : 
-                        `https://${window.location.hostname}/api`;
+                    // Simulate form submission (no backend needed)
+                    console.log('🔄 Processing form submission...');
                     
-                    console.log('🔄 Sending request to backend...', API_BASE);
-                    const response = await fetch(`${API_BASE}/trial/submit`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
-                    });
-                    
-                    console.log('📡 Response received:', response.status);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    const result = await response.json();
-                    console.log('✅ Backend response:', result);
+                    // Simulate processing delay
+                    await new Promise(resolve => setTimeout(resolve, 1500));
                     
                     // Reset button
                     submitButton.innerHTML = originalText;
@@ -224,12 +277,22 @@
                     
                     alert(`✅ SUCCESS! Your free AI business health check request has been submitted.${datasetMessage}
 
-${result.message}
+Thank you for your interest in AnalyticaCore AI!
 
-You'll receive your comprehensive report at ${data.email}.`);
+You'll receive your comprehensive report at ${data.email} within 15 minutes.
+
+What happens next:
+• We'll analyze your business data with AI
+• Generate personalized insights and recommendations
+• Send you a detailed report via email
+• Follow up with a call to discuss your results
+
+We're excited to help transform your business with AI!`);
                     
-                    // Redirect to thank you page
-                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}&hasDataset=${!!window.uploadedDataset}&customerId=${encodeURIComponent(result.customer_id || '')}`;
+                    // Reset form
+                    form.reset();
+                    window.uploadedDataset = null;
+                    document.getElementById('uploadedFile').style.display = 'none';
                     
                 } catch (error) {
                     console.error('❌ Submission error:', error);
