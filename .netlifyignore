@@ -1,0 +1,69 @@
+# Ignore Python files since this is a static site
+*.py
+**/*.py
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Ignore development files
+*.log
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Ignore testing directories
+**/dataSite-testing/
+**/tests/
+**/test_*/
+**/selenium_tests/
+**/security_tests/
+**/performance/
+
+# Ignore API and backend files
+api/
+backend/
+banckend/
+deploy/
+infrastructure/
+infra/
+azure/
+
+# Ignore documentation and guides
+*.md
+!README.md
+
+# Ignore config files that aren't needed for static site
+requirements.txt
+requirements-vercel.txt
+Dockerfile*
+docker-compose.yml
+vercel.json
+azure.yaml
+azure-irish-config.yml
+staticwebapp.config.json
+
+# Ignore git and version control
+.git/
+.gitignore
+
+# Ignore node modules (if any)
+node_modules/
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore temporary files
+*.bak
+*.backup
+*.old
