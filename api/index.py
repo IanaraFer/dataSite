@@ -1,73 +1,66 @@
-from flask import Flask, request, jsonify, render_template_string
-from flask_cors import CORS
-import stripe
-import os
+from http.server import BaseHTTPRequestHandler
 import json
+import os
 
-app = Flask(__name__)
-CORS(app)
-
-# Stripe configuration
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "sk_test_51234567890")
-
-@app.route("/api/create-checkout-session", methods=["POST"])
-def create_checkout_session():
-    try:
-        data = request.get_json()
-        price_id = data.get("price_id")
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
         
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[{
-                "price": price_id,
-                "quantity": 1,
-            }],
-            mode="subscription",
-            success_url="https://analyticacoreai.netlify.app/success.html",
-            cancel_url="https://analyticacoreai.netlify.app/pricing.html",
-        )
-        return jsonify({"url": checkout_session.url})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
-
-@app.route("/api/upload", methods=["POST"])
-def handle_upload():
-    try:
-        if "file" not in request.files:
-            return jsonify({"error": "No file uploaded"}), 400
-        
-        file = request.files["file"]
-        if file.filename == "":
-            return jsonify({"error": "No file selected"}), 400
-        
-        # Process file (simplified demo)
-        analysis_result = {
-            "filename": file.filename,
-            "size": len(file.read()),
-            "analysis": {
-                "total_records": 1000,
-                "revenue_trend": "?? +15% growth",
-                "top_customer": "ABC Corp",
-                "insights": [
-                    "Revenue increased 15% this quarter",
-                    "Customer retention rate: 85%",
-                    "Top performing product: Analytics Pro"
-                ]
-            }
+        response = {
+            "message": "AnalyticaCore AI API",
+            "status": "healthy",
+            "version": "1.0.0"
         }
+        self.wfile.write(json.dumps(response).encode())
+        return
+
+    def do_POST(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
         
-        return jsonify(analysis_result)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        # Get the path
+        path = self.path
+        
+        if path == '/api/contact':
+            response = {
+                "message": "Thank you! We'll contact you within 24 hours.",
+                "status": "success"
+            }
+        elif path == '/api/upload':
+            response = {
+                "message": "File upload received",
+                "status": "success",
+                "analysis": {
+                    "total_records": 1000,
+                    "revenue_trend": "📈 +15% growth",
+                    "top_customer": "ABC Corp",
+                    "insights": [
+                        "Revenue increased 15% this quarter",
+                        "Customer retention rate: 85%",
+                        "Top performing product: Analytics Pro"
+                    ]
+                }
+            }
+        else:
+            response = {
+                "message": "API endpoint not found",
+                "status": "error"
+            }
+        
+        self.wfile.write(json.dumps(response).encode())
+        return
 
-@app.route("/api/contact", methods=["POST"])
-def handle_contact():
-    try:
-        data = request.get_json()
-        # Send email (simplified - in production use SendGrid)
-        return jsonify({"message": "Thank you! We'll contact you within 24 hours."})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
+        return

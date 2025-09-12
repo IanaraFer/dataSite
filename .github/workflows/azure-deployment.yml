@@ -1,21 +1,21 @@
-name: AnalyticaCore AI - Azure Deployment (DISABLED)
+name: AnalyticaCore AI - Azure Deployment
 
-# Disabled until Azure Static Web Apps API token is configured
-# on:
-#   push:
-#     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # Allow manual trigger
 
 env:
   AZURE_RESOURCE_GROUP: rg-analyticacore-prod
   AZURE_LOCATION: eastus2
 
 jobs:
-  # Deploy Static Web App - Disabled until Azure token is configured
+  # Deploy Static Web App
   static-web-app:
     runs-on: ubuntu-latest
-    if: false  # Disabled until AZURE_STATIC_WEB_APPS_API_TOKEN is configured
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,10 +28,10 @@ jobs:
           action: "upload"
           app_location: "/"
           api_location: ""
-          output_location: ""
+          output_location: "/website"
           skip_app_build: true
           skip_api_build: true
-          skip_deploy_on_missing_secrets: true
+          skip_deploy_on_missing_secrets: false
           
   # Deploy Infrastructure (if needed)
   infrastructure:
