@@ -317,12 +317,32 @@
                     const formData = new FormData(this);
                     const data = Object.fromEntries(formData);
                     
+                    // Check if file was actually selected
+                    const fileInput = document.getElementById('businessData');
+                    const actualFile = fileInput.files[0];
+                    
+                    console.log('📁 File input files:', fileInput.files);
+                    console.log('📄 Actual file:', actualFile);
+                    console.log('💾 Window uploaded dataset:', window.uploadedDataset);
+                    
                     // Add file info if uploaded
-                    if (window.uploadedDataset) {
-                        data.datasetName = window.uploadedDataset.name;
-                        data.datasetSize = Math.round(window.uploadedDataset.size / 1024) + 'KB';
-                        data.datasetType = window.uploadedDataset.type;
-                        data.datasetPreview = window.uploadedDataset.preview ? JSON.stringify(window.uploadedDataset.preview) : null;
+                    if (window.uploadedDataset || actualFile) {
+                        const dataset = window.uploadedDataset || {
+                            name: actualFile.name,
+                            size: actualFile.size,
+                            type: actualFile.type
+                        };
+                        
+                        data.datasetName = dataset.name;
+                        data.datasetSize = Math.round(dataset.size / 1024) + 'KB';
+                        data.datasetType = dataset.type;
+                        data.datasetPreview = dataset.preview ? JSON.stringify(dataset.preview) : null;
+                        
+                        // Also add the actual file to FormData if it exists
+                        if (actualFile) {
+                            formData.append('businessData', actualFile);
+                            console.log('✅ File added to FormData:', actualFile.name);
+                        }
                     }
                     
                     console.log('📊 Form data:', data);
