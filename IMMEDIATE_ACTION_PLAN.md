@@ -21,7 +21,7 @@ Your platform will work 100% with:
 
 ### Step 3: When .ie Domain is Ready (Later)
 - DNS records will activate automatically
-- Email will upgrade to contact@analyticacoreai.ie
+- Email will upgrade to information@analyticacoreai.ie
 - Zero downtime migration
 
 ## 🎯 Business Impact

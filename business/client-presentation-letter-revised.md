@@ -100,7 +100,7 @@ We combine local business understanding with world-class AI technology.
 
 **Ready to transform your business decisions?**
 
-📧 **Email**: analyticacoreai@outlook.com  
+📧 **Email**: information@analyticacoreai.ie  
 🌐 **Platform**: analyticacore.ie (launching soon)  
 📍 **Dublin, Ireland**
 
@@ -119,7 +119,7 @@ Best regards,
 **[Your Name]**  
 Founder & CEO  
 **AnalyticaCore AI**  
-📧 analyticacoreai@outlook.com  
+📧 information@analyticacoreai.ie  
 
 *"Professional AI Analytics That Actually Drive Business Growth"*
 

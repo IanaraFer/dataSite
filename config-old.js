@@ -9,7 +9,7 @@
         }
     },
     companyName: 'AnalyticaCore AI',
-    email: 'analyticacoreai@outlook.com',
+    email: 'information@analyticacoreai.ie',
     website: 'https://analyticacoreai.ie',
     pricing: {
         starter: { name: 'Starter', price: 199, priceId: 'price_starter_eur_199' },

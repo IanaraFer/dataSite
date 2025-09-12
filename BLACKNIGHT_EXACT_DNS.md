@@ -60,7 +60,7 @@ TTL: 3600
 
 Record Type: TXT  
 Name: _dmarc
-Value: v=DMARC1; p=none; rua=mailto:contact@analyticacoreai.ie
+Value: v=DMARC1; p=none; rua=mailto:information@analyticacoreai.ie
 TTL: 3600
 ```
 

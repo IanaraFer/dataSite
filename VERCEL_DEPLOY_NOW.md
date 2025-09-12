@@ -34,7 +34,7 @@ Click **"Environment Variables"** and add:
 STRIPE_SECRET_KEY=sk_test_your_stripe_key
 STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_key
 SENDGRID_API_KEY=SG.your_sendgrid_key
-SENDGRID_FROM_EMAIL=contact@analyticacoreai.ie
+SENDGRID_FROM_EMAIL=information@analyticacoreai.ie
 ```
 
 ### Step 5: Deploy

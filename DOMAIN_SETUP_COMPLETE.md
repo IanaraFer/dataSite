@@ -94,8 +94,8 @@ Since your domain is finalized, we can configure DNS immediately - no waiting pe
 ## 📧 EMAIL SETUP (Professional Domain Email)
 
 Once DNS propagates, you can set up:
-- ✅ **contact@analyticacoreai.ie** 
-- ✅ **analyticacoreai@outlook.com**
+- ✅ **information@analyticacoreai.ie** 
+- ✅ **information@analyticacoreai.ie**
 - ✅ **Professional email signatures**
 - ✅ **Domain-authenticated sending**
 
@@ -114,7 +114,7 @@ Once DNS propagates, you can set up:
 
 ## Contact & Subscription
 
-Email: <analyticacoreai@outlook.com>
+Email: <information@analyticacoreai.ie>
 Subscription: (coming soon)
 
 ---

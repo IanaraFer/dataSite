@@ -15,7 +15,7 @@
 2. **Generate an API key** in SendGrid Settings > API Keys
 3. **Set environment variables**:
    - `SENDGRID_API_KEY=SG.your_api_key_here`
-   - `FROM_EMAIL=contact@analyticacoreai.ie`
+   - `FROM_EMAIL=information@analyticacoreai.ie`
 
 ### Google Analytics
 1. **Create a Google Analytics 4 property** at https://analytics.google.com

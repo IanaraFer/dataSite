@@ -1,4 +1,4 @@
-# ✅ EMAIL UPDATE COMPLETE - analyticacoreai@outlook.com
+# ✅ EMAIL UPDATE COMPLETE - information@analyticacoreai.ie
 
 ## 🔄 UPDATED FILES
 
@@ -20,13 +20,13 @@ Your professional founder email has been updated across your entire Analytica Co
 
 ## 📧 NEW EMAIL SETUP
 
-**Your Professional Email**: `analyticacoreai@outlook.com`
+**Your Professional Email**: `information@analyticacoreai.ie`
 
 ### ✅ What This Changes:
-- **Contact forms** → Send to analyticacoreai@outlook.com
+- **Contact forms** → Send to information@analyticacoreai.ie
 - **Business inquiries** → Directed to founder email
 - **Lead notifications** → Delivered to founder inbox
-- **Website contact** → Shows analyticacoreai@outlook.com
+- **Website contact** → Shows information@analyticacoreai.ie
 - **Professional image** → "Founder" sounds more authoritative than "hello"
 
 ---
@@ -36,7 +36,7 @@ Your professional founder email has been updated across your entire Analytica Co
 ### 1. **Setup Email Hosting** (When hosting is ready):
 - **Namecheap Email**: €1.5/month (simple option)
 - **Google Workspace**: €5/month (professional features)
-- **Create**: analyticacoreai@outlook.com mailbox
+- **Create**: information@analyticacoreai.ie mailbox
 
 ### 2. **Test Email Functionality**:
 - Use diagnostic.html to test email client
@@ -53,14 +53,14 @@ Your Analytica Core AI platform now has:
 - ✅ **Working contact forms** directed to founder email
 - ✅ **Business-ready presentation** for customers
 
-**When hosting activates, everything will work perfectly with your analyticacoreai@outlook.com email!** 🚀
+**When hosting activates, everything will work perfectly with your information@analyticacoreai.ie email!** 🚀
 
 ---
 
 ## 📱 EMAIL PRIORITY SETUP
 
 Once your hosting is active:
-1. **First**: Create analyticacoreai@outlook.com mailbox
+1. **First**: Create information@analyticacoreai.ie mailbox
 2. **Test**: Send test email from diagnostic page
 3. **Verify**: Forms send notifications correctly
 4. **Launch**: Your business is officially ready!

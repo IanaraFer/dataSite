@@ -31,4 +31,4 @@ Ready to join them?
 Best regards,  
 [Your Name]  
 AnalyticaCore AI  
-analyticacoreai@outlook.com
+information@analyticacoreai.ie

@@ -9,7 +9,7 @@ const PLATFORM_CONFIG = {
     platformName: 'DataSight AI',
     
     // Contact Information - Updated with correct email
-    email: 'founder@analyticacoreai.com',
+    email: 'information@analyticacoreai.ie',
     website: 'https://analyticacoreai.com',
     
     // Business Information - SME-focused value proposition

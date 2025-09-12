@@ -76,7 +76,7 @@ Analytica Core AI is an intelligent business analytics platform that automatical
 ### 📞 **Contact Information**
 
 **🌐 Website**: www.analyticacoreai.com *(launching soon)*  
-**📧 Email**: founder@analyticacoreai.com  
+**📧 Email**: information@analyticacoreai.ie  
 **📱 Phone**: +49 XXX XXX XXXX  
 **💼 LinkedIn**: DataSiteAI  
 

@@ -12,9 +12,9 @@ When a user completes a payment, the system sends:
 
 Set your admin email and SMTP credentials in your environment or in the code.
 ```
-OUTLOOK_EMAIL=analyticacoreai@outlook.com
+OUTLOOK_EMAIL=information@analyticacoreai.ie
 OUTLOOK_PASSWORD=Maiaemolly22
-ADMIN_EMAIL=analyticacoreai@outlook.com
+ADMIN_EMAIL=information@analyticacoreai.ie
 ```
 **Never commit your `.env` file or hardcode credentials in production.**
 

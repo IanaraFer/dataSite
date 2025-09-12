@@ -62,7 +62,7 @@ AI Insights:
 
 **Email Features:**
 ```
-From: contact@analyticacoreai.ie
+From: information@analyticacoreai.ie
 Templates: HTML with gradients, buttons, branding
 Content: Personalized with customer data
 Support: Reply-to support system
