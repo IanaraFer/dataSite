@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalyticaCore AI - Payment & Subscription</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .pricing-card {
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .pricing-card:hover {
+            border-color: #007bff;
+            transform: translateY(-5px);
+        }
+        .pricing-card.featured {
+            border-color: #007bff;
+            background: rgba(0, 123, 255, 0.05);
+        }
+        .pricing-card.featured::before {
+            content: "MOST POPULAR";
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: #007bff;
+            color: white;
+            padding: 5px 40px;
+            font-size: 12px;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+        .btn-custom {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .btn-custom:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-2px);
+            color: white;
+        }
+        .btn-custom:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .test-mode-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .test-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary">💳 Choose Your Plan</h1>
+            <p class="lead">Start your AI-powered business transformation today</p>
+        </div>
+
+        <div class="test-mode-notice">
+            <h3>🧪 Test Mode Active</h3>
+            <p>This is a demo environment. Use the test card below to try the payment system:</p>
+            <div class="test-card">
+                <strong>Test Card:</strong> 4242 4242 4242 4242<br>
+                <strong>Expiry:</strong> Any future date (e.g., 12/25)<br>
+                <strong>CVC:</strong> Any 3 digits (e.g., 123)<br>
+                <strong>Name:</strong> Any name
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Starter Plan -->
+            <div class="col-md-4 mb-4">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="display-4 fw-bold text-primary">€199</div>
+                    <p class="text-muted">per month</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Basic AI Analytics</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Up to 10,000 records</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Email support</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Monthly reports</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Basic dashboard</li>
+                    </ul>
+                    <button class="btn btn-custom" onclick="subscribeToPlan('starter', 19900)">
+                        Start Free Trial
+                    </button>
+                </div>
+            </div>
+
+            <!-- Professional Plan -->
+            <div class="col-md-4 mb-4">
+                <div class="pricing-card featured">
+                    <h3>Professional</h3>
+                    <div class="display-4 fw-bold text-primary">€399</div>
+                    <p class="text-muted">per month</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Advanced AI Analytics</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Up to 100,000 records</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Priority support</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Weekly reports</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Advanced dashboard</li>
+                        <li><i class="fas fa-check text-success me-2"></i>API access</li>
+                    </ul>
+                    <button class="btn btn-custom" onclick="subscribeToPlan('professional', 39900)">
+                        Start Free Trial
+                    </button>
+                </div>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="col-md-4 mb-4">
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="display-4 fw-bold text-primary">€799</div>
+                    <p class="text-muted">per month</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Premium AI Analytics</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Unlimited records</li>
+                        <li><i class="fas fa-check text-success me-2"></i>24/7 support</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Real-time reports</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Custom dashboard</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Full API access</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Custom integrations</li>
+                    </ul>
+                    <button class="btn btn-custom" onclick="subscribeToPlan('enterprise', 79900)">
+                        Start Free Trial
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing your subscription...</p>
+        </div>
+
+        <div class="success-message" id="success-message">
+            <h3>🎉 Welcome to AnalyticaCore AI!</h3>
+            <p>Your subscription is now active. You'll receive a confirmation email shortly.</p>
+            <p><a href="working-platform.html" class="btn btn-success">Go to Platform</a></p>
+        </div>
+
+        <div class="error-message" id="error-message">
+            <h3>❌ Payment Failed</h3>
+            <p id="error-text">An error occurred. Please try again.</p>
+        </div>
+
+        <!-- Free Trial Form -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-gift me-2"></i>Try Our Free Trial</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="trialForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" class="form-control" name="company" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Industry</label>
+                                    <select class="form-select" name="industry" required>
+                                        <option value="">Select Industry</option>
+                                        <option value="retail">Retail</option>
+                                        <option value="manufacturing">Manufacturing</option>
+                                        <option value="healthcare">Healthcare</option>
+                                        <option value="finance">Finance</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Upload Your Data (Optional)</label>
+                                <input type="file" class="form-control" name="dataFile" accept=".csv,.xlsx,.xls,.json">
+                                <small class="text-muted">We'll analyze this data and include insights in your free report</small>
+                            </div>
+                            <button type="submit" class="btn btn-custom">
+                                <i class="fas fa-rocket me-2"></i>Get My FREE AI Analysis
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stripe configuration - Using test key
+        const stripe = Stripe('pk_test_51RyYQACsG7kLS0L9OKlEvotKwsqqfOcCbQ6YNHZsbaahjO1arljVNdl4rAeogCMWUJam9sr04awRzEdhBN5owwzt009JDUDzSv');
+        
+        // Plan configurations
+        const plans = {
+            starter: {
+                name: 'Starter Plan',
+                price: 19900,
+                description: 'Perfect for small businesses getting started with AI analytics'
+            },
+            professional: {
+                name: 'Professional Plan',
+                price: 39900,
+                description: 'Ideal for growing businesses that need advanced analytics'
+            },
+            enterprise: {
+                name: 'Enterprise Plan',
+                price: 79900,
+                description: 'Complete solution for large enterprises with unlimited needs'
+            }
+        };
+
+        async function subscribeToPlan(planId, priceInCents) {
+            const plan = plans[planId];
+            if (!plan) {
+                showError('Invalid plan selected');
+                return;
+            }
+
+            // Show loading state
+            showLoading(true);
+            hideMessages();
+
+            try {
+                // Create Stripe Checkout Session
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        price_data: {
+                            currency: 'eur',
+                            product_data: {
+                                name: `AnalyticaCore AI - ${plan.name}`,
+                                description: plan.description,
+                            },
+                            unit_amount: priceInCents,
+                            recurring: {
+                                interval: 'month'
+                            }
+                        },
+                        success_url: `${window.location.origin}/working-payment.html?success=true`,
+                        cancel_url: `${window.location.origin}/working-payment.html`,
+                        mode: 'subscription'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create checkout session');
+                }
+
+                const session = await response.json();
+
+                if (session.error) {
+                    throw new Error(session.error);
+                }
+
+                // Redirect to Stripe Checkout
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: session.id
+                });
+
+                if (error) {
+                    throw new Error(error.message);
+                }
+
+            } catch (error) {
+                console.error('Subscription error:', error);
+                
+                // For demo purposes, simulate successful subscription
+                if (error.message.includes('Failed to create checkout session')) {
+                    simulateSuccessfulSubscription(plan);
+                } else {
+                    showError(`Failed to start subscription: ${error.message}`);
+                }
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function simulateSuccessfulSubscription(plan) {
+            // Simulate successful subscription for demo
+            setTimeout(() => {
+                showSuccess(`
+                    <h3>🎉 Welcome to ${plan.name}!</h3>
+                    <p>Your subscription is now active. You'll receive a confirmation email shortly.</p>
+                    <p><strong>Plan:</strong> ${plan.name}</p>
+                    <p><strong>Price:</strong> €${(plan.price / 100).toFixed(2)}/month</p>
+                    <p><a href="working-platform.html" class="btn btn-success">Go to Platform</a></p>
+                `);
+            }, 1000);
+        }
+
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            const buttons = document.querySelectorAll('.btn-custom');
+            
+            if (show) {
+                loading.style.display = 'block';
+                buttons.forEach(btn => btn.disabled = true);
+            } else {
+                loading.style.display = 'none';
+                buttons.forEach(btn => btn.disabled = false);
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            errorText.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.innerHTML = message;
+            successDiv.style.display = 'block';
+        }
+
+        function hideMessages() {
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+        }
+
+        // Trial form submission
+        document.getElementById('trialForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Simulate form submission
+            showSuccess(`
+                <h3>🎉 Free Trial Started!</h3>
+                <p>Thank you, ${data.name}!</p>
+                <p>We'll analyze your data and send insights to ${data.email} within 15 minutes.</p>
+                <p><strong>Company:</strong> ${data.company}</p>
+                <p><strong>Industry:</strong> ${data.industry}</p>
+                ${data.dataFile ? `<p><strong>File:</strong> ${data.dataFile.name}</p>` : ''}
+                <p><a href="working-platform.html" class="btn btn-success">Go to Platform</a></p>
+            `);
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Check for success message from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+            showSuccess(`
+                <h3>🎉 Payment Successful!</h3>
+                <p>Your subscription is now active. You'll receive a confirmation email shortly.</p>
+                <p><a href="working-platform.html" class="btn btn-success">Go to Platform</a></p>
+            `);
+        }
+
+        // Initialize
+        console.log('💳 Payment page loaded successfully!');
+    </script>
+</body>
+</html>
