@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-[build.environment]
-PYTHON_VERSION = "3.11.9"
-=======
 [build]
   publish = "."
   command = "echo 'Static site - no build required'"
 
 [build.environment]
   NODE_VERSION = "18.20.4"
-  PYTHON_VERSION = ""
+  PYTHON_VERSION = "3.11.9"
   MISE_VERBOSE = "0"
 
 [build.processing]
@@ -29,5 +25,3 @@ PYTHON_VERSION = "3.11.9"
   from = "/*"
   to = "/index.html"
   status = 200
-
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
