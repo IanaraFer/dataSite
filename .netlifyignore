@@ -77,6 +77,10 @@ node_modules/
 *.backup
 *.old
 
+# Ignore files with problematic characters for Netlify
+*#*
+*?*
+
 # Ignore specific problematic files
 app.py
 app_enhanced.py
