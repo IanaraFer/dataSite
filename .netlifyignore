@@ -1,4 +1,4 @@
-# Ignore Python files since this is a static site
+# Ignore ALL Python files and directories since this is a static site
 *.py
 **/*.py
 __pycache__/
@@ -11,6 +11,14 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.python-version
+runtime.txt
+requirements.txt
+requirements-vercel.txt
+Pipfile
+Pipfile.lock
+poetry.lock
+pyproject.toml
 
 # Ignore development files
 *.log
@@ -26,6 +34,8 @@ Thumbs.db
 **/selenium_tests/
 **/security_tests/
 **/performance/
+**/utils/
+**/reports/
 
 # Ignore API and backend files
 api/
@@ -35,14 +45,13 @@ deploy/
 infrastructure/
 infra/
 azure/
+.github/
 
 # Ignore documentation and guides
 *.md
 !README.md
 
 # Ignore config files that aren't needed for static site
-requirements.txt
-requirements-vercel.txt
 Dockerfile*
 docker-compose.yml
 vercel.json
@@ -67,3 +76,16 @@ node_modules/
 *.bak
 *.backup
 *.old
+
+# Ignore specific problematic files
+app.py
+app_enhanced.py
+app_test.py
+run_api_server.py
+test_api.py
+verify_dns.py
+pricing_check.py
+install_packages.py
+install_all_dependencies.py
+CreateRunScript.py
+check_python.py
