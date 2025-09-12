@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch: # Allow manual trigger
 
 env:
   AZURE_RESOURCE_GROUP: rg-analyticacore-prod
@@ -14,6 +15,7 @@ jobs:
   # Deploy Static Web App
   static-web-app:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,9 +26,12 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "/website"
-          api_location: "/api"
-          output_location: ""
+          app_location: "/"
+          api_location: ""
+          output_location: "/website"
+          skip_app_build: true
+          skip_api_build: true
+          skip_deploy_on_missing_secrets: true
           
   # Deploy Infrastructure (if needed)
   infrastructure:
@@ -49,4 +54,5 @@ jobs:
           resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP }}
           template: ./infra/main.bicep
           parameters: environmentName=prod location=eastus2
-          failOnStdErr: false
+          failOnStdErr: false`
+          

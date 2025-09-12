@@ -96,7 +96,7 @@
             document.getElementById('submitBtn').textContent = 'Processing...';
 
             // Call backend payment API (assume /api/payment/subscribe)
-            fetch('/api/payment/subscribe', {
+            fetch('/.netlify/functions/stripe-subscribe', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

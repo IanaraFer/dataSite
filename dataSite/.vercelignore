@@ -1,0 +1,65 @@
+# Vercel deployment ignore file
+# Exclude unnecessary files and directories
+
+# Development files
+.git/
+.github/
+.vscode/
+.streamlit/
+node_modules/
+venv/
+venv#/
+virtual/
+Activate/
+.conda/
+environment/
+
+# Test and documentation files
+reports/
+analysis/
+business/
+video/
+the/
+utils/
+infra/
+infrastructure/
+azure/
+website/dataSite-testing/
+
+# Backup and temporary files
+*-backup.*
+*-old.*
+*-test.*
+*-working.*
+*-fixed.*
+*.bak
+*.tmp
+*.log
+*.pyc
+__pycache__/
+
+# Deployment files not needed
+*.md
+*.txt
+!requirements.txt
+*.bat
+*.sh
+*.py
+!api/*.py
+
+# Environment files
+.env
+.env.*
+!.env.vercel
+
+# Large data files
+*.csv
+*.xlsx
+*.json
+!package.json
+!vercel.json
+
+# HTML files already in public/
+website/
+index*.html
+!public/

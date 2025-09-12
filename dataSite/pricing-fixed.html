@@ -1,0 +1,467 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalyticaCore AI - Choose Your Plan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        page_title: 'Pricing Page - AnalyticaCore AI',
+        page_location: window.location.href
+      });
+      
+      // Track pricing page view
+      gtag('event', 'page_view', {
+        page_title: 'Pricing Page',
+        page_location: window.location.href
+      });
+    </script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+        .pricing-container { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 40px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+        }
+        .pricing-card { 
+            background: white; 
+            border: 2px solid #e8ecf4; 
+            border-radius: 15px; 
+            padding: 30px; 
+            text-align: center; 
+            transition: all 0.3s ease; 
+            height: 100%; 
+        }
+        .pricing-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15); 
+        }
+        .pricing-card.featured { 
+            border: 2px solid #667eea; 
+            transform: scale(1.05); 
+            position: relative; 
+        }
+        .featured-badge { 
+            position: absolute; 
+            top: -15px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: #ff7f0e; 
+            color: white; 
+            padding: 8px 20px; 
+            border-radius: 20px; 
+            font-size: 14px; 
+            font-weight: 600; 
+        }
+        .price { 
+            font-size: 3rem; 
+            font-weight: 700; 
+            color: #667eea; 
+            margin: 20px 0; 
+        }
+        .btn-plan { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            border: none; 
+            padding: 15px 30px; 
+            border-radius: 25px; 
+            font-weight: 600; 
+            width: 100%; 
+            color: white; 
+            text-decoration: none; 
+            display: inline-block; 
+            transition: all 0.3s ease; 
+        }
+        .btn-plan:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.4); 
+            color: white; 
+        }
+        .btn-trial { 
+            background: transparent; 
+            border: 2px solid #667eea; 
+            color: #667eea; 
+        }
+        .btn-trial:hover { 
+            background: #667eea; 
+            color: white; 
+        }
+        .feature-list { 
+            text-align: left; 
+            margin: 30px 0; 
+        }
+        .feature-list li { 
+            padding: 8px 0; 
+            border-bottom: 1px solid #f0f0f0; 
+        }
+        .feature-list li:last-child { 
+            border-bottom: none; 
+        }
+    </style>
+</head>
+<body>
+    <div class="pricing-container">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">Choose Your AnalyticaCore AI Plan</h1>
+            <p class="lead text-muted">Transform your business data into actionable insights</p>
+            <div class="mt-3">
+                <span class="badge bg-success fs-6 me-2">
+                    <i class="fas fa-gift me-1"></i>7-Day Free Trial
+                </span>
+                <span class="badge bg-primary fs-6 me-2">
+                    <i class="fas fa-shield-alt me-1"></i>GDPR Compliant
+                </span>
+                <span class="badge bg-warning fs-6">
+                    <i class="fas fa-headset me-1"></i>Irish Support
+                </span>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Professional Plan -->
+            <div class="col-lg-4">
+                <div class="pricing-card">
+                    <h3 class="h4 fw-bold">Professional</h3>
+                    <div class="price">â‚¬199<small class="fs-6 text-muted">/month</small></div>
+                    <p class="text-muted">Perfect for growing SMEs</p>
+                    
+                    <ul class="list-unstyled feature-list">
+                        <li><i class="fas fa-check text-success me-2"></i>AI-powered data analysis (100k rows)</li>
+                        <li><i class="fas fa-check text-success me-2"></i>6-month revenue forecasting</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Customer segmentation insights</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Weekly business reports</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Email support (24h response)</li>
+                        <li><i class="fas fa-check text-success me-2"></i>GDPR compliant storage</li>
+                    </ul>
+                    
+                    <a href="#" onclick="subscribeToPlan('professional', 199)" class="btn btn-plan mb-2">
+                        <i class="fas fa-credit-card me-2"></i>Subscribe Now
+                    </a>
+                    <a href="free-trial-simple.html" class="btn btn-plan btn-trial mb-2">
+                        <i class="fas fa-rocket me-2"></i>Try Free First
+                    </a>
+                    <div class="mt-2">
+                        <small class="text-muted">â‚¬199/month + VAT</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Plan -->
+            <div class="col-lg-4">
+                <div class="pricing-card featured">
+                    <div class="featured-badge">Most Popular</div>
+                    <h3 class="h4 fw-bold">Business</h3>
+                    <div class="price">â‚¬399<small class="fs-6 text-muted">/month</small></div>
+                    <p class="text-muted">For scaling companies</p>
+                    
+                    <ul class="list-unstyled feature-list">
+                        <li><i class="fas fa-check text-success me-2"></i>Advanced 12-month forecasting</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Real-time anomaly detection</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Custom business dashboards</li>
+                        <li><i class="fas fa-check text-success me-2"></i>API integrations</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Daily automated reports</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Phone support (4h response)</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Unlimited data processing</li>
+                    </ul>
+                    
+                    <a href="#" onclick="subscribeToPlan('business', 399)" class="btn btn-plan mb-2">
+                        <i class="fas fa-credit-card me-2"></i>Subscribe Now
+                    </a>
+                    <a href="free-trial-simple.html" class="btn btn-plan btn-trial mb-2">
+                        <i class="fas fa-rocket me-2"></i>Try Free First
+                    </a>
+                    <div class="mt-2">
+                        <small class="text-muted">â‚¬399/month + VAT</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="col-lg-4">
+                <div class="pricing-card">
+                    <h3 class="h4 fw-bold">Enterprise</h3>
+                    <div class="price">â‚¬799<small class="fs-6 text-muted">/month</small></div>
+                    <p class="text-muted">For large organizations</p>
+                    
+                    <ul class="list-unstyled feature-list">
+                        <li><i class="fas fa-check text-success me-2"></i>Multi-location analysis</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Custom AI model training</li>
+                        <li><i class="fas fa-check text-success me-2"></i>White-label reporting</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Dedicated account manager</li>
+                        <li><i class="fas fa-check text-success me-2"></i>24/7 phone support + consulting</li>
+                        <li><i class="fas fa-check text-success me-2"></i>On-premise deployment option</li>
+                    </ul>
+                    
+                    <a href="mailto:contact@analyticacoreai.ie?subject=Enterprise Plan Inquiry" class="btn btn-plan btn-trial mb-2">
+                        <i class="fas fa-envelope me-2"></i>Contact Sales
+                    </a>
+                    <div class="mt-2">
+                        <small class="text-muted">Custom implementation</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <h3 class="h5 mb-3">Why Choose AnalyticaCore AI?</h3>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-bolt text-warning me-2"></i>
+                        <small><strong>15-min setup</strong></small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-shield-alt text-success me-2"></i>
+                        <small><strong>Enterprise security</strong></small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-chart-line text-primary me-2"></i>
+                        <small><strong>ROI within 30 days</strong></small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-headset text-info me-2"></i>
+                        <small><strong>Irish support team</strong></small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <p class="text-muted">
+                    <i class="fas fa-lock me-1"></i>Your data is secure and GDPR compliant â€¢ 
+                    <i class="fas fa-times-circle me-1"></i>Cancel anytime â€¢ 
+                    <i class="fas fa-phone me-1"></i>Irish business hours support
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('ðŸ’° AnalyticaCore AI pricing page loaded');
+        console.log('ðŸŽ¯ All plans include 7-day free trial');
+        
+        // Payment subscription function with Stripe integration
+        async function subscribeToPlan(planName, price) {
+            console.log(`ðŸš€ Subscribe to ${planName} plan - â‚¬${price}/month`);
+            
+            // Track payment start event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'begin_checkout', {
+                    event_category: 'ecommerce',
+                    event_label: planName,
+                    value: price,
+                    currency: 'EUR'
+                });
+            }
+            
+            try {
+                // Show loading
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                button.disabled = true;
+                
+                // Get customer email
+                const customerEmail = prompt('Please enter your email address:');
+                if (!customerEmail) {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    return;
+                }
+                
+                // Simulate processing time
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Reset button
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                // Show success and redirect to Stripe (simulation)
+                alert(`âœ… Payment Setup Complete!\\n\\nPlan: ${planName.toUpperCase()}\\nAmount: â‚¬${price}/month\\nEmail: ${customerEmail}\\n\\nðŸ”„ Redirecting to Stripe Checkout...\\n\\n(In production: Real Stripe payment processing)`);
+                
+                // Simulate Stripe redirect - in production this would be real
+                const stripeUrl = `https://checkout.stripe.com/demo?plan=${planName}&amount=${price}&email=${encodeURIComponent(customerEmail)}`;
+                
+                // For demo, show what would happen
+                if (confirm('ðŸš€ Open Stripe Checkout Demo?\\n\\n(In production, this would process real payments)')) {
+                    // Redirect to a demo page or show success
+                    showPaymentSuccess(planName, price, customerEmail);
+                }
+                
+            } catch (error) {
+                console.error('âŒ Payment error:', error);
+                
+                // Reset button
+                const button = event.target;
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                // Track error
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'checkout_error', {
+                        event_category: 'ecommerce',
+                        event_label: planName,
+                        error_message: error.message
+                    });
+                }
+                
+                // Show fallback
+                alert(`Payment system temporarily unavailable. Starting with free trial for ${planName} plan.`);
+            }
+        }
+        
+        function showPaymentSuccess(planName, price, customerEmail) {
+            // Create success modal
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 15px; padding: 40px; max-width: 500px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+                    <h2 style="color: #28a745; margin-bottom: 20px;">
+                        <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745;"></i><br>
+                        Payment Successful!
+                    </h2>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>Welcome to ${planName.toUpperCase()} Plan!</h4>
+                        <p><strong>Amount:</strong> â‚¬${price}/month</p>
+                        <p><strong>Email:</strong> ${customerEmail}</p>
+                    </div>
+                    <div style="text-align: left; margin: 20px 0; background: #e8f5e8; padding: 15px; border-radius: 5px;">
+                        <h6><i class="fas fa-gift"></i> What's Next:</h6>
+                        <ul style="margin: 0; padding-left: 20px;">
+                            <li>âœ… Welcome email sent to ${customerEmail}</li>
+                            <li>ðŸ”‘ Platform access activated</li>
+                            <li>ðŸ“Š AI features unlocked</li>
+                            <li>ðŸ’¬ Priority support enabled</li>
+                        </ul>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                   color: white; border: none; padding: 15px 30px; 
+                                   border-radius: 25px; font-weight: bold; cursor: pointer;">
+                        <i class="fas fa-rocket"></i> Access Your Dashboard
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Track success
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'purchase', {
+                    transaction_id: 'demo_' + Date.now(),
+                    value: price,
+                    currency: 'EUR',
+                    items: [{
+                        item_id: planName,
+                        item_name: planName + ' Plan',
+                        category: 'subscription',
+                        quantity: 1,
+                        price: price
+                    }]
+                });
+            }
+        }
+                    window.location.href = result.checkout_url;
+                } else {
+                    throw new Error('No checkout URL received');
+                }
+                
+            } catch (error) {
+                console.error('âŒ Payment error:', error);
+                
+                // Reset button
+                const button = event.target;
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                // Track error
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'checkout_error', {
+                        event_category: 'ecommerce',
+                        event_label: planName,
+                        error_message: error.message
+                    });
+                }
+                
+                // Fallback - redirect to trial form with plan info
+                alert(`Payment system temporarily unavailable. Starting with free trial for ${planName} plan.`);
+                window.location.href = `free-trial-simple.html?plan=${planName}&upgrade=true`;
+            }
+        }
+        
+        // Track pricing page views
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                page_title: 'Pricing Page',
+                page_location: window.location.href
+            });
+        }
+    </script>
+            });
+        }
+    </script>
+<script src="config.js"></script><script>
+// Direct subscription fix
+function subscribeToPlan(planName, price) {
+    console.log("Subscribe button clicked:", planName, price);
+    
+    let planType = "starter";
+    if (planName === "professional") planType = "professional";
+    if (planName === "business" || planName === "enterprise") planType = "enterprise";
+    
+    console.log("Redirecting to:", planType);
+    window.location.href = `subscribe.html?plan=${planType}`;
+}
+
+// Also handle any direct button clicks
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("a").forEach(button => {
+        if (button.textContent.includes("Subscribe")) {
+            button.addEventListener("click", function(e) {
+                e.preventDefault();
+                const text = button.textContent.toLowerCase();
+                const container = button.closest(".card, .pricing-card");
+                const containerText = container ? container.textContent.toLowerCase() : "";
+                
+                let planType = "starter";
+                if (containerText.includes("professional") || containerText.includes("399")) {
+                    planType = "professional";
+                } else if (containerText.includes("enterprise") || containerText.includes("799")) {
+                    planType = "enterprise";
+                }
+                
+                console.log("Direct click detected, plan:", planType);
+                window.location.href = `subscribe.html?plan=${planType}`;
+            });
+        }
+    });
+});
+</script></body>
+</html>
+
+

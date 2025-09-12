@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Dashboard - DataSight AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .lead-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .lead-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .lead-priority-high {
+            border-left: 5px solid #dc3545;
+        }
+
+        .lead-priority-medium {
+            border-left: 5px solid #ffc107;
+        }
+
+        .lead-priority-low {
+            border-left: 5px solid #28a745;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-users me-3"></i>DataSight AI Lead Dashboard</h1>
+                    <p class="mb-0">Manage your free trial requests and prospects</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="free-trial.html" class="btn btn-warning me-2">
+                        <i class="fas fa-plus me-1"></i>New Lead
+                    </a>
+                    <button class="btn btn-outline-light" onclick="exportLeads()">
+                        <i class="fas fa-download me-1"></i>Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-4">
+        <!-- Stats Row -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="totalLeads">0</div>
+                    <div class="text-muted">Total Leads</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="todayLeads">0</div>
+                    <div class="text-muted">Today</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="weekLeads">0</div>
+                    <div class="text-muted">This Week</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="conversionRate">0%</div>
+                    <div class="text-muted">Conversion Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="searchLeads" placeholder="Search by name, company, or email...">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filterIndustry">
+                            <option value="">All Industries</option>
+                            <option value="retail">Retail/E-commerce</option>
+                            <option value="restaurant">Restaurant/Food Service</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="technology">Technology/Software</option>
+                            <option value="professional">Professional Services</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Financial Services</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filterRevenue">
+                            <option value="">All Revenue Ranges</option>
+                            <option value="under-500k">Under €500K</option>
+                            <option value="500k-1m">€500K - €1M</option>
+                            <option value="1m-5m">€1M - €5M</option>
+                            <option value="5m-20m">€5M - €20M</option>
+                            <option value="over-20m">Over €20M</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" onclick="clearFilters()">
+                            <i class="fas fa-times me-1"></i>Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leads List -->
+        <div id="leadsList">
+            <!-- Leads will be populated here -->
+        </div>
+
+        <!-- No Leads Message -->
+        <div class="text-center py-5" id="noLeadsMessage" style="display: none;">
+            <i class="fas fa-users fs-1 text-muted mb-3"></i>
+            <h3 class="text-muted">No Leads Yet</h3>
+            <p class="text-muted">Your free trial requests will appear here.</p>
+            <a href="free-trial.html" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Add Test Lead
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function loadLeads() {
+            const leads = JSON.parse(localStorage.getItem('datasight_leads') || '[]');
+            const leadsList = document.getElementById('leadsList');
+            const noLeadsMessage = document.getElementById('noLeadsMessage');
+
+            if (leads.length === 0) {
+                leadsList.innerHTML = '';
+                noLeadsMessage.style.display = 'block';
+                return;
+            }
+
+            noLeadsMessage.style.display = 'none';
+            
+            // Update stats
+            updateStats(leads);
+
+            // Render leads
+            leadsList.innerHTML = leads.map(lead => `
+                <div class="lead-card card lead-priority-${getPriority(lead)}">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <h5 class="mb-1">${lead.firstName} ${lead.lastName}</h5>
+                                <p class="text-muted mb-1">${lead.company}</p>
+                                <small class="text-muted">${lead.industry}</small>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mb-1"><i class="fas fa-envelope me-2"></i>${lead.email}</p>
+                                <p class="mb-1"><i class="fas fa-phone me-2"></i>${lead.phone}</p>
+                                <p class="mb-0"><i class="fas fa-euro-sign me-2"></i>${lead.revenue}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="mb-1"><strong>Challenge:</strong></p>
+                                <p class="text-muted small">${lead.challenge || 'Not specified'}</p>
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <p class="small text-muted mb-2">${formatDate(lead.timestamp)}</p>
+                                <button class="btn btn-sm btn-success me-1" onclick="contactLead('${lead.id}')">
+                                    <i class="fas fa-phone"></i>
+                                </button>
+                                <button class="btn btn-sm btn-primary" onclick="emailLead('${lead.id}')">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats(leads) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            const todayLeads = leads.filter(lead => new Date(lead.timestamp) >= today).length;
+            const weekLeads = leads.filter(lead => new Date(lead.timestamp) >= weekAgo).length;
+
+            document.getElementById('totalLeads').textContent = leads.length;
+            document.getElementById('todayLeads').textContent = todayLeads;
+            document.getElementById('weekLeads').textContent = weekLeads;
+            document.getElementById('conversionRate').textContent = '15%'; // Placeholder
+        }
+
+        function getPriority(lead) {
+            const revenue = lead.revenue;
+            if (revenue === 'over-20m' || revenue === '5m-20m') return 'high';
+            if (revenue === '1m-5m' || revenue === '500k-1m') return 'medium';
+            return 'low';
+        }
+
+        function formatDate(timestamp) {
+            return new Date(timestamp).toLocaleDateString() + ' ' + new Date(timestamp).toLocaleTimeString();
+        }
+
+        function contactLead(leadId) {
+            const leads = JSON.parse(localStorage.getItem('datasight_leads') || '[]');
+            const lead = leads.find(l => l.id === leadId);
+            if (lead) {
+                window.open(`tel:${lead.phone}`);
+            }
+        }
+
+        function emailLead(leadId) {
+            const leads = JSON.parse(localStorage.getItem('datasight_leads') || '[]');
+            const lead = leads.find(l => l.id === leadId);
+            if (lead) {
+                const subject = `Follow-up: Your DataSight AI Business Analysis for ${lead.company}`;
+                const body = `Hi ${lead.firstName},
+
+Thank you for your interest in DataSight AI! I wanted to follow up on your free business health check request.
+
+Based on your profile:
+- Company: ${lead.company}
+- Industry: ${lead.industry}
+- Challenge: ${lead.challenge}
+
+I'd love to schedule a 15-minute call to:
+1. Share your personalized AI analysis results
+2. Show you how other ${lead.industry} companies are using our platform
+3. Discuss specific solutions for your challenge
+
+Are you available for a quick call this week?
+
+Best regards,
+The DataSight AI Team
+📞 +353 874502058`;
+
+                window.open(`mailto:${lead.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+            }
+        }
+
+        function exportLeads() {
+            const leads = JSON.parse(localStorage.getItem('datasight_leads') || '[]');
+            const csv = 'First Name,Last Name,Company,Email,Phone,Industry,Revenue,Challenge,Timestamp\n' +
+                leads.map(lead => `"${lead.firstName}","${lead.lastName}","${lead.company}","${lead.email}","${lead.phone}","${lead.industry}","${lead.revenue}","${lead.challenge || ''}","${lead.timestamp}"`).join('\n');
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `datasight-leads-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function clearFilters() {
+            document.getElementById('searchLeads').value = '';
+            document.getElementById('filterIndustry').value = '';
+            document.getElementById('filterRevenue').value = '';
+            loadLeads();
+        }
+
+        // Search and filter functionality
+        document.getElementById('searchLeads').addEventListener('input', filterLeads);
+        document.getElementById('filterIndustry').addEventListener('change', filterLeads);
+        document.getElementById('filterRevenue').addEventListener('change', filterLeads);
+
+        function filterLeads() {
+            const search = document.getElementById('searchLeads').value.toLowerCase();
+            const industry = document.getElementById('filterIndustry').value;
+            const revenue = document.getElementById('filterRevenue').value;
+
+            const leads = JSON.parse(localStorage.getItem('datasight_leads') || '[]');
+            const filtered = leads.filter(lead => {
+                const matchesSearch = !search || 
+                    lead.firstName.toLowerCase().includes(search) ||
+                    lead.lastName.toLowerCase().includes(search) ||
+                    lead.company.toLowerCase().includes(search) ||
+                    lead.email.toLowerCase().includes(search);
+                
+                const matchesIndustry = !industry || lead.industry === industry;
+                const matchesRevenue = !revenue || lead.revenue === revenue;
+
+                return matchesSearch && matchesIndustry && matchesRevenue;
+            });
+
+            // Re-render with filtered results
+            const leadsList = document.getElementById('leadsList');
+            leadsList.innerHTML = filtered.map(lead => `
+                <div class="lead-card card lead-priority-${getPriority(lead)}">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <h5 class="mb-1">${lead.firstName} ${lead.lastName}</h5>
+                                <p class="text-muted mb-1">${lead.company}</p>
+                                <small class="text-muted">${lead.industry}</small>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mb-1"><i class="fas fa-envelope me-2"></i>${lead.email}</p>
+                                <p class="mb-1"><i class="fas fa-phone me-2"></i>${lead.phone}</p>
+                                <p class="mb-0"><i class="fas fa-euro-sign me-2"></i>${lead.revenue}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="mb-1"><strong>Challenge:</strong></p>
+                                <p class="text-muted small">${lead.challenge || 'Not specified'}</p>
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <p class="small text-muted mb-2">${formatDate(lead.timestamp)}</p>
+                                <button class="btn btn-sm btn-success me-1" onclick="contactLead('${lead.id}')">
+                                    <i class="fas fa-phone"></i>
+                                </button>
+                                <button class="btn btn-sm btn-primary" onclick="emailLead('${lead.id}')">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load leads on page load
+        loadLeads();
+    </script>
+</body>
+</html>

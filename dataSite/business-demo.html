@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Analysis Demo - AnalyticaCore AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .demo-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .demo-header { text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px; }
+        .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .analysis-card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-left: 5px solid #667eea; }
+        .analysis-card h3 { color: #667eea; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .metric { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+        .metric:last-child { border-bottom: none; }
+        .metric-value { font-weight: bold; color: #333; }
+        .metric-trend { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .trend-up { background: #e8f5e8; color: #2e7d2e; }
+        .trend-down { background: #fee; color: #d63384; }
+        .trend-stable { background: #e3f2fd; color: #1976d2; }
+        .chart-container { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .progress-bar { background: #e9ecef; border-radius: 10px; height: 20px; overflow: hidden; margin: 10px 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.3s ease; }
+        .cta-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; text-align: center; margin-top: 40px; }
+        .cta-button { background: white; color: #667eea; padding: 15px 30px; border: none; border-radius: 25px; font-size: 18px; font-weight: bold; cursor: pointer; margin: 10px; transition: transform 0.3s ease; }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .dataset-preview { background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; font-family: monospace; font-size: 12px; overflow-x: auto; }
+        .insight-box { background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #28a745; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"><a href="index.html">AnalyticaCore AI</a></div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="platform.html">Platform</a></li>
+                <li><a href="business-demo.html" class="active">Demo</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1><i class="fas fa-chart-bar"></i> Business Dataset Analysis Demo</h1>
+            <p><strong>Sample Analysis:</strong> E-commerce Sales Data - 50,000 transactions</p>
+            <p><em>See how AnalyticaCore AI transforms raw business data into actionable insights</em></p>
+        </div>        <!-- File Upload Demo Section -->
+        <div class="chart-container">
+            <h3><i class="fas fa-upload"></i> Upload Your Business Data</h3>
+            <div style="border: 2px dashed #4CAF50; border-radius: 10px; padding: 30px; text-align: center; background: #f9f9f9; margin: 20px 0;">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #4CAF50; margin-bottom: 15px;"></i>
+                <h4 style="margin: 10px 0; color: #333;">Drag & Drop Your Files Here</h4>
+                <p style="color: #666; margin: 10px 0;">Supports CSV, Excel, JSON files up to 100MB</p>
+                <button class="cta-button" style="margin-top: 15px; background: #4CAF50;" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-folder-open"></i> Choose Files
+                </button>
+                <input type="file" id="fileInput" accept=".csv,.xlsx,.json" multiple style="display: none;" onchange="handleFileUpload(this)">
+                <div id="uploadStatus" style="margin-top: 15px; font-weight: bold; color: #4CAF50;"></div>
+            </div>
+            <p style="color: #666; font-style: italic; margin-top: 15px;">
+                <i class="fas fa-info-circle"></i> This is a demo - files are processed locally for privacy. Try uploading a CSV file to see the interface!
+            </p>
+        </div>
+
+
+        <!-- Dataset Preview -->
+        <div class="chart-container">
+            <h3><i class="fas fa-database"></i> Raw Dataset Sample</h3>
+            <div class="dataset-preview">
+transaction_id,date,customer_id,product_category,revenue,quantity,channel,region
+TXN_001,2024-08-15,CUST_4821,Electronics,1299.99,1,Online,Europe
+TXN_002,2024-08-15,CUST_3947,Clothing,89.50,2,Store,North America
+TXN_003,2024-08-15,CUST_2156,Home & Garden,156.75,1,Online,Asia
+TXN_004,2024-08-15,CUST_8394,Electronics,2499.00,1,Online,Europe
+TXN_005,2024-08-15,CUST_5672,Books,24.99,3,Online,North America
+... (49,995 more rows)
+            </div>
+            <p style="color: #666; font-style: italic;">
+                <i class="fas fa-upload"></i> Upload your CSV, Excel, or JSON files and get insights in minutes
+            </p>
+        </div>
+
+        <div class="analysis-grid">
+            <!-- Revenue Analysis -->
+            <div class="analysis-card">
+                <h3><i class="fas fa-euro-sign"></i> Revenue Analysis</h3>
+                <div class="metric">
+                    <span>Total Revenue</span>
+                    <span class="metric-value">€2.4M</span>
+                    <span class="metric-trend trend-up">↗ +18%</span>
+                </div>
+                <div class="metric">
+                    <span>Average Order Value</span>
+                    <span class="metric-value">€48.50</span>
+                    <span class="metric-trend trend-up">↗ +5%</span>
+                </div>
+                <div class="metric">
+                    <span>Monthly Growth Rate</span>
+                    <span class="metric-value">12.3%</span>
+                    <span class="metric-trend trend-up">↗ +2.1%</span>
+                </div>
+                <div class="metric">
+                    <span>Top Revenue Day</span>
+                    <span class="metric-value">Friday</span>
+                    <span class="metric-trend trend-stable">€387K avg</span>
+                </div>
+            </div>
+
+            <!-- Customer Insights -->
+            <div class="analysis-card">
+                <h3><i class="fas fa-users"></i> Customer Insights</h3>
+                <div class="metric">
+                    <span>Total Customers</span>
+                    <span class="metric-value">23,847</span>
+                    <span class="metric-trend trend-up">↗ +14%</span>
+                </div>
+                <div class="metric">
+                    <span>Repeat Customer Rate</span>
+                    <span class="metric-value">68%</span>
+                    <span class="metric-trend trend-up">↗ +7%</span>
+                </div>
+                <div class="metric">
+                    <span>Customer Lifetime Value</span>
+                    <span class="metric-value">€156</span>
+                    <span class="metric-trend trend-up">↗ +23%</span>
+                </div>
+                <div class="metric">
+                    <span>Churn Rate</span>
+                    <span class="metric-value">8.2%</span>
+                    <span class="metric-trend trend-down">↘ -3.1%</span>
+                </div>
+            </div>
+
+            <!-- Product Performance -->
+            <div class="analysis-card">
+                <h3><i class="fas fa-box"></i> Product Performance</h3>
+                <div class="metric">
+                    <span>Top Category</span>
+                    <span class="metric-value">Electronics</span>
+                    <span class="metric-trend trend-up">↗ €890K</span>
+                </div>
+                <div class="metric">
+                    <span>Fastest Growing</span>
+                    <span class="metric-value">Home & Garden</span>
+                    <span class="metric-trend trend-up">↗ +45%</span>
+                </div>
+                <div class="metric">
+                    <span>Profit Margin Leader</span>
+                    <span class="metric-value">Books</span>
+                    <span class="metric-trend trend-stable">→ 42%</span>
+                </div>
+                <div class="metric">
+                    <span>Inventory Turnover</span>
+                    <span class="metric-value">6.8x annually</span>
+                    <span class="metric-trend trend-up">↗ +1.2x</span>
+                </div>
+            </div>
+
+            <!-- Geographic Analysis -->
+            <div class="analysis-card">
+                <h3><i class="fas fa-globe"></i> Geographic Performance</h3>
+                <div class="metric">
+                    <span>Top Region</span>
+                    <span class="metric-value">Europe</span>
+                    <span class="metric-trend trend-up">↗ 42% share</span>
+                </div>
+                <div class="metric">
+                    <span>Fastest Growing Market</span>
+                    <span class="metric-value">Asia</span>
+                    <span class="metric-trend trend-up">↗ +67%</span>
+                </div>
+                <div class="metric">
+                    <span>Highest AOV Region</span>
+                    <span class="metric-value">North America</span>
+                    <span class="metric-trend trend-stable">→ €65.30</span>
+                </div>
+                <div class="metric">
+                    <span>Market Penetration</span>
+                    <span class="metric-value">23 countries</span>
+                    <span class="metric-trend trend-up">↗ +4 new</span>
+                </div>
+            </div>
+
+            <!-- Channel Analysis -->
+            <div class="analysis-card">
+                <h3><i class="fas fa-shopping-cart"></i> Sales Channel Analysis</h3>
+                <div class="metric">
+                    <span>Online Revenue</span>
+                    <span class="metric-value">€1.8M (75%)</span>
+                    <span class="metric-trend trend-up">↗ +22%</span>
+                </div>
+                <div class="metric">
+                    <span>Store Revenue</span>
+                    <span class="metric-value">€600K (25%)</span>
+                    <span class="metric-trend trend-stable">→ +2%</span>
+                </div>
+                <div class="metric">
+                    <span>Mobile Conversion</span>
+                    <span class="metric-value">3.8%</span>
+                    <span class="metric-trend trend-up">↗ +0.9%</span>
+                </div>
+                <div class="metric">
+                    <span>Best Converting Channel</span>
+                    <span class="metric-value">Email Marketing</span>
+                    <span class="metric-trend trend-up">↗ 8.2%</span>
+                </div>
+            </div>
+
+            <!-- Seasonal Trends -->
+            <div class="analysis-card">
+                <h3><i class="fas fa-calendar-alt"></i> Seasonal Patterns</h3>
+                <div class="metric">
+                    <span>Peak Sales Period</span>
+                    <span class="metric-value">Q4 (Nov-Dec)</span>
+                    <span class="metric-trend trend-up">↗ +156%</span>
+                </div>
+                <div class="metric">
+                    <span>Best Month</span>
+                    <span class="metric-value">December</span>
+                    <span class="metric-trend trend-up">↗ €420K</span>
+                </div>
+                <div class="metric">
+                    <span>Weekday vs Weekend</span>
+                    <span class="metric-value">65% vs 35%</span>
+                    <span class="metric-trend trend-stable">→ Consistent</span>
+                </div>
+                <div class="metric">
+                    <span>Summer Dip</span>
+                    <span class="metric-value">July-August</span>
+                    <span class="metric-trend trend-down">↘ -23%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Insights -->
+        <div class="chart-container">
+            <h3><i class="fas fa-robot"></i> AI-Generated Business Insights</h3>
+            <div class="insight-box">
+                <h4><i class="fas fa-lightbulb"></i> Key Opportunity Identified</h4>
+                <p><strong>Revenue Optimization:</strong> Asia region shows 67% growth but only 18% market share. Increasing marketing budget by €50K in Asia could potentially generate €300K additional revenue based on current conversion patterns.</p>
+            </div>
+            <div class="insight-box">
+                <h4><i class="fas fa-exclamation-triangle"></i> Risk Alert</h4>
+                <p><strong>Inventory Management:</strong> Electronics category has 15% higher return rate in Q2. Implementing seasonal inventory adjustments could reduce carrying costs by €75K annually.</p>
+            </div>
+            <div class="insight-box">
+                <h4><i class="fas fa-trending-up"></i> Growth Recommendation</h4>
+                <p><strong>Customer Retention:</strong> Customers who purchase Books have highest LTV (€203) but lowest acquisition. Cross-selling books to Electronics customers could increase revenue by 12%.</p>
+            </div>
+        </div>
+
+        <!-- Predictive Analytics -->
+        <div class="chart-container">
+            <h3><i class="fas fa-crystal-ball"></i> Predictive Analytics</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4 style="color: #667eea;">Next Month Revenue</h4>
+                    <div style="font-size: 24px; font-weight: bold; color: #28a745;">€284K</div>
+                    <p style="font-size: 14px; color: #666;">95% confidence interval</p>
+                </div>
+                <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4 style="color: #667eea;">Customer Acquisition</h4>
+                    <div style="font-size: 24px; font-weight: bold; color: #1976d2;">2,340</div>
+                    <p style="font-size: 14px; color: #666;">New customers expected</p>
+                </div>
+                <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4 style="color: #667eea;">Churn Risk</h4>
+                    <div style="font-size: 24px; font-weight: bold; color: #d63384;">847</div>
+                    <p style="font-size: 14px; color: #666;">Customers at risk</p>
+                </div>
+                <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4 style="color: #667eea;">Inventory Needs</h4>
+                    <div style="font-size: 24px; font-weight: bold; color: #ff9800;">€156K</div>
+                    <p style="font-size: 14px; color: #666;">Recommended stock value</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Download Section -->
+        <div class="chart-container" style="text-align: center; margin: 40px 0;">
+            <h3><i class="fas fa-download"></i> Download Demo Reports</h3>
+            <p style="margin-bottom: 30px; color: #666;">Get these sample reports to see the depth of analysis AnalyticaCore AI provides</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <button class="cta-button" onclick="downloadReportEnhanced('full-report')" style="display: block; width: 100%;">
+                    <i class="fas fa-file-pdf"></i> Full Analysis Report
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Complete 15-page business analysis</div>
+                </button>
+                <button class="cta-button" onclick="downloadReportEnhanced('forecast')" style="display: block; width: 100%;">
+                    <i class="fas fa-chart-line"></i> Forecast Data (CSV)
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">6-month revenue predictions</div>
+                </button>
+                <button class="cta-button" onclick="downloadReportEnhanced('insights')" style="display: block; width: 100%;">
+                    <i class="fas fa-lightbulb"></i> AI Insights Report
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Actionable recommendations</div>
+                </button>
+            </div>
+        </div>
+        <!-- Call to Action -->
+        <div class="cta-section">
+            <h2><i class="fas fa-upload"></i> Ready to Analyze Your Business Data?</h2>
+            <p style="font-size: 18px; margin: 20px 0;">Upload your datasets and get comprehensive business insights in minutes. Our AI handles CSV, Excel, JSON, and database connections.</p>
+            <div>
+                <button class="cta-button" onclick="window.location.href='platform.html'">
+                    <i class="fas fa-chart-line"></i> Try Free Analysis
+                </button>
+                <button class="cta-button" onclick="window.location.href='pricing.html'">
+                    <i class="fas fa-rocket"></i> Get Full Platform Access
+                </button>
+            </div>
+            <p style="margin-top: 20px; font-size: 14px; opacity: 0.9;">
+                <i class="fas fa-shield-alt"></i> Secure & Private • <i class="fas fa-clock"></i> Results in Minutes • <i class="fas fa-file-csv"></i> Supports All Data Formats
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate progress bars
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.analysis-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 15px 40px rgba(0,0,0,0.15)';
+                    this.style.transition = 'all 0.3s ease';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+                });
+            });
+        });
+    </script>
+<script src="demo-downloads.js"></script></body>
+</html>
+
+

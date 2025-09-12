@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup analyticacoreai.ie - Your Domain Configuration</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
+        .container { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { color: #667eea; font-size: 2.5rem; margin-bottom: 10px; }
+        .step { background: #f8f9ff; border-left: 5px solid #667eea; padding: 25px; margin: 25px 0; border-radius: 0 10px 10px 0; }
+        .step h3 { color: #333; margin-bottom: 15px; font-size: 1.3rem; }
+        .highlight { background: #fff3cd; padding: 15px; border-radius: 8px; border: 1px solid #ffeaa7; margin: 15px 0; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        .warning { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .code { background: #f4f4f4; padding: 15px; border-radius: 5px; font-family: 'Courier New', monospace; border-left: 4px solid #667eea; }
+        .btn { display: inline-block; padding: 15px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 8px; margin: 10px 5px; font-weight: bold; text-align: center; }
+        .btn:hover { background: #5a67d8; transform: translateY(-2px); }
+        .hosting-option { border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; margin: 15px 0; }
+        .hosting-option h4 { color: #667eea; margin-bottom: 10px; }
+        .nameserver-box { background: #e8f5e8; border: 2px solid #4caf50; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .dns-records { background: #f0f8ff; border: 2px solid #2196f3; padding: 20px; border-radius: 8px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇮🇪 Setup analyticacoreai.ie</h1>
+            <p>Complete domain configuration for your AI SaaS platform</p>
+        </div>
+
+        <div class="step">
+            <h3>🎉 Congratulations on Your Domain!</h3>
+            <div class="success">
+                <strong>Your Domain:</strong> <code>analyticacoreai.ie</code><br>
+                <strong>Perfect for:</strong> Irish and European customers<br>
+                <strong>Brand Alignment:</strong> Matches your AnalyticaCore AI platform perfectly!<br>
+                <strong>Trust Factor:</strong> .ie domains are highly trusted for business
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🌐 Immediate Nameserver Setup</h3>
+            <div class="nameserver-box">
+                <strong>📋 Recommended Nameservers (Cloudflare - FREE):</strong><br><br>
+                
+                <strong>1. Sign up at Cloudflare:</strong><br>
+                <a href="https://dash.cloudflare.com/sign-up" class="btn" target="_blank">Sign up for FREE Cloudflare</a><br><br>
+                
+                <strong>2. Add your domain:</strong><br>
+                • Click "Add Site"<br>
+                • Enter: <code>analyticacoreai.ie</code><br>
+                • Choose FREE plan<br><br>
+                
+                <strong>3. Cloudflare will give you nameservers like:</strong><br>
+                <div class="code">
+                james.ns.cloudflare.com<br>
+                luna.ns.cloudflare.com
+                </div>
+                
+                <strong>4. Update at your registrar:</strong><br>
+                • Log into where you bought the domain<br>
+                • Find "Nameservers" or "DNS" settings<br>
+                • Replace with Cloudflare nameservers<br>
+                • Save changes (takes 24-48 hours to propagate)
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🚀 Hosting Options for analyticacoreai.ie</h3>
+            
+            <div class="hosting-option">
+                <h4>🥇 Option 1: Vercel (RECOMMENDED)</h4>
+                <div class="success">
+                    <strong>Cost:</strong> FREE tier (perfect for starting)<br>
+                    <strong>Perfect for:</strong> Your Python/Streamlit app<br>
+                    <strong>Benefits:</strong> Automatic SSL, global CDN, easy deploys<br><br>
+                    
+                    <strong>Setup Steps:</strong><br>
+                    1. Sign up at <a href="https://vercel.com" target="_blank">vercel.com</a><br>
+                    2. Connect your GitHub repository<br>
+                    3. Add custom domain: analyticacoreai.ie<br>
+                    4. Vercel handles SSL automatically<br><br>
+                    
+                    <strong>DNS Records to add in Cloudflare:</strong><br>
+                    <div class="code">
+                    Type: CNAME<br>
+                    Name: @<br>
+                    Target: cname.vercel-dns.com<br><br>
+                    
+                    Type: CNAME<br>
+                    Name: www<br>
+                    Target: cname.vercel-dns.com
+                    </div>
+                </div>
+            </div>
+
+            <div class="hosting-option">
+                <h4>🥈 Option 2: Azure App Service</h4>
+                <div class="info">
+                    <strong>Cost:</strong> €20-50/month<br>
+                    <strong>Perfect for:</strong> Professional business hosting<br>
+                    <strong>Benefits:</strong> Enterprise-grade, easy scaling<br><br>
+                    
+                    <strong>DNS Records to add in Cloudflare:</strong><br>
+                    <div class="code">
+                    Type: CNAME<br>
+                    Name: @<br>
+                    Target: yourapp.azurewebsites.net<br><br>
+                    
+                    Type: CNAME<br>
+                    Name: www<br>
+                    Target: yourapp.azurewebsites.net
+                    </div>
+                </div>
+            </div>
+
+            <div class="hosting-option">
+                <h4>🥉 Option 3: DigitalOcean</h4>
+                <div class="info">
+                    <strong>Cost:</strong> €5-20/month<br>
+                    <strong>Perfect for:</strong> Full control, custom setup<br>
+                    <strong>Benefits:</strong> Flexible, great performance<br><br>
+                    
+                    <strong>Use DigitalOcean nameservers:</strong><br>
+                    <div class="code">
+                    ns1.digitalocean.com<br>
+                    ns2.digitalocean.com<br>
+                    ns3.digitalocean.com
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>📧 Professional Email Setup</h3>
+            <div class="dns-records">
+                <strong>🎯 Get professional emails like:</strong><br>
+                • information@analyticacoreai.ie<br>
+                • information@analyticacoreai.ie<br>
+                • information@analyticacoreai.ie<br><br>
+                
+                <strong>Email Provider Options:</strong><br>
+                <strong>1. Google Workspace (€5/month):</strong><br>
+                • Professional Gmail interface<br>
+                • 30GB storage<br>
+                • Google Drive integration<br><br>
+                
+                <strong>2. Microsoft 365 (€4/month):</strong><br>
+                • Outlook interface<br>
+                • Office apps included<br>
+                • OneDrive storage<br><br>
+                
+                <strong>3. Cloudflare Email (FREE):</strong><br>
+                • Basic email forwarding<br>
+                • Forward to your existing email<br>
+                • Perfect for starting
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>⚡ Quick Start Action Plan</h3>
+            <div class="warning">
+                <strong>🚀 Do This Now (takes 30 minutes):</strong><br><br>
+                
+                <strong>Step 1:</strong> Sign up for Cloudflare (FREE)<br>
+                <strong>Step 2:</strong> Add analyticacoreai.ie to Cloudflare<br>
+                <strong>Step 3:</strong> Update nameservers at your registrar<br>
+                <strong>Step 4:</strong> Choose hosting (Vercel recommended)<br>
+                <strong>Step 5:</strong> Connect domain to hosting<br><br>
+                
+                <strong>🎯 Priority Order:</strong><br>
+                1. Cloudflare setup (security + speed)<br>
+                2. Vercel hosting (free + reliable)<br>
+                3. Deploy your app<br>
+                4. Professional email later
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>🔧 Technical Configuration</h3>
+            <div class="highlight">
+                <strong>🔧 After DNS is set up, you'll need:</strong><br><br>
+                
+                <strong>1. Update your app configuration:</strong><br>
+                • Change from localhost to analyticacoreai.ie<br>
+                • Update CORS settings<br>
+                • Configure production environment<br><br>
+                
+                <strong>2. SSL Certificate:</strong><br>
+                • Cloudflare provides FREE SSL<br>
+                • Vercel provides automatic SSL<br>
+                • Your site will be https://analyticacoreai.ie<br><br>
+                
+                <strong>3. Environment Variables:</strong><br>
+                • Move your Stripe keys to production<br>
+                • Update database connections<br>
+                • Set production API endpoints
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>📞 Next Steps - Tell Me:</h3>
+            <div class="success">
+                <strong>Let me know:</strong><br>
+                1. Which registrar you used for analyticacoreai.ie<br>
+                2. If you want help with Cloudflare setup<br>
+                3. Which hosting option you prefer<br>
+                4. If you need help deploying your app<br><br>
+                
+                <strong>I can help you:</strong><br>
+                ✅ Set up Cloudflare step-by-step<br>
+                ✅ Configure Vercel hosting<br>
+                ✅ Deploy your DataSight AI platform<br>
+                ✅ Set up professional email<br>
+                ✅ Configure production settings<br>
+                ✅ Test everything works perfectly
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="https://dash.cloudflare.com/sign-up" class="btn" target="_blank">🛡️ Setup Cloudflare</a>
+            <a href="https://vercel.com" class="btn" target="_blank">🚀 Setup Vercel</a>
+        </div>
+    </div>
+
+    <script>
+        console.log('🇮🇪 Domain: analyticacoreai.ie ready for setup!');
+        console.log('🎯 Next: Cloudflare → Vercel → Deploy');
+        
+        // Add some interactivity
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                console.log('🔗 Opening:', this.textContent);
+            });
+        });
+    </script>
+</body>
+</html>

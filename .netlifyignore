@@ -1,0 +1,95 @@
+# Ignore ALL Python files and directories since this is a static site
+*.py
+**/*.py
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+runtime.txt
+requirements.txt
+requirements-vercel.txt
+Pipfile
+Pipfile.lock
+poetry.lock
+pyproject.toml
+
+# Ignore development files
+*.log
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Ignore testing directories
+**/dataSite-testing/
+**/tests/
+**/test_*/
+**/selenium_tests/
+**/security_tests/
+**/performance/
+**/utils/
+**/reports/
+
+# Ignore API and backend files
+api/
+backend/
+banckend/
+deploy/
+infrastructure/
+infra/
+azure/
+.github/
+
+# Ignore documentation and guides
+*.md
+!README.md
+
+# Ignore config files that aren't needed for static site
+Dockerfile*
+docker-compose.yml
+vercel.json
+azure.yaml
+azure-irish-config.yml
+staticwebapp.config.json
+
+# Ignore git and version control
+.git/
+.gitignore
+
+# Ignore node modules (if any)
+node_modules/
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore temporary files
+*.bak
+*.backup
+*.old
+
+# Ignore files with problematic characters for Netlify
+*#*
+*?*
+
+# Ignore specific problematic files
+app.py
+app_enhanced.py
+app_test.py
+run_api_server.py
+test_api.py
+verify_dns.py
+pricing_check.py
+install_packages.py
+install_all_dependencies.py
+CreateRunScript.py
+check_python.py

@@ -100,11 +100,17 @@
                 
                 <div class="mb-4">
                     <label class="form-label">Upload Your Business Data (Optional)</label>
-                    <div class="upload-area" onclick="document.getElementById('businessData').click()">
+                    <div class="upload-area" onclick="console.log('Upload area clicked'); document.getElementById('businessData').click()">
                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                         <h6>Upload CSV, Excel, or Data File</h6>
+<<<<<<< HEAD
                         <input type="file" id="businessData" name="businessData" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
                         <div id="uploadedFile" class="mt-2 text-success">
+=======
+                        <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
+                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="console.log('File input changed'); handleFileUpload(this)">
+                        <div id="uploadedFile" class="mt-2 text-success" style="display: none;">
+>>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
                             <i class="fas fa-check-circle me-1"></i>
                             <span id="fileName"></span>
                         </div>
@@ -131,16 +137,171 @@
     <script>
         console.log('🧪 Simple Free Trial Page Loaded');
 
-        // File upload handler
+        // File upload handler with client-side processing
         function handleFileUpload(input) {
+            console.log('🔍 handleFileUpload called');
+            console.log('📁 Input files:', input.files);
+            
             const file = input.files[0];
             if (file) {
-                document.getElementById('fileName').textContent = file.name;
-                document.getElementById('uploadedFile').style.display = 'block';
+                console.log('📄 File selected:', file.name, file.size, file.type);
+                
+                // Validate file
+                const validation = validateFile(file);
+                console.log('✅ Validation result:', validation);
+                
+                if (!validation.valid) {
+                    alert(validation.message);
+                    input.value = '';
+                    return;
+                }
+                
+                const fileNameElement = document.getElementById('fileName');
+                const uploadedFileElement = document.getElementById('uploadedFile');
+                
+                if (fileNameElement) {
+                    fileNameElement.textContent = file.name;
+                } else {
+                    console.error('❌ fileName element not found');
+                }
+                
+                if (uploadedFileElement) {
+                    uploadedFileElement.style.display = 'block';
+                } else {
+                    console.error('❌ uploadedFile element not found');
+                }
+                
                 console.log('✅ File uploaded:', file.name);
+<<<<<<< HEAD
                 // Store file reference for submission
                 window.uploadedDataset = file;
+=======
+                
+                // Process file client-side
+                processFileClientSide(file);
+            } else {
+                console.log('❌ No file selected');
             }
+        }
+        
+        // Validate uploaded file
+        function validateFile(file) {
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            const allowedExtensions = ['.csv', '.xlsx', '.xls', '.json'];
+            
+            if (file.size > maxSize) {
+                return { valid: false, message: 'File size must be less than 10MB' };
+            }
+            
+            const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+            if (!allowedExtensions.includes(fileExtension)) {
+                return { valid: false, message: 'Only CSV, Excel, and JSON files are supported' };
+            }
+            
+            return { valid: true };
+        }
+        
+        // Process file client-side and generate preview
+        async function processFileClientSide(file) {
+            try {
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                let data = null;
+                
+                if (fileExtension === 'csv') {
+                    data = await processCSVFile(file);
+                } else if (fileExtension === 'json') {
+                    data = await processJSONFile(file);
+                } else {
+                    data = { message: 'Excel file uploaded - will be processed by our team' };
+                }
+                
+                // Store file info and processed data
+                window.uploadedDataset = {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    processedData: data,
+                    preview: data ? generateDataPreview(data) : null
+                };
+                
+                console.log('✅ File processed:', data);
+                
+            } catch (error) {
+                console.error('File processing error:', error);
+                alert('Error processing file: ' + error.message);
+            }
+        }
+        
+        // Process CSV file
+        function processCSVFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const csv = e.target.result;
+                        const lines = csv.split('\n');
+                        const headers = lines[0].split(',').map(h => h.trim());
+                        const rows = lines.slice(1, 6).map(line => {
+                            const values = line.split(',').map(v => v.trim());
+                            const row = {};
+                            headers.forEach((header, index) => {
+                                row[header] = values[index] || '';
+                            });
+                            return row;
+                        });
+                        
+                        resolve({
+                            headers: headers,
+                            rows: rows,
+                            totalRows: lines.length - 1,
+                            type: 'csv'
+                        });
+                    } catch (error) {
+                        reject(new Error('Invalid CSV format'));
+                    }
+                };
+                reader.onerror = () => reject(new Error('Error reading file'));
+                reader.readAsText(file);
+            });
+        }
+        
+        // Process JSON file
+        function processJSONFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const json = JSON.parse(e.target.result);
+                        resolve({
+                            data: Array.isArray(json) ? json.slice(0, 5) : [json],
+                            totalItems: Array.isArray(json) ? json.length : 1,
+                            type: 'json'
+                        });
+                    } catch (error) {
+                        reject(new Error('Invalid JSON format'));
+                    }
+                };
+                reader.onerror = () => reject(new Error('Error reading file'));
+                reader.readAsText(file);
+            });
+        }
+        
+        // Generate data preview
+        function generateDataPreview(data) {
+            if (data.type === 'csv') {
+                return {
+                    summary: `${data.totalRows} rows, ${data.headers.length} columns`,
+                    headers: data.headers,
+                    sampleRows: data.rows
+                };
+            } else if (data.type === 'json') {
+                return {
+                    summary: `${data.totalItems} items`,
+                    sampleData: data.data
+                };
+>>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
+            }
+            return null;
         }
 
         // Form submission handler - Updated to use backend API
@@ -167,9 +328,40 @@
                 try {
                     // Get form data
                     const formData = new FormData(this);
+<<<<<<< HEAD
                     // Attach file if uploaded
                     if (window.uploadedDataset) {
                         formData.append('businessData', window.uploadedDataset);
+=======
+                    const data = Object.fromEntries(formData);
+                    
+                    // Check if file was actually selected
+                    const fileInput = document.getElementById('businessData');
+                    const actualFile = fileInput.files[0];
+                    
+                    console.log('📁 File input files:', fileInput.files);
+                    console.log('📄 Actual file:', actualFile);
+                    console.log('💾 Window uploaded dataset:', window.uploadedDataset);
+                    
+                    // Add file info if uploaded
+                    if (window.uploadedDataset || actualFile) {
+                        const dataset = window.uploadedDataset || {
+                            name: actualFile.name,
+                            size: actualFile.size,
+                            type: actualFile.type
+                        };
+                        
+                        data.datasetName = dataset.name;
+                        data.datasetSize = Math.round(dataset.size / 1024) + 'KB';
+                        data.datasetType = dataset.type;
+                        data.datasetPreview = dataset.preview ? JSON.stringify(dataset.preview) : null;
+                        
+                        // Also add the actual file to FormData if it exists
+                        if (actualFile) {
+                            formData.append('businessData', actualFile);
+                            console.log('✅ File added to FormData:', actualFile.name);
+                        }
+>>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
                     }
                     console.log('📊 FormData keys:', Array.from(formData.keys()));
                     // Track trial form submission attempt

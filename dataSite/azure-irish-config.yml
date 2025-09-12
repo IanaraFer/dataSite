@@ -1,0 +1,40 @@
+# Irish Business Configuration
+
+gdpr_compliance:
+  data_residency: "EU"
+  encryption_at_rest: true
+  encryption_in_transit: true
+  data_retention_policy: "7_years" # Irish legal requirement
+  right_to_be_forgotten: true
+
+business_registration:
+  cro_number: "REQUIRED" # Companies Registration Office number
+  vat_number: "IE1234567X" # Irish VAT number format
+  registered_address: "Ireland"
+  business_type: "Private Limited Company"
+
+azure_regions:
+  primary: "West Europe"
+  secondary: "North Europe" # For backup/DR
+  data_residency: "EU_only"
+
+compliance_requirements:
+  gdpr: true
+  irish_data_protection: true
+  revenue_commissioners: true # Irish tax authority
+  companies_house: true
+
+monthly_costs_eur:
+  static_web_app_standard: 8.50
+  container_apps: "15-45"
+  key_vault: 3.20
+  application_insights: "0-10"
+  container_registry: 4.25
+  dns_zone: 0.45
+  log_analytics: "5-15"
+  total_estimated: "36-86"
+
+annual_costs_eur:
+  ie_domain: "25-35"
+  ssl_certificate: "0" # Free with Azure
+  business_registration: "50-100" # CRO fees

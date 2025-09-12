@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Deployment Status</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .status-card {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+        }
+        .status-card.warning {
+            border-left-color: #ffc107;
+        }
+        .status-card.error {
+            border-left-color: #dc3545;
+        }
+        .step {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .step-number {
+            background: #0078d4;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        .btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #218838;
+        }
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        .btn-info {
+            background: #17a2b8;
+        }
+        .btn-info:hover {
+            background: #138496;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+        .checklist li i {
+            margin-right: 10px;
+            width: 20px;
+        }
+        .fa-check { color: #28a745; }
+        .fa-times { color: #dc3545; }
+        .fa-clock { color: #ffc107; }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>☁️ Azure Deployment Status</h1>
+        
+        <div class="status-card">
+            <h3><i class="fas fa-info-circle"></i> Current Status</h3>
+            <p>Azure deployment is configured and ready. You just need to:</p>
+            <ol class="checklist">
+                <li><i class="fas fa-clock"></i> Create Azure Static Web App</li>
+                <li><i class="fas fa-clock"></i> Get deployment token</li>
+                <li><i class="fas fa-clock"></i> Add token to GitHub Secrets</li>
+                <li><i class="fas fa-check"></i> Push to main branch (automatic deployment)</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>
+                <h4>Create Azure Static Web App</h4>
+                <p>Go to Azure Portal and create a new Static Web App</p>
+                <a href="https://portal.azure.com" target="_blank" class="btn">Open Azure Portal</a>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>
+                <h4>Configure Static Web App</h4>
+                <p>Use these settings when creating your Static Web App:</p>
+                <ul>
+                    <li><strong>Resource Group:</strong> rg-analyticacore-prod</li>
+                    <li><strong>Name:</strong> analyticacore-ai (or any unique name)</li>
+                    <li><strong>Plan:</strong> Free</li>
+                    <li><strong>Region:</strong> East US 2</li>
+                    <li><strong>Source:</strong> GitHub</li>
+                    <li><strong>Repository:</strong> dataSite</li>
+                    <li><strong>Branch:</strong> main</li>
+                    <li><strong>App location:</strong> /</li>
+                    <li><strong>Output location:</strong> /website</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>
+                <h4>Get Deployment Token</h4>
+                <p>After creating the Static Web App, get the deployment token:</p>
+                <ol>
+                    <li>Go to your Static Web App in Azure Portal</li>
+                    <li>Click "Manage deployment token" in the left menu</li>
+                    <li>Copy the deployment token</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">4</div>
+            <div>
+                <h4>Add Token to GitHub Secrets</h4>
+                <p>Add the deployment token to your GitHub repository secrets:</p>
+                <a href="https://github.com/IanaraFer/dataSite/settings/secrets/actions" target="_blank" class="btn btn-warning">Open GitHub Secrets</a>
+                <p><strong>Secret Name:</strong> AZURE_STATIC_WEB_APPS_API_TOKEN</p>
+                <p><strong>Secret Value:</strong> [Your deployment token from step 3]</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">5</div>
+            <div>
+                <h4>Check Deployment Status</h4>
+                <p>Monitor your deployment progress:</p>
+                <a href="https://github.com/IanaraFer/dataSite/actions" target="_blank" class="btn btn-info">View GitHub Actions</a>
+                <p>Look for "Azure Deployment" workflow - it should run automatically after you add the token.</p>
+            </div>
+        </div>
+
+        <div class="status-card warning">
+            <h3><i class="fas fa-exclamation-triangle"></i> Troubleshooting</h3>
+            <ul class="checklist">
+                <li><i class="fas fa-times"></i> <strong>Token not working?</strong> Make sure the secret name is exactly: AZURE_STATIC_WEB_APPS_API_TOKEN</li>
+                <li><i class="fas fa-times"></i> <strong>Workflow not running?</strong> Push a small change to trigger it</li>
+                <li><i class="fas fa-times"></i> <strong>Site not loading?</strong> Wait 2-3 minutes after deployment completes</li>
+                <li><i class="fas fa-times"></i> <strong>Build errors?</strong> Check the GitHub Actions logs for specific error messages</li>
+            </ul>
+        </div>
+
+        <div class="status-card">
+            <h3><i class="fas fa-rocket"></i> Quick Start Guide</h3>
+            <p>For detailed step-by-step instructions, see:</p>
+            <a href="AZURE_QUICK_SETUP.md" class="btn">Open Quick Setup Guide</a>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh every 30 seconds to check for updates
+        setTimeout(() => {
+            location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>
