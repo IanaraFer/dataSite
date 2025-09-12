@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Token Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .token-display {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #218838;
+        }
+        .status {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .success { border-left: 5px solid #28a745; }
+        .warning { border-left: 5px solid #ffc107; }
+        .error { border-left: 5px solid #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 Azure Token Test</h1>
+        
+        <div class="status success">
+            <h3>✅ Token Received</h3>
+            <p>Your Azure Static Web Apps deployment token:</p>
+            <div class="token-display">
+                91aa649d-dd6f-4cc0-8e08-529c76b7c69b
+            </div>
+        </div>
+
+        <div class="status warning">
+            <h3>📋 Next Steps</h3>
+            <ol>
+                <li><strong>Add to GitHub Secrets:</strong>
+                    <br>Go to: <a href="https://github.com/IanaraFer/dataSite/settings/secrets/actions" target="_blank" style="color: #ffc107;">GitHub Secrets</a>
+                    <br>Name: <code>AZURE_STATIC_WEB_APPS_API_TOKEN</code>
+                    <br>Value: <code>91aa649d-dd6f-4cc0-8e08-529c76b7c69b</code>
+                </li>
+                <li><strong>Check Deployment:</strong>
+                    <br>Go to: <a href="https://github.com/IanaraFer/dataSite/actions" target="_blank" style="color: #ffc107;">GitHub Actions</a>
+                </li>
+                <li><strong>Wait for completion</strong> (2-3 minutes)</li>
+                <li><strong>Visit your site</strong> when deployment is complete</li>
+            </ol>
+        </div>
+
+        <div class="status">
+            <h3>🔧 Troubleshooting</h3>
+            <ul>
+                <li><strong>Token not working?</strong> Make sure the secret name is exactly: <code>AZURE_STATIC_WEB_APPS_API_TOKEN</code></li>
+                <li><strong>Workflow not running?</strong> Push a small change to trigger it</li>
+                <li><strong>Deployment failing?</strong> Check the GitHub Actions logs for specific errors</li>
+                <li><strong>Site not loading?</strong> Wait 2-3 minutes after deployment completes</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="https://github.com/IanaraFer/dataSite/settings/secrets/actions" target="_blank" class="btn">Add Token to GitHub</a>
+            <a href="https://github.com/IanaraFer/dataSite/actions" target="_blank" class="btn">Check Deployment Status</a>
+        </div>
+    </div>
+</body>
+</html>
