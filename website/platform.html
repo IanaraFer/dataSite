@@ -60,6 +60,8 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
     </style>
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <!-- Pricing Badge -->
@@ -133,6 +135,7 @@
         const fileInput = document.getElementById('fileInput');
         const processingStatus = document.getElementById('processingStatus');
         const resultsSection = document.getElementById('resultsSection');
+        window.__platformState = { data: null, headers: null, insights: null, filename: null };
 
         // Drag and drop handlers
         uploadZone.addEventListener('dragover', (e) => {
@@ -214,6 +217,7 @@
 
             // Generate AI insights
             const insights = generateAIInsights(data, headers);
+            window.__platformState = { data, headers, insights, filename };
 
             resultsSection.innerHTML = `
                 <div class="result-card card mt-4">
@@ -336,15 +340,177 @@
         }
 
         function downloadReport(filename) {
-            alert(`📊 Generating AI report for ${filename}...\n\nReport will include:\n✅ Revenue forecasting\n✅ Customer insights\n✅ Growth recommendations\n✅ Risk analysis`);
+            try {
+                const state = window.__platformState || {};
+                if (!state || !state.data || !state.headers) {
+                    alert('Please upload data or load demo first.');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf || {};
+                if (!jsPDF) {
+                    alert('PDF library failed to load. Please refresh and try again.');
+                    return;
+                }
+
+                const doc = new jsPDF();
+                const reportTitle = 'Analytica Core AI - Business Report';
+                const now = new Date();
+                const fileLabel = state.filename || filename || 'dataset.csv';
+
+                doc.setFontSize(18);
+                doc.text(reportTitle, 14, 20);
+                doc.setFontSize(11);
+                doc.text(`Generated: ${now.toLocaleString()}`, 14, 28);
+                doc.text(`File: ${fileLabel}`, 14, 34);
+
+                // Summary
+                doc.setFontSize(14);
+                doc.text('Summary', 14, 46);
+                doc.setFontSize(11);
+                const summaryLines = [
+                    `Records processed: ${state.data.length.toLocaleString()}`,
+                    `Columns detected: ${state.headers.length}`,
+                    `Data Quality: ${state.insights?.quality ?? 'N/A'}%`,
+                    `Completeness: ${state.insights?.completeness ?? 'N/A'}%`
+                ];
+                let y = 52;
+                summaryLines.forEach(line => { doc.text(`• ${line}`, 18, y); y += 6; });
+
+                // Insights
+                doc.setFontSize(14);
+                doc.text('AI Insights', 14, y + 6);
+                doc.setFontSize(11);
+                y += 12;
+                const recs = (state.insights?.recommendations || []).slice(0, 8);
+                if (recs.length === 0) {
+                    doc.text('No insights available.', 18, y);
+                    y += 6;
+                } else {
+                    recs.forEach(rec => { doc.text(`• ${rec}`, 18, y); y += 6; });
+                }
+
+                const outName = `Analytica_Report_${now.toISOString().slice(0,10)}.pdf`;
+                doc.save(outName);
+            } catch (err) {
+                console.error('Download report error:', err);
+                alert('Failed to generate report: ' + (err?.message || err));
+            }
         }
 
         function generateForecast() {
-            alert(`📈 AI Forecasting Model activated!\n\nGenerating:\n🔮 6-month revenue predictions\n📊 Customer growth projections\n⚠️ Risk assessments\n💡 Optimization suggestions`);
+            try {
+                const state = window.__platformState || {};
+                if (!state || !state.data || state.data.length === 0) {
+                    alert('Please upload data or load demo first.');
+                    return;
+                }
+
+                const headers = state.headers || Object.keys(state.data[0] || {});
+                const dateKey = headers.find(h => /date|time/i.test(h)) || 'Date';
+                let valueKey = headers.find(h => /revenue|sales|amount|value/i.test(h));
+                if (!valueKey) {
+                    valueKey = headers.find(h => !isNaN(parseFloat(state.data[0][h])));
+                }
+                const series = state.data
+                    .map(row => ({
+                        date: row[dateKey] ? new Date(row[dateKey]) : null,
+                        value: parseFloat((row[valueKey] ?? '').toString().replace(/[€$,]/g, ''))
+                    }))
+                    .filter(p => !isNaN(p.value));
+                if (series.length < 5) {
+                    alert('Not enough numeric data to generate forecast.');
+                    return;
+                }
+
+                const hasDates = series.every(p => p.date instanceof Date && !isNaN(p.date));
+                if (hasDates) series.sort((a, b) => a.date - b.date);
+
+                const y = series.map(p => p.value);
+                const n = y.length;
+                const x = Array.from({ length: n }, (_, i) => i);
+                const sumX = x.reduce((a, b) => a + b, 0);
+                const sumY = y.reduce((a, b) => a + b, 0);
+                const sumXY = x.reduce((s, xi, i) => s + xi * y[i], 0);
+                const sumXX = x.reduce((s, xi) => s + xi * xi, 0);
+                const slope = (n * sumXY - sumX * sumY) / Math.max(1, (n * sumXX - sumX * sumX));
+                const intercept = (sumY - slope * sumX) / n;
+
+                const historyDates = hasDates ? series.slice(-30).map(p => p.date.toISOString().slice(0,10)) : x.slice(-30).map(i => i.toString());
+                const historyVals = y.slice(-30);
+                const forecastDates = [];
+                const forecastVals = [];
+                for (let i = 1; i <= 30; i++) {
+                    const idx = n + i - 1;
+                    const base = intercept + slope * idx;
+                    const seasonal = 0.1 * base * Math.sin((i / 7) * 2 * Math.PI);
+                    const predicted = Math.max(0, base + seasonal);
+                    forecastVals.push(predicted);
+                    if (hasDates) {
+                        const d = new Date(series[series.length - 1].date);
+                        d.setDate(d.getDate() + i);
+                        forecastDates.push(d.toISOString().slice(0,10));
+                    } else {
+                        forecastDates.push((idx).toString());
+                    }
+                }
+
+                const existing = document.getElementById('forecastSection');
+                if (existing) existing.remove();
+                const html = `
+                    <div id="forecastSection" class="card mt-4">
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i>30-Day Forecast</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="forecastChart" style="height: 360px;"></div>
+                        </div>
+                    </div>`;
+                resultsSection.insertAdjacentHTML('beforeend', html);
+
+                const traces = [
+                    { x: historyDates, y: historyVals, type: 'scatter', mode: 'lines', name: 'Historical', line: { color: '#1f77b4', width: 3 } },
+                    { x: forecastDates, y: forecastVals, type: 'scatter', mode: 'lines', name: 'Forecast', line: { color: '#ff7f0e', width: 3, dash: 'dash' } }
+                ];
+                const layout = { margin: { t: 30, r: 20, b: 40, l: 60 }, xaxis: { title: hasDates ? 'Date' : 'Index' }, yaxis: { title: 'Value' }, showlegend: true };
+                if (typeof Plotly !== 'undefined') {
+                    Plotly.newPlot('forecastChart', traces, layout, { displayModeBar: false, responsive: true });
+                } else {
+                    document.getElementById('forecastChart').innerText = 'Chart library failed to load.';
+                }
+            } catch (err) {
+                console.error('Forecast error:', err);
+                alert('Failed to generate forecast: ' + (err?.message || err));
+            }
         }
 
         function exportInsights() {
-            alert(`💡 Exporting AI Business Insights...\n\nIncluding:\n🎯 Action items\n📈 Growth opportunities\n⚡ Quick wins\n🛡️ Risk mitigation`);
+            try {
+                const state = window.__platformState || {};
+                if (!state || !state.insights || !state.data) {
+                    alert('Please upload data or load demo first.');
+                    return;
+                }
+                const payload = {
+                    file: state.filename,
+                    generatedAt: new Date().toISOString(),
+                    summary: { records: state.data.length, columns: state.headers?.length || 0, quality: state.insights.quality, completeness: state.insights.completeness },
+                    recommendations: state.insights.recommendations
+                };
+                const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const base = (state.filename || 'insights').replace(/\.[^/.]+$/, '');
+                a.download = `${base}_ai_insights.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (err) {
+                console.error('Export insights error:', err);
+                alert('Failed to export insights: ' + (err?.message || err));
+            }
         }
 
         // Clear browser cache for pricing
