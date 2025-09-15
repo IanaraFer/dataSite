@@ -260,39 +260,21 @@
                         });
                     }
                     
-                    // Simulate form submission (no backend needed)
-                    console.log('🔄 Processing form submission...');
-                    
-                    // Simulate processing delay
-                    await new Promise(resolve => setTimeout(resolve, 1500));
-                    
-                    // Reset button
+                    // Build FormData for backend
+                    const fd = new FormData();
+                    Object.entries(data).forEach(([k,v]) => fd.append(k, v));
+                    const fileEl = document.getElementById('businessData');
+                    if (fileEl && fileEl.files && fileEl.files[0]) fd.append('businessData', fileEl.files[0]);
+
+                    // Submit to Netlify function
+                    const res = await fetch('/.netlify/functions/trial-submit', { method: 'POST', body: fd });
+                    const json = await res.json().catch(() => ({}));
+                    if (!res.ok || !json.success) throw new Error(json.error || `HTTP ${res.status}`);
+
                     submitButton.innerHTML = originalText;
                     submitButton.disabled = false;
-                    
-                    // Show success message
-                    const datasetMessage = window.uploadedDataset ? 
-                        ` Your ${window.uploadedDataset.name} file has been received and will be analyzed within 2 hours.` : 
-                        '';
-                    
-                    alert(`✅ SUCCESS! Your free AI business health check request has been submitted.${datasetMessage}
-
-Thank you for your interest in AnalyticaCore AI!
-
-You'll receive your comprehensive report at ${data.email} within 15 minutes.
-
-What happens next:
-• We'll analyze your business data with AI
-• Generate personalized insights and recommendations
-• Send you a detailed report via email
-• Follow up with a call to discuss your results
-
-We're excited to help transform your business with AI!`);
-                    
-                    // Reset form
-                    form.reset();
-                    window.uploadedDataset = null;
-                    document.getElementById('uploadedFile').style.display = 'none';
+                    alert('✅ Success! Your request has been submitted. We will email your analysis shortly.');
+                    form.reset(); window.uploadedDataset = null; document.getElementById('uploadedFile').style.display = 'none';
                     
                 } catch (error) {
                     console.error('❌ Submission error:', error);
@@ -355,7 +337,7 @@ This lead was generated from your DataSight AI free trial page.
                     `.trim();
 
                     // Open email client with lead notification
-                    const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                    const mailtoLink = `mailto:information@analyticacoreai.ie?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
                     window.open(mailtoLink);
                     
                     // Show fallback message
