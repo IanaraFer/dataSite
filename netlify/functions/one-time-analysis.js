@@ -77,6 +77,19 @@ exports.handler = async (event) => {
       attachments
     });
 
+    // Send confirmation to requester
+    if (email) {
+      const confirmSubject = 'We received your One-Time Data Analysis request';
+      const typeList = Array.isArray(analysisTypes) ? analysisTypes.join(', ') : analysisTypes;
+      const confirmText = `Hi ${fullName},\n\nThanks for your request. Our team at Analytica Core AI has received your details and will contact you shortly.\n\nSummary:\n• Name: ${fullName}\n• Email: ${email}\n• Company: ${company}\n• Analysis Types: ${typeList}\n\nYour message:\n${message || '(none)'}\n\nIf you have additional files or context, just reply to this email.\n\nBest regards,\nAnalytica Core AI`;
+      await transporter.sendMail({
+        from: smtpUser,
+        to: email,
+        subject: confirmSubject,
+        text: confirmText
+      });
+    }
+
     return { statusCode: 200, body: JSON.stringify({ success: true }) };
   } catch (err) {
     return { statusCode: 500, body: JSON.stringify({ error: err.message || String(err) }) };
