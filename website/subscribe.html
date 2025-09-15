@@ -79,7 +79,34 @@
         }
         document.getElementById('subscriptionForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Subscription form submitted for ' + plan.name + ' - €' + plan.price + '/month. Payment integration coming soon!');
+            // Collect customer info
+            const email = document.getElementById('email') ? document.getElementById('email').value : '';
+            const firstName = document.getElementById('firstName') ? document.getElementById('firstName').value : '';
+            const lastName = document.getElementById('lastName') ? document.getElementById('lastName').value : '';
+            // Backend URL (adjust if needed)
+            const API_BASE = window.location.hostname === 'localhost' ? 
+                'http://localhost:8001' : 
+                `https://${window.location.hostname}/api`;
+            fetch(`${API_BASE}/payment/subscribe`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    plan: selectedPlan,
+                    amount: plan.price,
+                    currency: 'EUR',
+                    customer_email: email,
+                    customer_name: firstName + ' ' + lastName
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.checkout_url) {
+                    window.location.href = data.checkout_url;
+                } else {
+                    alert('Payment error: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(err => alert('Network error: ' + err));
         });
     </script>
 </body>

@@ -24,7 +24,7 @@ STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "pk_test_placeholde
 
 # Initialize SendGrid
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
-FROM_EMAIL = os.getenv("FROM_EMAIL", "contact@analyticacoreai.ie")
+FROM_EMAIL = os.getenv("FROM_EMAIL", "information@analyticacoreai.ie")
 FROM_NAME = os.getenv("FROM_NAME", "AnalyticaCore AI")
 
 # Configure CORS

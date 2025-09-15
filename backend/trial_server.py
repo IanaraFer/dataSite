@@ -282,7 +282,7 @@ ACTION REQUIRED:
 {'🔥 HIGH PRIORITY - Call within 15 minutes: ' + customer_info['phone'] if customer_info.get('datasetName') else '📞 Call within 24 hours: ' + customer_info['phone']}
 📧 Send report to: {customer_info['email']}
 
-Contact: datasightai.founders@gmail.com
+Contact: information@analyticacoreai.ie
 ================================================================================
         """
         
@@ -325,7 +325,7 @@ Report Includes:
 ✅ Executive Summary
 
 Contact Info:
-📧 datasightai.founders@gmail.com
+📧 information@analyticacoreai.ie
 📞 +353 874502058
 ================================================================================
         """

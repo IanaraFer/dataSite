@@ -3,6 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Trial - AnalyticaCore AI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+        <h1>Free Trial Request</h1>
+        <form id="freeTrialForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required />
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required />
+            </div>
+            <div class="form-group">
+                <label for="company">Company</label>
+                <input type="text" id="company" name="company" />
+            </div>
+            <div class="form-group">
+                <label for="file">Upload File</label>
+                <input type="file" id="file" name="file" />
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message"></textarea>
+            </div>
+            <button type="submit">Submit Free Trial</button>
+        </form>
+        <div id="formStatus"></div>
+        <script>
+            document.getElementById('freeTrialForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const form = e.target;
+                const formData = new FormData(form);
+                const data = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    company: formData.get('company'),
+                    message: formData.get('message')
+                };
+                document.getElementById('formStatus').textContent = 'Sending...';
+                try {
+                    const response = await fetch('/.netlify/functions/free-trial-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    const text = await response.text();
+                    document.getElementById('formStatus').textContent = text;
+                    form.reset();
+                } catch (err) {
+                    document.getElementById('formStatus').textContent = 'Error sending form.';
+                }
+            });
+        </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FREE AI Business Health Check - DataSight AI</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -12,6 +74,10 @@
             --success-color: #28a745;
             --warning-color: #ffc107;
             --danger-color: #dc3545;
+        }
+
+        .hidden-file-input {
+            display: none;
         }
 
         body {
@@ -89,6 +155,10 @@
             font-weight: bold;
             display: inline-block;
             margin-bottom: 20px;
+        }
+
+        .uploaded-file-name {
+            display: none;
         }
 
         .urgency-banner {
@@ -322,18 +392,18 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">First Name *</label>
-                                        <input type="text" class="form-control form-control-lg" id="firstName" name="firstName" required>
+                                        <input type="text" class="form-control form-control-lg" id="firstName" name="firstName" required placeholder="Enter your first name" title="First Name">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Last Name *</label>
-                                        <input type="text" class="form-control form-control-lg" id="lastName" name="lastName" required>
+                                        <input type="text" class="form-control form-control-lg" id="lastName" name="lastName" required title="Last Name" placeholder="Enter your last name">
                                     </div>
                                 </div>
                                 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Business Email *</label>
-                                        <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+                                        <input type="email" class="form-control form-control-lg" id="email" name="email" required title="Business Email" placeholder="Enter your business email">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Phone Number *</label>
@@ -348,7 +418,7 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Industry *</label>
-                                        <select class="form-select form-select-lg" id="industry" name="industry" required>
+                                        <select class="form-select form-select-lg" id="industry" name="industry" required title="Industry">
                                             <option value="">Select Industry</option>
                                             <option value="retail">Retail/E-commerce</option>
                                             <option value="restaurant">Restaurant/Food Service</option>
@@ -364,7 +434,7 @@
                                 
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Approximate Annual Revenue *</label>
-                                    <select class="form-select form-select-lg" id="revenue" name="revenue" required>
+                                    <select class="form-select form-select-lg" id="revenue" name="revenue" required title="Approximate Annual Revenue">
                                         <option value="">Select Revenue Range</option>
                                         <option value="under-500k">Under €500K</option>
                                         <option value="500k-1m">€500K - €1M</option>
@@ -383,11 +453,19 @@
                                 <!-- Dataset Upload Section -->
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Upload Your Business Data (Optional)</label>
+<<<<<<< HEAD
+                                        <input type="file" id="datasetFile" name="datasetFile" class="hidden-file-input" accept=".csv,.xlsx,.xls,.json" onchange="handleDatasetUpload(this)">
+                                        <div id="uploadedFileName" class="mt-2 text-success uploaded-file-name">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            <span id="fileName"></span>
+                                        </div>
+=======
                                     <div class="upload-area-small" onclick="console.log('Upload area clicked'); document.getElementById('datasetFile').click()" style="border: 2px dashed #1f77b4; border-radius: 10px; padding: 2rem; text-align: center; background: rgba(31, 119, 180, 0.05); cursor: pointer; transition: all 0.3s ease;">
                                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                                         <h6>Upload CSV, Excel, or Data File</h6>
                                         <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
                                         <input type="file" id="datasetFile" name="datasetFile" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="console.log('File input changed'); handleDatasetUpload(this)">
+>>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
                                         <div id="uploadedFileName" class="mt-2 text-success" style="display: none;">
                                             <i class="fas fa-check-circle me-1"></i>
                                             <span id="fileName"></span>

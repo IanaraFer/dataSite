@@ -36,7 +36,7 @@ jobs:
   # Deploy Infrastructure (if needed)
   infrastructure:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && false  # Disabled for now
+    if: github.event_name == 'push'  # Enabled for push events
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,6 +49,7 @@ jobs:
       - name: Deploy Bicep template
         uses: azure/arm-deploy@v1
         with:
+          scope: resourceGroup
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP }}
           template: ./infra/main.bicep

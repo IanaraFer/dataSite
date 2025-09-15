@@ -13,6 +13,9 @@
         .analysis-section { background: #f8f9fa; border-left: 4px solid #007bff; padding: 20px; margin: 20px 0; border-radius: 5px; }
         .metric-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px; margin: 10px 0; text-align: center; }
         .recommendation { background: #e8f5e8; border: 1px solid #28a745; border-radius: 10px; padding: 15px; margin: 10px 0; }
+        #datasetPreview { display: none; }
+        #analysisResult { display: none; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -26,7 +29,7 @@
             <div class="row mb-4">
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Your Email Address</label>
-                    <input type="email" id="userEmail" class="form-control" placeholder="Enter your email" value="datasightai.founders@gmail.com">
+                    <input type="email" id="userEmail" class="form-control" placeholder="Enter your email" value="information@analyticacoreai.ie">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Company Name</label>
@@ -37,7 +40,7 @@
             <div class="row mb-4">
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Industry</label>
-                    <select id="industry" class="form-select">
+                    <select id="industry" class="form-select" title="Industry">
                         <option value="technology">Technology</option>
                         <option value="retail">Retail</option>
                         <option value="healthcare">Healthcare</option>
@@ -49,7 +52,7 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Revenue Range</label>
-                    <select id="revenue" class="form-select">
+                    <select id="revenue" class="form-select" title="Revenue Range">
                         <option value="under-500k">Under €500k</option>
                         <option value="500k-1m">€500k - €1M</option>
                         <option value="1m-5m">€1M - €5M</option>
@@ -59,7 +62,7 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Company Size</label>
-                    <select id="companySize" class="form-select">
+                    <select id="companySize" class="form-select" title="Company Size">
                         <option value="1-10">1-10 employees</option>
                         <option value="11-50">11-50 employees</option>
                         <option value="51-200">51-200 employees</option>
@@ -68,14 +71,29 @@
                     </select>
                 </div>
             </div>
+
+            <!-- Dataset Upload Section -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Upload Your Dataset (CSV or Excel)</label>
+                    <input type="file" id="datasetFile" class="form-control" accept=".csv,.xlsx,.xls">
+                    <small class="text-muted">Supported formats: CSV, Excel. Max file size: 20MB</small>
+                </div>
+            </div>
+            <div class="text-center mb-4">
+                <button onclick="handleDatasetUpload()" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-upload me-2"></i>Upload & Preview Dataset
+                </button>
+            <div id="datasetPreview"></div>
+            <div id="datasetPreview"></div>
             
             <div class="text-center mb-4">
                 <button onclick="generateAnalysis()" class="btn btn-primary-custom btn-lg">
                     <i class="fas fa-robot me-2"></i>Generate My AI Business Analysis
                 </button>
             </div>
-            
-            <div id="analysisResult" style="display: none;">
+            <div id="analysisResult" class="hidden">
+            <div id="analysisResult" class="hidden">
                 <div class="analysis-section">
                     <h4><i class="fas fa-chart-bar me-2"></i>Business Health Score</h4>
                     <div class="row">
@@ -122,8 +140,17 @@
                 </div>
                 
                 <div class="text-center mt-4">
-                    <button onclick="sendAnalysisEmail()" class="btn btn-primary-custom btn-lg">
+                    <button onclick="sendAnalysisEmail()" class="btn btn-primary-custom btn-lg me-2">
                         <i class="fas fa-envelope me-2"></i>Send Analysis to My Email
+                    </button>
+                    <button onclick="downloadReport()" class="btn btn-success btn-lg me-2">
+                        <i class="fas fa-download me-2"></i>Download Full Report
+                    </button>
+                    <button onclick="downloadInsights()" class="btn btn-info btn-lg me-2">
+                        <i class="fas fa-download me-2"></i>Download Insights
+                    </button>
+                    <button onclick="downloadForecast()" class="btn btn-warning btn-lg">
+                        <i class="fas fa-download me-2"></i>Download Forecast
                     </button>
                 </div>
             </div>
@@ -363,7 +390,7 @@ ROI Timeline: 3-6 months for full implementation
 All data is kept confidential and GDPR compliant.
 
 📧 Questions? Reply to this email or contact us at:
-Email: datasightai.founders@gmail.com
+Email: information@analyticacoreai.ie
 Phone: +353 874502058
 Website: DataSight AI Platform
 
@@ -423,6 +450,53 @@ You'll receive your complete AI business health check with:
         }
         
         // Auto-load with saved data if available
+        // Download functions
+        function downloadReport() {
+            const company = document.getElementById('companyName').value;
+            const industry = document.getElementById('industry').value;
+            const overallScore = document.getElementById('overallScore').textContent;
+            const growthScore = document.getElementById('growthScore').textContent;
+            const efficiencyScore = document.getElementById('efficiencyScore').textContent;
+            const riskScore = document.getElementById('riskScore').textContent;
+            const keyInsights = document.getElementById('keyInsights').innerText;
+            const recommendations = document.getElementById('recommendations').innerText;
+            const opportunities = document.getElementById('opportunities').innerText;
+            const reportContent = `Business Analysis Report\n\nCompany: ${company}\nIndustry: ${industry}\n\nScores:\n- Overall: ${overallScore}\n- Growth: ${growthScore}\n- Efficiency: ${efficiencyScore}\n- Risk: ${riskScore}\n\nKey Insights:\n${keyInsights}\n\nRecommendations:\n${recommendations}\n\nGrowth Opportunities:\n${opportunities}`;
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${company}_Business_Analysis_Report.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadInsights() {
+            const company = document.getElementById('companyName').value;
+            const keyInsights = document.getElementById('keyInsights').innerText;
+            const insightsContent = `Business Insights for ${company}\n\n${keyInsights}`;
+            const blob = new Blob([insightsContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${company}_Insights.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadForecast() {
+            const company = document.getElementById('companyName').value;
+            const recommendations = document.getElementById('recommendations').innerText;
+            const opportunities = document.getElementById('opportunities').innerText;
+            const forecastContent = `Forecast & Recommendations for ${company}\n\nRecommendations:\n${recommendations}\n\nGrowth Opportunities:\n${opportunities}`;
+            const blob = new Blob([forecastContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${company}_Forecast.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
         window.addEventListener('load', function() {
             // Try to load saved lead data
             const leads = JSON.parse(localStorage.getItem('datasight_leads') || '[]');

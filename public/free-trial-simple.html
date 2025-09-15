@@ -67,8 +67,8 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label">Industry *</label>
-                    <select class="form-select" name="industry" required>
+                    <label class="form-label" for="industrySelect">Industry *</label>
+                    <select class="form-select" id="industrySelect" name="industry" required>
                         <option value="">Select Industry</option>
                         <option value="technology">Technology</option>
                         <option value="retail">Retail</option>
@@ -80,8 +80,8 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label">Annual Revenue *</label>
-                    <select class="form-select" name="revenue" required>
+                    <label class="form-label" for="revenueSelect">Annual Revenue *</label>
+                    <select class="form-select" id="revenueSelect" name="revenue" required>
                         <option value="">Select Revenue Range</option>
                         <option value="under-500k">Under €500k</option>
                         <option value="500k-1m">€500k - €1M</option>
@@ -283,8 +283,8 @@ ${window.uploadedDataset ?
 4. 💰 This is a HOT LEAD - they're ready to see results!` :
 `1. 📞 Call within 24 hours: ${data.phone}
 2. 📧 Send demo analysis to: ${data.email}
-3. 💼 Offer to analyze their data
-4. 🎯 Schedule demo call`}
+3. Offer to analyze their data
+4. 🎯 Schedule demo call
 
 ---
 ⚡ RESPOND IMMEDIATELY for highest conversion rates!
@@ -312,7 +312,6 @@ You'll receive your comprehensive report within ${window.uploadedDataset ? '2 ho
             
             console.log('✅ All event listeners attached successfully');
         });
-3. 💼 Offer to analyze their data
 4. 🎯 Schedule demo call`}
 
 ---

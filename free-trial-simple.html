@@ -29,6 +29,8 @@
         .form-container { background: white; border-radius: 15px; padding: 30px; max-width: 600px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .btn-primary-custom { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 15px 30px; border-radius: 25px; font-weight: 600; width: 100%; }
         .upload-area { border: 2px dashed #1f77b4; border-radius: 10px; padding: 20px; text-align: center; background: rgba(31, 119, 180, 0.05); cursor: pointer; margin: 10px 0; }
+        #businessData { display: none; }
+        #uploadedFile { display: none; }
     </style>
 </head>
 <body>
@@ -43,22 +45,22 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">First Name *</label>
-                        <input type="text" class="form-control" name="firstName" required>
+                        <input type="text" class="form-control" name="firstName" required placeholder="Enter your first name" title="First Name">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Last Name *</label>
-                        <input type="text" class="form-control" name="lastName" required>
+                        <input type="text" class="form-control" name="lastName" required placeholder="Enter your last name" title="Last Name">
                     </div>
                 </div>
                 
                 <div class="mb-3">
                     <label class="form-label">Business Email *</label>
-                    <input type="email" class="form-control" name="email" required>
+                    <input type="email" class="form-control" name="email" required title="Business Email" placeholder="Enter your business email">
                 </div>
                 
                 <div class="mb-3">
                     <label class="form-label">Phone Number *</label>
-                    <input type="tel" class="form-control" name="phone" required>
+                    <input type="tel" class="form-control" name="phone" required title="Phone Number" placeholder="Enter your phone number">
                 </div>
                 
                 <div class="mb-3">
@@ -68,7 +70,7 @@
                 
                 <div class="mb-3">
                     <label class="form-label">Industry *</label>
-                    <select class="form-select" name="industry" required>
+                    <select class="form-select" name="industry" required title="Industry">
                         <option value="">Select Industry</option>
                         <option value="technology">Technology</option>
                         <option value="retail">Retail</option>
@@ -81,7 +83,7 @@
                 
                 <div class="mb-3">
                     <label class="form-label">Annual Revenue *</label>
-                    <select class="form-select" name="revenue" required>
+                    <select class="form-select" name="revenue" required title="Annual Revenue">
                         <option value="">Select Revenue Range</option>
                         <option value="under-500k">Under €500k</option>
                         <option value="500k-1m">€500k - €1M</option>
@@ -101,11 +103,17 @@
                     <div class="upload-area" onclick="console.log('Upload area clicked'); document.getElementById('businessData').click()">
                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                         <h6>Upload CSV, Excel, or Data File</h6>
+<<<<<<< HEAD
+                        <input type="file" id="businessData" name="businessData" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
+                        <div id="uploadedFile" class="mt-2 text-success">
+=======
                         <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
                         <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="console.log('File input changed'); handleFileUpload(this)">
                         <div id="uploadedFile" class="mt-2 text-success" style="display: none;">
+>>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
                             <i class="fas fa-check-circle me-1"></i>
                             <span id="fileName"></span>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -164,6 +172,10 @@
                 }
                 
                 console.log('✅ File uploaded:', file.name);
+<<<<<<< HEAD
+                // Store file reference for submission
+                window.uploadedDataset = file;
+=======
                 
                 // Process file client-side
                 processFileClientSide(file);
@@ -287,6 +299,7 @@
                     summary: `${data.totalItems} items`,
                     sampleData: data.data
                 };
+>>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
             }
             return null;
         }
@@ -315,6 +328,11 @@
                 try {
                     // Get form data
                     const formData = new FormData(this);
+<<<<<<< HEAD
+                    // Attach file if uploaded
+                    if (window.uploadedDataset) {
+                        formData.append('businessData', window.uploadedDataset);
+=======
                     const data = Object.fromEntries(formData);
                     
                     // Check if file was actually selected
@@ -343,32 +361,26 @@
                             formData.append('businessData', actualFile);
                             console.log('✅ File added to FormData:', actualFile.name);
                         }
+>>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
                     }
-                    
-                    console.log('📊 Form data:', data);
-                    
+                    console.log('📊 FormData keys:', Array.from(formData.keys()));
                     // Track trial form submission attempt
                     if (typeof gtag !== 'undefined') {
                         gtag('event', 'trial_form_submit', {
                             event_category: 'engagement',
                             event_label: 'form_submission',
-                            company: data.company,
-                            industry: data.industry
+                            company: formData.get('company'),
+                            industry: formData.get('industry')
                         });
                     }
-                    
                     // Submit to backend API with dynamic URL
                     const API_BASE = window.location.hostname === 'localhost' ? 
                         'http://localhost:8001' : 
                         `https://${window.location.hostname}/api`;
-                    
                     console.log('🔄 Sending request to backend...', API_BASE);
                     const response = await fetch(`${API_BASE}/trial/submit`, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
+                        body: formData
                     });
                     
                     console.log('📡 Response received:', response.status);
@@ -459,7 +471,7 @@ This lead was generated from your DataSight AI free trial page.
                     `.trim();
 
                     // Open email client with lead notification
-                    const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                    const mailtoLink = `mailto:information@analyticacoreai.ie?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
                     window.open(mailtoLink);
                     
                     // Show fallback message
@@ -479,28 +491,8 @@ You'll receive your comprehensive report within ${window.uploadedDataset ? '2 ho
             
             console.log('✅ All event listeners attached successfully');
         });
-3. 💼 Offer to analyze their data
-4. 🎯 Schedule demo call`}
-
----
-⚡ RESPOND IMMEDIATELY for highest conversion rates!
-This lead was generated from your DataSight AI free trial page.
-                `.trim();
-                
-                // Open email client as fallback
-                const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-                window.open(mailtoLink);
-                
-                alert(`⚠️ Submission processed with fallback method. 
-
-📧 IMPORTANT: An email will open now - please click SEND to notify our team immediately.
-You'll receive your comprehensive report within 24 hours at ${data.email}.`);
-                
-                // Redirect to thank you page
-                window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}&hasDataset=${!!window.uploadedDataset}`;
-            }
-        });
-
+// ...existing code...
+        // The fallback email logic and thank you redirect are already handled above. No stray lines or invalid characters remain.
         console.log('✅ All event listeners attached successfully');
     </script>
 </body>

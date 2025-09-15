@@ -79,7 +79,45 @@
         }
         document.getElementById('subscriptionForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Subscription form submitted for ' + plan.name + ' - €' + plan.price + '/month. Payment integration coming soon!');
+            // Collect form data
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                company: document.getElementById('company').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                plan: plan.name,
+                price: plan.price
+            };
+
+            // Show loading state
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = 'Processing...';
+
+            // Call backend payment API (assume /api/payment/subscribe)
+            fetch('/.netlify/functions/stripe-subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.checkout_url) {
+                    window.location.href = data.checkout_url;
+                } else {
+                    alert('Payment error: ' + (data.error || 'Unknown error'));
+                    document.getElementById('submitBtn').disabled = false;
+                    document.getElementById('submitBtn').textContent = `Complete Subscription - €${plan.price}/month`;
+                }
+            })
+            .catch(error => {
+                alert('Payment error: ' + error.message);
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').textContent = `Complete Subscription - €${plan.price}/month`;
+            });
         });
     </script>
 </body>

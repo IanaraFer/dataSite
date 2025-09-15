@@ -4,8 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "18.20.4"
-  PYTHON_VERSION = ""
+  PYTHON_VERSION = "3.11.9"
   MISE_VERBOSE = "0"
+  STRIPE_SECRET_KEY = "sk_live_YOUR_SECRET_KEY_HERE"
 
 [build.processing]
   skip_processing = false
@@ -25,4 +26,3 @@
   from = "/*"
   to = "/index.html"
   status = 200
-

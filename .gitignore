@@ -3,6 +3,8 @@
 *.xlsx
 *.xls
 *.json
+!package-lock.json
+!package.json
 data/
 datasets/
 
