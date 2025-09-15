@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - Analytica Core AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .page-card { background: white; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        .icon-badge { display: inline-flex; align-items: center; gap: 8px; background: #f6f7fb; border: 1px solid #e8ecf4; border-radius: 10px; padding: 8px 12px; }
+        .section-title { font-weight: 700; }
+    </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="page-card p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="h3 m-0"><i class="fas fa-shield-alt me-2 text-primary"></i>How It Works: Transparency, Privacy and Safeguards</h1>
+                <a href="index.html" class="btn btn-outline-primary btn-sm">Back to Home</a>
+            </div>
+            <p class="text-muted">We built Analytica Core AI to be simple, secure, and transparent. This page explains what happens to your data, how we protect it, and how you can control it at any time.</p>
+
+            <hr class="my-4">
+
+            <div class="row g-4">
+                <div class="col-12 col-lg-6">
+                    <h2 class="section-title h5"><i class="fas fa-diagram-project me-2 text-primary"></i>What happens when you upload data</h2>
+                    <ol class="mt-3 text-muted">
+                        <li><strong>Secure Upload (HTTPS):</strong> Your file is transmitted over an encrypted TLS connection.</li>
+                        <li><strong>Temporary Processing:</strong> Our AI reads columns and rows to compute metrics and insights shown to you.</li>
+                        <li><strong>Minimal Retention:</strong> For the demo, files are processed in-memory where possible. We don’t sell data or use it to train external models.</li>
+                        <li><strong>You’re in Control:</strong> You can request deletion of your data at any time (see below).</li>
+                    </ol>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <span class="icon-badge"><i class="fas fa-lock"></i> TLS Encryption</span>
+                        <span class="icon-badge"><i class="fas fa-user-shield"></i> Access Controls</span>
+                        <span class="icon-badge"><i class="fas fa-ban"></i> No Data Selling</span>
+                        <span class="icon-badge"><i class="fas fa-euro-sign"></i> GDPR Aligned</span>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <h2 class="section-title h5"><i class="fas fa-user-lock me-2 text-primary"></i>Privacy & Safeguards</h2>
+                    <ul class="mt-3 text-muted">
+                        <li><strong>Encryption in transit:</strong> All traffic uses HTTPS/TLS.</li>
+                        <li><strong>Least-privilege access:</strong> Only authorized personnel can access operational systems.</li>
+                        <li><strong>Purpose limitation:</strong> We use your data solely to generate insights for you.</li>
+                        <li><strong>No third-party selling:</strong> We do not sell or broker your data.</li>
+                        <li><strong>Auditability:</strong> Requests for deletion are tracked and actioned promptly.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row g-4">
+                <div class="col-12 col-lg-6">
+                    <h2 class="section-title h5"><i class="fas fa-certificate me-2 text-primary"></i>Security & Trust Badges</h2>
+                    <div class="row gy-3 mt-1">
+                        <div class="col-12 d-flex align-items-center">
+                            <i class="fas fa-lock text-success me-2"></i>
+                            <div>
+                                <strong>HTTPS/TLS Encryption</strong>
+                                <div class="text-muted small">All pages and uploads use TLS to protect data in transit.</div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex align-items-center">
+                            <i class="fas fa-user-check text-success me-2"></i>
+                            <div>
+                                <strong>GDPR-Aligned Practices</strong>
+                                <div class="text-muted small">User consent, data minimization, and deletion on request.</div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex align-items-center">
+                            <i class="fas fa-ban text-success me-2"></i>
+                            <div>
+                                <strong>No Data Selling</strong>
+                                <div class="text-muted small">We never sell or share your data with advertisers.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-3 mb-0 small">
+                        Looking for a specific compliance attestation (e.g., ISO 27001, SOC 2)? Contact us — we can share our current controls and roadmap.
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <h2 class="section-title h5"><i class="fas fa-database me-2 text-primary"></i>Data Retention & Deletion</h2>
+                    <ul class="mt-3 text-muted">
+                        <li><strong>Default retention:</strong> Demo uploads are processed transiently. Production retention is limited to what’s necessary to provide the service.</li>
+                        <li><strong>Deletion anytime:</strong> You can request deletion at any time using the form below.</li>
+                        <li><strong>Response time:</strong> We aim to confirm deletion within 72 hours (sooner in most cases).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row g-4">
+                <div class="col-12 col-lg-8">
+                    <h2 class="section-title h5"><i class="fas fa-user-slash me-2 text-primary"></i>Request Data Deletion</h2>
+                    <p class="text-muted mb-3">Submit your request and we’ll confirm when your data has been removed. Use the description to help us locate the data (e.g., file names, dates, email used).</p>
+                    <form id="deletionForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" name="fullName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Describe the data to delete</label>
+                                <textarea class="form-control" name="description" rows="4" placeholder="Dataset names, dates, account email, or any identifiers..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mt-3">
+                            <button type="submit" id="deleteSubmit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt me-2"></i>Submit Deletion Request
+                            </button>
+                            <span class="text-muted small ms-3">We’ll email confirmation to you and action the request promptly.</span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="border rounded p-3 bg-light">
+                        <h6 class="mb-2"><i class="fas fa-info-circle me-2 text-primary"></i>Need help?</h6>
+                        <ul class="small m-0 text-muted">
+                            <li>Contact: information@analyticacoreai.ie</li>
+                            <li>Business hours: 09:00–18:00 (GMT)</li>
+                            <li>Typical response: under 24 hours</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('deletionForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const submitBtn = document.getElementById('deleteSubmit');
+            const fd = new FormData(form);
+            const payload = { fullName: fd.get('fullName'), email: fd.get('email'), description: fd.get('description') };
+            if (!payload.fullName || !payload.email || !payload.description) { alert('Please complete all fields.'); return; }
+            try {
+                submitBtn.disabled = true; submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+                const res = await fetch('/.netlify/functions/data-deletion-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) throw new Error(data.error || `HTTP ${res.status}`);
+                alert('✅ Deletion request submitted. We will confirm via email.');
+                form.reset();
+            } catch (err) {
+                alert('Failed to submit request: ' + (err?.message || err));
+            } finally {
+                submitBtn.disabled = false; submitBtn.innerHTML = '<i class="fas fa-trash-alt me-2"></i>Submit Deletion Request';
+            }
+        });
+    </script>
+</body>
+</html>
+
