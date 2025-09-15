@@ -434,7 +434,7 @@
         <div class="modal fade" id="oneTimeModal" tabindex="-1" aria-labelledby="oneTimeModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form id="oneTimeForm">
+                    <form id="oneTimeForm" enctype="multipart/form-data">
                         <div class="modal-header">
                             <h5 class="modal-title" id="oneTimeModalLabel">Request One-Time Data Analysis</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -455,6 +455,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Upload Data File (CSV, PDF, DOC, XLSX, etc.)</label>
                                 <input type="file" class="form-control" name="dataFile" accept=".csv,.pdf,.doc,.docx,.xlsx,.xls,.json,.txt" required>
+                                <small class="text-muted">Max 25MB. You can also share a link in the message field.</small>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Select Analysis Types</label>
@@ -475,12 +476,12 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Additional Message (optional)</label>
-                                <textarea class="form-control" name="message" rows="3" placeholder="Describe your project or specific needs..."></textarea>
+                                <textarea class="form-control" name="message" rows="4" placeholder="Describe your project, goals, data sources, timelines, and any links..."></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                            <button type="submit" id="oneTimeSubmit" class="btn btn-primary">Submit Request</button>
                         </div>
                     </form>
                 </div>
@@ -989,6 +990,34 @@
         window.addEventListener('load', function() {
             const loadTime = performance.now();
             console.log(`⚡ Page loaded in ${Math.round(loadTime)}ms`);
+        });
+    </script>
+    <script>
+        document.getElementById('oneTimeForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const submitBtn = document.getElementById('oneTimeSubmit');
+            const fd = new FormData(form);
+            // Basic validations
+            if (!fd.get('fullName') || !fd.get('email')) { alert('Please enter your name and email.'); return; }
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+                const res = await fetch('/.netlify/functions/one-time-analysis', { method: 'POST', body: fd });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) throw new Error(data.error || `HTTP ${res.status}`);
+                submitBtn.innerHTML = 'Sent!';
+                alert('✅ Request sent. Our team will contact you shortly.');
+                form.reset();
+                const modalEl = document.getElementById('oneTimeModal');
+                const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                modal.hide();
+            } catch (err) {
+                alert('Failed to send request: ' + (err?.message || err));
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Submit Request';
+            }
         });
     </script>
 </body>
