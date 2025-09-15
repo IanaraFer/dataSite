@@ -20,6 +20,33 @@
         page_location: window.location.href
       });
     </script>
+    <script>
+        document.getElementById('oneTimeForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const submitBtn = document.getElementById('oneTimeSubmit');
+            const fd = new FormData(form);
+            if (!fd.get('fullName') || !fd.get('email')) { alert('Please enter your name and email.'); return; }
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+                const res = await fetch('/.netlify/functions/one-time-analysis', { method: 'POST', body: fd });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) throw new Error(data.error || `HTTP ${res.status}`);
+                submitBtn.innerHTML = 'Sent!';
+                alert('✅ Request sent. Our team will contact you shortly.');
+                form.reset();
+                const modalEl = document.getElementById('oneTimeModal');
+                const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                modal.hide();
+            } catch (err) {
+                alert('Failed to send request: ' + (err?.message || err));
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Submit Request';
+            }
+        });
+    </script>
     
     <style>
         :root {
@@ -402,6 +429,81 @@
             </div>
         </div>
     </section>
+
+    <!-- One-Time Data Analysis Subscription Section -->
+    <section id="one-time-analysis" class="pricing">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <div class="card p-4 shadow-sm mb-4">
+                        <h3 class="fw-bold mb-3">One-Time Data Analysis</h3>
+                        <p class="text-muted mb-3">Get a complete, custom data analysis for a single project. No subscription required.</p>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#oneTimeModal">
+                            Request One-Time Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- One-Time Analysis Modal -->
+    <div class="modal fade" id="oneTimeModal" tabindex="-1" aria-labelledby="oneTimeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="oneTimeForm" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="oneTimeModalLabel">Request One-Time Data Analysis</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="fullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Company (optional)</label>
+                            <input type="text" class="form-control" name="company">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Upload Data File (CSV, PDF, DOC, XLSX, etc.)</label>
+                            <input type="file" class="form-control" name="dataFile" accept=".csv,.pdf,.doc,.docx,.xlsx,.xls,.json,.txt" required>
+                            <small class="text-muted">Max 25MB. You can also share a link in the message field.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Select Analysis Types</label>
+                            <select class="form-select" name="analysisTypes" multiple required>
+                                <option value="business-overview">Business Overview</option>
+                                <option value="revenue-forecasting">Revenue Forecasting</option>
+                                <option value="customer-segmentation">Customer Segmentation</option>
+                                <option value="anomaly-detection">Anomaly Detection</option>
+                                <option value="comparative-analysis">Comparative Analysis</option>
+                                <option value="churn-prediction">Churn Prediction</option>
+                                <option value="rfm-analysis">RFM Analysis</option>
+                                <option value="custom-dashboard">Custom Dashboard</option>
+                                <option value="api-integration">API Integration</option>
+                                <option value="white-label-reporting">White-label Reporting</option>
+                                <option value="other">Other (describe in message)</option>
+                            </select>
+                            <small class="text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple options.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Additional Message (optional)</label>
+                            <textarea class="form-control" name="message" rows="4" placeholder="Describe your project, goals, data sources, timelines, and any links..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" id="oneTimeSubmit" class="btn btn-primary">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Stats Section -->
     <section class="stats">
