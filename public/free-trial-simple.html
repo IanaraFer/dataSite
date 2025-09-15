@@ -190,19 +190,14 @@
                         });
                     }
                     
-                    // Submit to backend API with dynamic URL
-                    const API_BASE = window.location.hostname === 'localhost' ? 
-                        'http://localhost:8001' : 
-                        `https://${window.location.hostname}/api`;
-                    
-                    console.log('🔄 Sending request to backend...', API_BASE);
-                    const response = await fetch(`${API_BASE}/trial/submit`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
-                    });
+                    // Build FormData and submit to Netlify function
+                    const fd = new FormData();
+                    Object.entries(data).forEach(([k,v]) => fd.append(k, v));
+                    const fileEl = document.getElementById('businessData');
+                    if (fileEl && fileEl.files && fileEl.files[0]) fd.append('businessData', fileEl.files[0]);
+
+                    console.log('🔄 Sending request to Netlify function...');
+                    const response = await fetch('/.netlify/functions/trial-submit', { method: 'POST', body: fd });
                     
                     console.log('📡 Response received:', response.status);
                     
@@ -292,7 +287,7 @@ This lead was generated from your DataSight AI free trial page.
                     `.trim();
 
                     // Open email client with lead notification
-                    const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                    const mailtoLink = `mailto:information@analyticacoreai.ie?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
                     window.open(mailtoLink);
                     
                     // Show fallback message
