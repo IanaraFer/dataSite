@@ -372,7 +372,7 @@
             ).join('');
         }
         
-        function sendAnalysisEmail() {
+        async function sendAnalysisEmail() {
             const email = document.getElementById('userEmail').value;
             const company = document.getElementById('companyName').value;
             const industry = document.getElementById('industry').value;
@@ -458,55 +458,37 @@ Website: DataSight AI Platform
 © 2025 DataSight AI - Transforming Business Through Intelligence
             `.trim();
 
-            // Open email client with the complete analysis
-            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-            window.open(mailtoLink);
-            
-            // Also send a copy to the business email
-            const businessEmailSubject = `📊 Analysis Report Sent to ${company} (${email})`;
-            const businessEmailBody = `
-📊 ANALYSIS REPORT DELIVERY CONFIRMATION
-
-Report sent to: ${email}
-Company: ${company}
-Industry: ${industry}
-Timestamp: ${new Date().toLocaleString()}
-
-Business Health Scores:
-• Overall: ${overallScore}
-• Growth: ${growthScore}
-• Efficiency: ${efficiencyScore}
-• Risk: ${riskScore}
-
-📞 FOLLOW-UP REQUIRED:
-• Call customer within 24 hours: ${email}
-• Offer strategy consultation
-• Discuss implementation timeline
-• Schedule platform demo
-
-This is a qualified lead ready for conversion.
-            `.trim();
-            
-            const businessMailtoLink = `mailto:information@analyticacoreai.ie?subject=${encodeURIComponent(businessEmailSubject)}&body=${encodeURIComponent(businessEmailBody)}`;
-            
-            // Open both emails
-            setTimeout(() => {
-                window.open(businessMailtoLink);
-            }, 1000);
-            
-            alert(`✅ SUCCESS! Your comprehensive business analysis has been sent to ${email}
-
-📧 Check your email client - two emails will open:
-1. Your detailed analysis report
-2. Business notification for follow-up
-
-You'll receive your complete AI business health check with:
-• Detailed scores and insights
-• Actionable recommendations
-• Growth opportunities
-• Implementation roadmap
-
-📞 Questions? Call us at +353 874502058`);
+            // Send via Netlify function
+            try {
+                const btns = document.querySelectorAll('button');
+                btns.forEach(b => b.disabled = true);
+                const res = await fetch('/.netlify/functions/send-analysis-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        toEmail: email,
+                        company,
+                        industry,
+                        overallScore,
+                        growthScore,
+                        efficiencyScore,
+                        riskScore,
+                        keyInsights,
+                        recommendations,
+                        opportunities
+                    })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) {
+                    throw new Error(data.error || `HTTP ${res.status}`);
+                }
+                alert('✅ Success! Your analysis has been emailed to you and our team.');
+            } catch (err) {
+                alert('Email send failed: ' + (err?.message || err));
+            } finally {
+                const btns = document.querySelectorAll('button');
+                btns.forEach(b => b.disabled = false);
+            }
         }
         
         // Auto-load with saved data if available
