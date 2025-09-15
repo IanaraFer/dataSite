@@ -5,6 +5,13 @@ exports.handler = async function(event, context) {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
+  if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY.includes('YOUR_SECRET_KEY')) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Stripe key not configured. Set STRIPE_SECRET_KEY in environment.' })
+    };
+  }
+
   const data = JSON.parse(event.body);
   const { plan, email } = data;
 
@@ -27,7 +34,7 @@ exports.handler = async function(event, context) {
     });
     return {
       statusCode: 200,
-      body: JSON.stringify({ checkout_url: session.url })
+      body: JSON.stringify({ success: true, checkout_url: session.url })
     };
   } catch (error) {
     return {

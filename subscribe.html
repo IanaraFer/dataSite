@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -95,7 +95,7 @@
             document.getElementById('submitBtn').disabled = true;
             document.getElementById('submitBtn').textContent = 'Processing...';
 
-            // Call backend payment API (assume /api/payment/subscribe)
+            // Call Netlify function for Stripe Checkout session
             fetch('/.netlify/functions/stripe-subscribe', {
                 method: 'POST',
                 headers: {
@@ -103,18 +103,20 @@
                 },
                 body: JSON.stringify(formData)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.checkout_url) {
+            .then(async response => {
+                let data;
+                try { data = await response.json(); } catch (e) {}
+                if (!response.ok) { throw new Error(data?.error || `HTTP ${response.status}`); }
+                if (data.checkout_url) {
                     window.location.href = data.checkout_url;
                 } else {
-                    alert('Payment error: ' + (data.error || 'Unknown error'));
+                    alert('Payment error: ' + (data.error || 'No checkout URL returned.'));
                     document.getElementById('submitBtn').disabled = false;
                     document.getElementById('submitBtn').textContent = `Complete Subscription - €${plan.price}/month`;
                 }
             })
             .catch(error => {
-                alert('Payment error: ' + error.message);
+                alert('Payment error: ' + (error?.message || error));
                 document.getElementById('submitBtn').disabled = false;
                 document.getElementById('submitBtn').textContent = `Complete Subscription - €${plan.price}/month`;
             });
