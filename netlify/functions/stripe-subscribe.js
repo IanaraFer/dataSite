@@ -12,25 +12,45 @@ exports.handler = async function(event, context) {
     };
   }
 
-  const data = JSON.parse(event.body);
-  const { plan, email } = data;
+  const data = JSON.parse(event.body || '{}');
+  // Accept multiple shapes from different frontends
+  let planInput = data.plan || data.planType || data.tier || '';
+  const customerEmail = data.customer_email || data.email || data.userEmail || '';
 
-  // Map plan name to Stripe price ID
-  const priceIds = {
-    'Starter Plan': 'price_1S2Ne8EPS0ev8tkiBKZzV4pS',
-    'Professional Plan': 'price_1S2NfWEPS0ev8tkiwao10uJ0',
-    'Enterprise Plan': 'price_1S2NgSEPS0ev8tkiRuu9Xbtb'
+  // Normalize plan
+  const normalizedPlan = String(planInput).toLowerCase().includes('enterprise')
+    ? 'enterprise'
+    : String(planInput).toLowerCase().includes('pro')
+      ? 'professional'
+      : 'starter';
+
+  // Price IDs from environment (no hard-coded IDs)
+  const priceIdMap = {
+    starter: process.env.PRICE_ID_STARTER,
+    professional: process.env.PRICE_ID_PROFESSIONAL,
+    enterprise: process.env.PRICE_ID_ENTERPRISE,
   };
-  const priceId = priceIds[plan] || priceIds['Starter Plan'];
+
+  const priceId = priceIdMap[normalizedPlan];
+  if (!priceId) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: `Missing price ID for plan '${normalizedPlan}'. Set PRICE_ID_STARTER, PRICE_ID_PROFESSIONAL, PRICE_ID_ENTERPRISE in environment.` })
+    };
+  }
 
   try {
+    const hostHeader = event.headers['x-forwarded-host'] || event.headers['host'] || 'analyticacoreai.netlify.app';
+    const scheme = (event.headers['x-forwarded-proto'] || 'https');
+    const baseUrl = `${scheme}://${hostHeader}`;
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
       mode: 'subscription',
-      customer_email: email,
-      success_url: 'https://analyticacoreai.netlify.app/success.html',
-      cancel_url: 'https://analyticacoreai.netlify.app/pricing.html'
+      customer_email: customerEmail || undefined,
+      success_url: `${baseUrl}/success.html`,
+      cancel_url: `${baseUrl}/pricing.html`
     });
     return {
       statusCode: 200,
