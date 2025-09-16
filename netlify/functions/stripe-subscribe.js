@@ -36,9 +36,9 @@ exports.handler = async function(event, context) {
     // Optional last-resort fallbacks (only used if explicitly allowed)
     const allowFallbacks = (process.env.ALLOW_HARDCODED_PRICE_FALLBACKS || 'false').toLowerCase() === 'true';
     const fallbackMap = allowFallbacks ? {
-      starter: 'price_1S2Ne8EPS0ev8tkiBKZzV4pS',
-      professional: 'price_1S2NfWEPS0ev8tkiwao10uJ0',
-      enterprise: 'price_1S2NgSEPS0ev8tkiRuu9Xbtb'
+      starter: 'price_1RyYmsCsG7kLS0L9IukaQMDl',
+      professional: 'price_1RyYo0CsG7kLS0L9ewWXfqnf',
+      enterprise: 'price_1RyYpmCsG7kLS0L9PEzBRHFE'
     } : {};
     const resolved = fallbackMap[normalizedPlan];
     if (!resolved) {
