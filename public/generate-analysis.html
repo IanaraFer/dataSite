@@ -69,6 +69,21 @@
                 </div>
             </div>
             
+            <!-- Dataset Upload Section -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Upload Your Dataset (CSV or Excel)</label>
+                    <input type="file" id="datasetFile" class="form-control" accept=".csv,.xlsx,.xls">
+                    <small class="text-muted">Supported formats: CSV, Excel. Max file size: 20MB</small>
+                </div>
+            </div>
+            <div class="text-center mb-3">
+                <button onclick="handleDatasetUpload()" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-upload me-2"></i>Upload & Preview Dataset
+                </button>
+            </div>
+            <div id="datasetPreview"></div>
+
             <div class="text-center mb-4">
                 <button onclick="generateAnalysis()" class="btn btn-primary-custom btn-lg">
                     <i class="fas fa-robot me-2"></i>Generate My AI Business Analysis
@@ -443,6 +458,22 @@ Website: DataSight AI Platform
                 const data = await res.json().catch(() => ({}));
                 if (!res.ok || !data.success) {
                     throw new Error(data.error || `HTTP ${res.status}`);
+                }
+                // If a dataset file is selected, send it to the business inbox via one-time-analysis
+                const fileInput = document.getElementById('datasetFile');
+                if (fileInput && fileInput.files && fileInput.files.length > 0) {
+                    const fd = new FormData();
+                    fd.append('fullName', '');
+                    fd.append('email', email);
+                    fd.append('company', company);
+                    fd.append('message', 'Dataset uploaded from Generate Analysis page');
+                    fd.append('analysisTypes', 'generated-analysis');
+                    fd.append('file', fileInput.files[0], fileInput.files[0].name);
+                    try {
+                        const upRes = await fetch('/.netlify/functions/one-time-analysis', { method: 'POST', body: fd });
+                        const upData = await upRes.json().catch(() => ({}));
+                        if (!upRes.ok) { console.warn('Dataset send failed:', upData); }
+                    } catch (e) { console.warn('Dataset send error:', e); }
                 }
                 alert('✅ Success! Your analysis has been emailed to you and our team.');
             } catch (err) {
