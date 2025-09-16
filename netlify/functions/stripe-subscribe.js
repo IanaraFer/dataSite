@@ -24,10 +24,10 @@ exports.handler = async function(event, context) {
       ? 'professional'
       : 'starter';
 
-  // Mode detection
+  // Mode detection (informational)
   const usingLiveKey = process.env.STRIPE_SECRET_KEY.startsWith('sk_live_');
 
-  // Price IDs from environment with aliases and safe fallbacks (test only)
+  // Price IDs from environment with aliases
   const priceIdMap = {
     starter: process.env.PRICE_ID_STARTER || process.env.STRIPE_PRICE_ID_STARTER || process.env.STARTER_PRICE_ID,
     professional: process.env.PRICE_ID_PROFESSIONAL || process.env.STRIPE_PRICE_ID_PROFESSIONAL || process.env.PROFESSIONAL_PRICE_ID,
@@ -35,27 +35,21 @@ exports.handler = async function(event, context) {
   };
 
   const priceId = priceIdMap[normalizedPlan];
-  if (!priceId) {
-    if (usingLiveKey) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: `Missing live price ID for plan '${normalizedPlan}'. Set PRICE_ID_* environment variables.` })
-      };
-    }
-    const allowFallbacks = (process.env.ALLOW_HARDCODED_PRICE_FALLBACKS || 'false').toLowerCase() === 'true';
-    const fallbackMap = allowFallbacks ? {
-      starter: 'price_1RyYmsCsG7kLS0L9IukaQMDl',
-      professional: 'price_1RyYo0CsG7kLS0L9ewWXfqnf',
-      enterprise: 'price_1RyYpmCsG7kLS0L9PEzBRHFE'
-    } : {};
-    const resolved = fallbackMap[normalizedPlan];
-    if (!resolved) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: `Missing test price ID for plan '${normalizedPlan}'. Provide PRICE_ID_* or enable ALLOW_HARDCODED_PRICE_FALLBACKS=true.` })
-      };
-    }
-    priceIdMap[normalizedPlan] = resolved;
+  // Always allow fallback to known IDs you provided so checkout works even if env vars are unset
+  const fallbackMap = {
+    starter: 'price_1RyYmsCsG7kLS0L9IukaQMDl',
+    professional: 'price_1RyYo0CsG7kLS0L9ewWXfqnf',
+    enterprise: 'price_1RyYpmCsG7kLS0L9PEzBRHFE'
+  };
+  const finalPriceId = priceId || fallbackMap[normalizedPlan];
+  if (!finalPriceId) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: `Missing price ID for plan '${normalizedPlan}'. Set PRICE_ID_* env vars or verify fallback IDs.`,
+        plan: normalizedPlan
+      })
+    };
   }
 
   try {
@@ -65,7 +59,7 @@ exports.handler = async function(event, context) {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [{ price: priceIdMap[normalizedPlan], quantity: 1 }],
+      line_items: [{ price: finalPriceId, quantity: 1 }],
       mode: 'subscription',
       customer_email: customerEmail || undefined,
       success_url: `${baseUrl}/success.html`,
