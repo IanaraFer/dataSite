@@ -24,7 +24,10 @@ exports.handler = async function(event, context) {
       ? 'professional'
       : 'starter';
 
-  // Price IDs from environment with aliases and safe fallbacks
+  // Mode detection
+  const usingLiveKey = process.env.STRIPE_SECRET_KEY.startsWith('sk_live_');
+
+  // Price IDs from environment with aliases and safe fallbacks (test only)
   const priceIdMap = {
     starter: process.env.PRICE_ID_STARTER || process.env.STRIPE_PRICE_ID_STARTER || process.env.STARTER_PRICE_ID,
     professional: process.env.PRICE_ID_PROFESSIONAL || process.env.STRIPE_PRICE_ID_PROFESSIONAL || process.env.PROFESSIONAL_PRICE_ID,
@@ -33,7 +36,12 @@ exports.handler = async function(event, context) {
 
   const priceId = priceIdMap[normalizedPlan];
   if (!priceId) {
-    // Optional last-resort fallbacks (only used if explicitly allowed)
+    if (usingLiveKey) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: `Missing live price ID for plan '${normalizedPlan}'. Set PRICE_ID_* environment variables.` })
+      };
+    }
     const allowFallbacks = (process.env.ALLOW_HARDCODED_PRICE_FALLBACKS || 'false').toLowerCase() === 'true';
     const fallbackMap = allowFallbacks ? {
       starter: 'price_1RyYmsCsG7kLS0L9IukaQMDl',
@@ -44,14 +52,7 @@ exports.handler = async function(event, context) {
     if (!resolved) {
       return {
         statusCode: 500,
-        body: JSON.stringify({
-          error: `Missing price ID for plan '${normalizedPlan}'. Set PRICE_ID_STARTER, PRICE_ID_PROFESSIONAL, PRICE_ID_ENTERPRISE (or STRIPE_PRICE_ID_* aliases).`,
-          details: {
-            plan: normalizedPlan,
-            expected_env_vars: ['PRICE_ID_STARTER','PRICE_ID_PROFESSIONAL','PRICE_ID_ENTERPRISE'],
-            aliases: ['STRIPE_PRICE_ID_STARTER','STRIPE_PRICE_ID_PROFESSIONAL','STRIPE_PRICE_ID_ENTERPRISE','STARTER_PRICE_ID','PROFESSIONAL_PRICE_ID','ENTERPRISE_PRICE_ID']
-          }
-        })
+        body: JSON.stringify({ error: `Missing test price ID for plan '${normalizedPlan}'. Provide PRICE_ID_* or enable ALLOW_HARDCODED_PRICE_FALLBACKS=true.` })
       };
     }
     priceIdMap[normalizedPlan] = resolved;
