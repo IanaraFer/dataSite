@@ -37,7 +37,7 @@ exports.handler = async (event) => {
       return { statusCode: 400, body: JSON.stringify({ error: 'Missing required fields' }) };
     }
 
-    const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER || 'information@analyticacoreai.ie';
+    const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER || process.env.SENDGRID_FROM || 'information@analyticacoreai.ie';
     const smtpPass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
     const smtpHost = process.env.SMTP_HOST || 'smtp.office365.com';
     const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);

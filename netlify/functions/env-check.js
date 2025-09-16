@@ -10,6 +10,8 @@ exports.handler = async () => {
   const pricePro = process.env.PRICE_ID_PROFESSIONAL || process.env.STRIPE_PRICE_ID_PROFESSIONAL || process.env.PROFESSIONAL_PRICE_ID;
   const priceEnt = process.env.PRICE_ID_ENTERPRISE || process.env.STRIPE_PRICE_ID_ENTERPRISE || process.env.ENTERPRISE_PRICE_ID;
   const sendgridKey = process.env.SENDGRID_API_KEY;
+  const emailUser = process.env.EMAIL_USER || process.env.SMTP_USER;
+  const sendgridFrom = process.env.SENDGRID_FROM;
 
   return {
     statusCode: 200,
@@ -24,7 +26,9 @@ exports.handler = async () => {
       PRICE_ID_STARTER: present(priceStarter),
       PRICE_ID_PROFESSIONAL: present(pricePro),
       PRICE_ID_ENTERPRISE: present(priceEnt),
-      SENDGRID_API_KEY: present(sendgridKey)
+      SENDGRID_API_KEY: present(sendgridKey),
+      EMAIL_USER: present(emailUser),
+      SENDGRID_FROM: present(sendgridFrom)
     })
   };
 };
