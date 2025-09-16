@@ -24,19 +24,37 @@ exports.handler = async function(event, context) {
       ? 'professional'
       : 'starter';
 
-  // Price IDs from environment (no hard-coded IDs)
+  // Price IDs from environment with aliases and safe fallbacks
   const priceIdMap = {
-    starter: process.env.PRICE_ID_STARTER,
-    professional: process.env.PRICE_ID_PROFESSIONAL,
-    enterprise: process.env.PRICE_ID_ENTERPRISE,
+    starter: process.env.PRICE_ID_STARTER || process.env.STRIPE_PRICE_ID_STARTER || process.env.STARTER_PRICE_ID,
+    professional: process.env.PRICE_ID_PROFESSIONAL || process.env.STRIPE_PRICE_ID_PROFESSIONAL || process.env.PROFESSIONAL_PRICE_ID,
+    enterprise: process.env.PRICE_ID_ENTERPRISE || process.env.STRIPE_PRICE_ID_ENTERPRISE || process.env.ENTERPRISE_PRICE_ID,
   };
 
   const priceId = priceIdMap[normalizedPlan];
   if (!priceId) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: `Missing price ID for plan '${normalizedPlan}'. Set PRICE_ID_STARTER, PRICE_ID_PROFESSIONAL, PRICE_ID_ENTERPRISE in environment.` })
-    };
+    // Optional last-resort fallbacks (only used if explicitly allowed)
+    const allowFallbacks = (process.env.ALLOW_HARDCODED_PRICE_FALLBACKS || 'false').toLowerCase() === 'true';
+    const fallbackMap = allowFallbacks ? {
+      starter: 'price_1S2Ne8EPS0ev8tkiBKZzV4pS',
+      professional: 'price_1S2NfWEPS0ev8tkiwao10uJ0',
+      enterprise: 'price_1S2NgSEPS0ev8tkiRuu9Xbtb'
+    } : {};
+    const resolved = fallbackMap[normalizedPlan];
+    if (!resolved) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error: `Missing price ID for plan '${normalizedPlan}'. Set PRICE_ID_STARTER, PRICE_ID_PROFESSIONAL, PRICE_ID_ENTERPRISE (or STRIPE_PRICE_ID_* aliases).`,
+          details: {
+            plan: normalizedPlan,
+            expected_env_vars: ['PRICE_ID_STARTER','PRICE_ID_PROFESSIONAL','PRICE_ID_ENTERPRISE'],
+            aliases: ['STRIPE_PRICE_ID_STARTER','STRIPE_PRICE_ID_PROFESSIONAL','STRIPE_PRICE_ID_ENTERPRISE','STARTER_PRICE_ID','PROFESSIONAL_PRICE_ID','ENTERPRISE_PRICE_ID']
+          }
+        })
+      };
+    }
+    priceIdMap[normalizedPlan] = resolved;
   }
 
   try {
@@ -46,7 +64,7 @@ exports.handler = async function(event, context) {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [{ price: priceIdMap[normalizedPlan], quantity: 1 }],
       mode: 'subscription',
       customer_email: customerEmail || undefined,
       success_url: `${baseUrl}/success.html`,
