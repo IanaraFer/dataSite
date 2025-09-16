@@ -9,6 +9,7 @@ exports.handler = async () => {
   const priceStarter = process.env.PRICE_ID_STARTER || process.env.STRIPE_PRICE_ID_STARTER || process.env.STARTER_PRICE_ID;
   const pricePro = process.env.PRICE_ID_PROFESSIONAL || process.env.STRIPE_PRICE_ID_PROFESSIONAL || process.env.PROFESSIONAL_PRICE_ID;
   const priceEnt = process.env.PRICE_ID_ENTERPRISE || process.env.STRIPE_PRICE_ID_ENTERPRISE || process.env.ENTERPRISE_PRICE_ID;
+  const sendgridKey = process.env.SENDGRID_API_KEY;
 
   return {
     statusCode: 200,
@@ -22,7 +23,8 @@ exports.handler = async () => {
       STRIPE_MODE: stripeMode,
       PRICE_ID_STARTER: present(priceStarter),
       PRICE_ID_PROFESSIONAL: present(pricePro),
-      PRICE_ID_ENTERPRISE: present(priceEnt)
+      PRICE_ID_ENTERPRISE: present(priceEnt),
+      SENDGRID_API_KEY: present(sendgridKey)
     })
   };
 };

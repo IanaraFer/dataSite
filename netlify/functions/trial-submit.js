@@ -41,11 +41,16 @@ exports.handler = async (event) => {
     const smtpPass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
     const smtpHost = process.env.SMTP_HOST || 'smtp.office365.com';
     const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
-    if (!smtpPass) {
+    const sendgridKey = process.env.SENDGRID_API_KEY;
+
+    let transporter;
+    if (smtpPass) {
+      transporter = nodemailer.createTransport({ host: smtpHost, port: smtpPort, secure: false, auth: { user: smtpUser, pass: smtpPass } });
+    } else if (sendgridKey) {
+      transporter = nodemailer.createTransport({ service: 'SendGrid', auth: { user: 'apikey', pass: sendgridKey } });
+    } else {
       return { statusCode: 500, body: JSON.stringify({ error: 'Email credentials not configured' }) };
     }
-
-    const transporter = nodemailer.createTransport({ host: smtpHost, port: smtpPort, secure: false, auth: { user: smtpUser, pass: smtpPass } });
     const to = 'information@analyticacoreai.ie';
     const subject = `New Free Trial Request - ${firstName} ${lastName} (${company})`;
     const text = `New Free Trial Lead\n\nName: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\nCompany: ${company}\nIndustry: ${industry}\nRevenue: ${revenue}\n\nChallenge:\n${challenge || '(not specified)'}\n`;
