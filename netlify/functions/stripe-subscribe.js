@@ -2,12 +2,13 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async function(event, context) {
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   }
 
   if (!process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY.includes('YOUR_SECRET_KEY')) {
     return {
       statusCode: 500,
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
       body: JSON.stringify({ error: 'Stripe key not configured. Set STRIPE_SECRET_KEY in environment.' })
     };
   }
@@ -67,6 +68,7 @@ exports.handler = async function(event, context) {
     });
     return {
       statusCode: 200,
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
       body: JSON.stringify({ success: true, checkout_url: session.url })
     };
   } catch (error) {
@@ -76,6 +78,7 @@ exports.handler = async function(event, context) {
       : error?.message;
     return {
       statusCode: 500,
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
       body: JSON.stringify({
         error: helpful || 'Stripe error',
         details: {

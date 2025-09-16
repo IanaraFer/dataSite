@@ -99,17 +99,21 @@
             .then(async res => {
                 let data;
                 try { data = await res.json(); } catch (e) {}
-                if (!res.ok) { throw new Error(data?.error || `HTTP ${res.status}`); }
+                if (!res.ok) {
+                    const msg = (data && data.error) ? `${data.error}${data.details ? ` (mode: ${data.details.mode}, plan: ${data.details.plan})` : ''}` : `HTTP ${res.status}`;
+                    throw new Error(msg);
+                }
                 return data;
             })
             .then(data => {
                 if (data.checkout_url) {
                     window.location.href = data.checkout_url;
                 } else {
-                    alert('Payment error: ' + (data.error || 'No checkout URL returned.'));
+                    const errMsg = (data && data.error) ? data.error : 'No checkout URL returned.';
+                    alert('Payment error: ' + errMsg);
                 }
             })
-            .catch(err => alert('Payment error: ' + (err?.message || err)));
+            .catch(err => alert('Payment error: ' + (err && err.message ? err.message : String(err))));
         });
     </script>
 </body>
