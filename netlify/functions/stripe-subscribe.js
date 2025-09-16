@@ -70,9 +70,20 @@ exports.handler = async function(event, context) {
       body: JSON.stringify({ success: true, checkout_url: session.url })
     };
   } catch (error) {
+    const mode = usingLiveKey ? 'live' : 'test';
+    const helpful = (typeof error?.message === 'string' && error.message.includes('No such price'))
+      ? `Price ID not found in ${mode} mode. Ensure the PRICE_ID for plan '${normalizedPlan}' exists in your ${mode} Stripe account.`
+      : error?.message;
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: error.message })
+      body: JSON.stringify({
+        error: helpful || 'Stripe error',
+        details: {
+          mode,
+          plan: normalizedPlan,
+          price_id_used: finalPriceId
+        }
+      })
     };
   }
 };
