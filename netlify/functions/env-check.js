@@ -5,6 +5,7 @@ exports.handler = async () => {
   const smtpHost = process.env.SMTP_HOST;
   const smtpPort = process.env.SMTP_PORT;
   const stripeKey = process.env.STRIPE_SECRET_KEY;
+  const stripeMode = stripeKey && stripeKey.startsWith('sk_live_') ? 'live' : (stripeKey && stripeKey.startsWith('sk_test_') ? 'test' : null);
   const priceStarter = process.env.PRICE_ID_STARTER || process.env.STRIPE_PRICE_ID_STARTER || process.env.STARTER_PRICE_ID;
   const pricePro = process.env.PRICE_ID_PROFESSIONAL || process.env.STRIPE_PRICE_ID_PROFESSIONAL || process.env.PROFESSIONAL_PRICE_ID;
   const priceEnt = process.env.PRICE_ID_ENTERPRISE || process.env.STRIPE_PRICE_ID_ENTERPRISE || process.env.ENTERPRISE_PRICE_ID;
@@ -18,6 +19,7 @@ exports.handler = async () => {
       SMTP_HOST: smtpHost || null,
       SMTP_PORT: smtpPort || null,
       STRIPE_SECRET_KEY: present(stripeKey),
+      STRIPE_MODE: stripeMode,
       PRICE_ID_STARTER: present(priceStarter),
       PRICE_ID_PROFESSIONAL: present(pricePro),
       PRICE_ID_ENTERPRISE: present(priceEnt)
