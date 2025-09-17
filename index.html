@@ -313,6 +313,11 @@
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
         }
+        /* Fixed navbar offset for mobile and scroll targets */
+        @media (max-width: 991.98px) {
+            body { padding-top: 70px; }
+        }
+        [id] { scroll-margin-top: 80px; }
     </style>
     <script type="application/ld+json">
     {
