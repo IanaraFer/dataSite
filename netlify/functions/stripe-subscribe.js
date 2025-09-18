@@ -57,15 +57,45 @@ exports.handler = async function(event, context) {
     const hostHeader = event.headers['x-forwarded-host'] || event.headers['host'] || 'analyticacoreai.netlify.app';
     const scheme = (event.headers['x-forwarded-proto'] || 'https');
     const baseUrl = `${scheme}://${hostHeader}`;
+    const planMeta = {
+      starter: { amount: 19900, name: 'Starter Plan' },
+      professional: { amount: 39900, name: 'Professional Plan' },
+      enterprise: { amount: 79900, name: 'Enterprise Plan' }
+    }[normalizedPlan];
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [{ price: finalPriceId, quantity: 1 }],
-      mode: 'subscription',
-      customer_email: customerEmail || undefined,
-      success_url: `${baseUrl}/success.html`,
-      cancel_url: `${baseUrl}/pricing.html`
-    });
+    async function createSessionWithPrice(priceId) {
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{ price: priceId, quantity: 1 }],
+        mode: 'subscription',
+        customer_email: customerEmail || undefined,
+        success_url: `${baseUrl}/success.html`,
+        cancel_url: `${baseUrl}/pricing.html`
+      });
+      return session;
+    }
+
+    let session;
+    try {
+      session = await createSessionWithPrice(finalPriceId);
+    } catch (err) {
+      const allowAutoCreate = (process.env.AUTO_CREATE_PRICES || 'true').toLowerCase() === 'true';
+      const isNoSuchPrice = typeof err?.message === 'string' && err.message.includes('No such price');
+      if (usingLiveKey && allowAutoCreate && isNoSuchPrice && planMeta) {
+        // Auto-create a live EUR monthly price if missing
+        const price = await stripe.prices.create({
+          currency: 'eur',
+          unit_amount: planMeta.amount,
+          recurring: { interval: 'month' },
+          lookup_key: `${normalizedPlan}_monthly_eur`,
+          product_data: { name: `AnalyticaCore AI ${planMeta.name}` }
+        });
+        session = await createSessionWithPrice(price.id);
+      } else {
+        throw err;
+      }
+    }
+
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
