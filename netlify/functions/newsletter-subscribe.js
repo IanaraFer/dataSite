@@ -17,25 +17,32 @@ exports.handler = async (event) => {
     const sendgridKey = process.env.SENDGRID_API_KEY;
 
     let transporter;
+    let fromAddress = smtpUser;
     if (smtpPass) {
       transporter = nodemailer.createTransport({ host: smtpHost, port: smtpPort, secure: false, auth: { user: smtpUser, pass: smtpPass } });
     } else if (sendgridKey) {
       transporter = nodemailer.createTransport({ service: 'SendGrid', auth: { user: 'apikey', pass: sendgridKey } });
+      fromAddress = process.env.SENDGRID_FROM;
+      if (!fromAddress) {
+        return { statusCode: 500, body: JSON.stringify({ error: 'SENDGRID_FROM not set. Set it to a verified sender in SendGrid.' }) };
+      }
     } else {
       return { statusCode: 500, body: JSON.stringify({ error: 'Email credentials not configured' }) };
     }
 
     // Notify business inbox
+    const businessInbox = process.env.BUSINESS_INBOX || 'information@analyticacoreai.ie';
     await transporter.sendMail({
-      from: smtpUser,
+      from: fromAddress,
       to: 'information@analyticacoreai.ie',
       subject: 'New newsletter subscriber',
-      text: `Email: ${email}`
+      text: `Email: ${email}`,
+      replyTo: email
     });
 
     // Send confirmation to subscriber
     await transporter.sendMail({
-      from: smtpUser,
+      from: fromAddress,
       to: email,
       subject: 'Thanks for subscribing to Analytica Core AI updates',
       text: 'Thanks for subscribing! We will send you occasional product updates and promotions. You can unsubscribe anytime by replying STOP.'
