@@ -33,7 +33,7 @@ def handler(event, context):
                 "transfer_data": {"destination": account_id}
             },
             mode="payment",
-            success_url="https://yourdomain.com/success?session_id={CHECKOUT_SESSION_ID}",
+            success_url="https://yourdomain.com/thankyou.html?session_id={CHECKOUT_SESSION_ID}",
             cancel_url="https://yourdomain.com/cancel"
         )
         return {
