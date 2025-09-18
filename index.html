@@ -840,6 +840,24 @@
         </div>
     </section>
 
+    <!-- Newsletter Signup -->
+    <section class="py-5" style="background: #0f172a;">
+        <div class="container">
+            <div class="row align-items-center g-3">
+                <div class="col-lg-6 text-white">
+                    <h3 class="mb-2">Stay in the loop</h3>
+                    <p class="m-0 text-light">Get product updates, tips and promotions. Unsubscribe anytime.</p>
+                </div>
+                <div class="col-lg-6">
+                    <form id="newsletterForm" class="d-flex gap-2">
+                        <input type="email" class="form-control" id="newsletterEmail" placeholder="you@company.com" required>
+                        <button class="btn btn-primary" id="newsletterBtn" type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -997,6 +1015,26 @@
         window.addEventListener('load', function() {
             const loadTime = performance.now();
             console.log(`⚡ Page loaded in ${Math.round(loadTime)}ms`);
+        });
+    </script>
+    <script>
+        document.getElementById('newsletterForm')?.addEventListener('submit', async function(e){
+            e.preventDefault();
+            const btn = document.getElementById('newsletterBtn');
+            const email = document.getElementById('newsletterEmail').value;
+            if (!email) return;
+            try {
+                btn.disabled = true; btn.textContent = 'Subscribing...';
+                const res = await fetch('/.netlify/functions/newsletter-subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) throw new Error(data.error || `HTTP ${res.status}`);
+                alert('✅ Subscribed! Please check your email for confirmation.');
+                this.reset();
+            } catch (err) {
+                alert('Subscription failed: ' + (err?.message || err));
+            } finally {
+                btn.disabled = false; btn.textContent = 'Subscribe';
+            }
         });
     </script>
     <script>
