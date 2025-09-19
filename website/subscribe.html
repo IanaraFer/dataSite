@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -84,10 +84,8 @@
             const firstName = document.getElementById('firstName') ? document.getElementById('firstName').value : '';
             const lastName = document.getElementById('lastName') ? document.getElementById('lastName').value : '';
             // Backend URL (adjust if needed)
-            const API_BASE = window.location.hostname === 'localhost' ? 
-                'http://localhost:8001' : 
-                `https://${window.location.hostname}/api`;
-            fetch(`${API_BASE}/payment/subscribe`, {
+            const endpoint = '/.netlify/functions/stripe-subscribe';
+            fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -98,15 +96,24 @@
                     customer_name: firstName + ' ' + lastName
                 })
             })
-            .then(res => res.json())
+            .then(async res => {
+                let data;
+                try { data = await res.json(); } catch (e) {}
+                if (!res.ok) {
+                    const msg = (data && data.error) ? `${data.error}${data.details ? ` (mode: ${data.details.mode}, plan: ${data.details.plan})` : ''}` : `HTTP ${res.status}`;
+                    throw new Error(msg);
+                }
+                return data;
+            })
             .then(data => {
-                if (data.success && data.checkout_url) {
+                if (data.checkout_url) {
                     window.location.href = data.checkout_url;
                 } else {
-                    alert('Payment error: ' + (data.error || 'Unknown error'));
+                    const errMsg = (data && data.error) ? data.error : 'No checkout URL returned.';
+                    alert('Payment error: ' + errMsg);
                 }
             })
-            .catch(err => alert('Network error: ' + err));
+            .catch(err => alert('Payment error: ' + (err && err.message ? err.message : String(err))));
         });
     </script>
 </body>

@@ -8,12 +8,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQQHWKG6SY"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX', {
+      gtag('config', 'G-FQQHWKG6SY', {
         page_title: 'Free Trial Form - AnalyticaCore AI',
         page_location: window.location.href
       });
@@ -108,6 +108,11 @@
                             <span id="fileName"></span>
                         </div>
                     </div>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-link p-0" onclick="downloadSample()">
+                            <i class="fas fa-download me-1"></i>Download sample CSV template
+                        </button>
+                    </div>
                 </div>
                 
                 <button type="submit" class="btn btn-primary-custom">
@@ -144,6 +149,19 @@
                     type: file.type
                 };
             }
+        }
+
+        function downloadSample() {
+            const sample = 'customer_id,order_date,amount\n1001,2025-01-05,1200\n1002,2025-01-06,850\n1003,2025-01-07,430';
+            const blob = new Blob([sample], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sample-business-data.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
         // Form submission handler - Updated to use backend API
@@ -190,19 +208,14 @@
                         });
                     }
                     
-                    // Submit to backend API with dynamic URL
-                    const API_BASE = window.location.hostname === 'localhost' ? 
-                        'http://localhost:8001' : 
-                        `https://${window.location.hostname}/api`;
-                    
-                    console.log('🔄 Sending request to backend...', API_BASE);
-                    const response = await fetch(`${API_BASE}/trial/submit`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
-                    });
+                    // Build FormData and submit to Netlify function
+                    const fd = new FormData();
+                    Object.entries(data).forEach(([k,v]) => fd.append(k, v));
+                    const fileEl = document.getElementById('businessData');
+                    if (fileEl && fileEl.files && fileEl.files[0]) fd.append('businessData', fileEl.files[0]);
+
+                    console.log('🔄 Sending request to Netlify function...');
+                    const response = await fetch('/.netlify/functions/trial-submit', { method: 'POST', body: fd });
                     
                     console.log('📡 Response received:', response.status);
                     
@@ -292,7 +305,7 @@ This lead was generated from your DataSight AI free trial page.
                     `.trim();
 
                     // Open email client with lead notification
-                    const mailtoLink = `mailto:datasightai.founders@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                    const mailtoLink = `mailto:information@analyticacoreai.ie?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
                     window.open(mailtoLink);
                     
                     // Show fallback message

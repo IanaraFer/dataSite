@@ -8,12 +8,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQQHWKG6SY"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX', {
+      gtag('config', 'G-FQQHWKG6SY', {
         page_title: 'Free Trial Form - AnalyticaCore AI',
         page_location: window.location.href
       });
@@ -103,18 +103,18 @@
                     <div class="upload-area" onclick="console.log('Upload area clicked'); document.getElementById('businessData').click()">
                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                         <h6>Upload CSV, Excel, or Data File</h6>
-<<<<<<< HEAD
-                        <input type="file" id="businessData" name="businessData" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
-                        <div id="uploadedFile" class="mt-2 text-success">
-=======
                         <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
-                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="console.log('File input changed'); handleFileUpload(this)">
+                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
                         <div id="uploadedFile" class="mt-2 text-success" style="display: none;">
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
                             <i class="fas fa-check-circle me-1"></i>
                             <span id="fileName"></span>
                         </div>
                         </div>
+                    </div>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-link p-0" onclick="downloadSample()">
+                            <i class="fas fa-download me-1"></i>Download sample CSV template
+                        </button>
                     </div>
                 </div>
                 
@@ -172,10 +172,6 @@
                 }
                 
                 console.log('✅ File uploaded:', file.name);
-<<<<<<< HEAD
-                // Store file reference for submission
-                window.uploadedDataset = file;
-=======
                 
                 // Process file client-side
                 processFileClientSide(file);
@@ -299,9 +295,21 @@
                     summary: `${data.totalItems} items`,
                     sampleData: data.data
                 };
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
             }
             return null;
+        }
+
+        function downloadSample() {
+            const sample = 'customer_id,order_date,amount\n1001,2025-01-05,1200\n1002,2025-01-06,850\n1003,2025-01-07,430';
+            const blob = new Blob([sample], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sample-business-data.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
         // Form submission handler - Updated to use backend API
@@ -374,14 +382,8 @@
                         });
                     }
                     // Submit to backend API with dynamic URL
-                    const API_BASE = window.location.hostname === 'localhost' ? 
-                        'http://localhost:8001' : 
-                        `https://${window.location.hostname}/api`;
-                    console.log('🔄 Sending request to backend...', API_BASE);
-                    const response = await fetch(`${API_BASE}/trial/submit`, {
-                        method: 'POST',
-                        body: formData
-                    });
+                    // Submit to Netlify function
+                    const response = await fetch('/.netlify/functions/trial-submit', { method: 'POST', body: formData });
                     
                     console.log('📡 Response received:', response.status);
                     

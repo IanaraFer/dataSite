@@ -10,16 +10,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQQHWKG6SY"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX', {
+      gtag('config', 'G-FQQHWKG6SY', {
         page_title: 'Homepage - AnalyticaCore AI',
         page_location: window.location.href
       });
     </script>
+    <script>
+        document.addEventListener('click', function(e){
+            const el = e.target.closest('a,button');
+            if (!el) return;
+            const label = el.innerText?.trim() || el.getAttribute('href') || el.id || 'unknown';
+            if (typeof gtag === 'function') {
+                gtag('event', 'click', { event_category: 'engagement', event_label: label });
+            }
+            if (window.dataLayer) {
+                window.dataLayer.push({ event: 'cta_click', label: label });
+            }
+        });
+        (function(){
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const src = { utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), referrer: document.referrer || null };
+                if (typeof gtag === 'function') { gtag('event', 'session_source', src); }
+                if (window.dataLayer) { window.dataLayer.push({ event: 'session_source', ...src }); }
+            } catch(_){}
+        })();
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MBW3XDRZ');</script>
     
     <style>
         :root {
@@ -313,6 +336,11 @@
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
         }
+        /* Fixed navbar offset for mobile and scroll targets */
+        @media (max-width: 991.98px) {
+            body { padding-top: 70px; }
+        }
+        [id] { scroll-margin-top: 80px; }
     </style>
 </head>
 <!-- Google tag (gtag.js) -->
@@ -364,7 +392,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="hero-content fade-in">
-                        <h1>Transform Your Data Into <span class="text-warning">Decisions</span> Automatically</h1>
+                        <h1>AI-powered analytics that helps small businesses cut reporting time by 80%.</h1>
                         <p class="lead">AI-powered business analytics that turns complex data into actionable insights. No technical skills required. Get results in minutes, not weeks.</p>
                         <div class="mt-4">
                         <a href="working-payment.html" class="btn-hero btn-primary-hero btn-lg">
@@ -446,6 +474,24 @@
                         <span class="stat-number">2 min</span>
                         <span class="stat-label">Setup Time</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section class="py-5" style="background: #0f172a;">
+        <div class="container">
+            <div class="row align-items-center g-3">
+                <div class="col-lg-6 text-white">
+                    <h3 class="mb-2">Stay in the loop</h3>
+                    <p class="m-0 text-light">Get product updates, tips and promotions. Unsubscribe anytime.</p>
+                </div>
+                <div class="col-lg-6">
+                    <form id="newsletterForm" class="d-flex gap-2">
+                        <input type="email" class="form-control" id="newsletterEmail" placeholder="you@company.com" required>
+                        <button class="btn btn-primary" id="newsletterBtn" type="submit">Subscribe</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -925,6 +971,26 @@
         window.addEventListener('load', function() {
             const loadTime = performance.now();
             console.log(`⚡ Page loaded in ${Math.round(loadTime)}ms`);
+        });
+    </script>
+    <script>
+        document.getElementById('newsletterForm')?.addEventListener('submit', async function(e){
+            e.preventDefault();
+            const btn = document.getElementById('newsletterBtn');
+            const email = document.getElementById('newsletterEmail').value;
+            if (!email) return;
+            try {
+                btn.disabled = true; btn.textContent = 'Subscribing...';
+                const res = await fetch('/.netlify/functions/newsletter-subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) throw new Error(data.error || `HTTP ${res.status}`);
+                alert('✅ Subscribed! Please check your email for confirmation.');
+                this.reset();
+            } catch (err) {
+                alert('Subscription failed: ' + (err?.message || err));
+            } finally {
+                btn.disabled = false; btn.textContent = 'Subscribe';
+            }
         });
     </script>
 </body>
