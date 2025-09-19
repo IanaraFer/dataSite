@@ -20,6 +20,29 @@
         page_location: window.location.href
       });
     </script>
+    <script>
+        document.addEventListener('click', function(e){
+            const el = e.target.closest('a,button');
+            if (!el) return;
+            const label = el.innerText?.trim() || el.getAttribute('href') || el.id || 'unknown';
+            if (typeof gtag === 'function') {
+                gtag('event', 'click', { event_category: 'engagement', event_label: label });
+            }
+            if (window.dataLayer) {
+                window.dataLayer.push({ event: 'cta_click', label: label });
+            }
+        });
+        (function(){
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const src = { utm_source: params.get('utm_source'), utm_medium: params.get('utm_medium'), utm_campaign: params.get('utm_campaign'), referrer: document.referrer || null };
+                if (typeof gtag === 'function') { gtag('event', 'session_source', src); }
+                if (window.dataLayer) { window.dataLayer.push({ event: 'session_source', ...src }); }
+            } catch(_){}
+        })();
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
     
     <style>
         :root {
