@@ -71,7 +71,7 @@ function generateAnalysisEmail(leadData) {
         
         <p>Best regards,<br>
         The DataSight AI Team<br>
-    📧 information@analyticacoreai.ie<br>
+        📧 information@analyticacoreai.ie<br>
         📱 +353 874502058</p>
         
         <p><small>P.S. This analysis was generated using our AI algorithms. A full analysis with your actual data would provide much more detailed and actionable insights.</small></p>
