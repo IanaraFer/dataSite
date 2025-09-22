@@ -255,7 +255,7 @@
                     }
 
                     const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:8001' : `https://${window.location.hostname}/api`;
-                    const resp = await fetch(`${API_BASE}/trial/submit`, { method: 'POST', body: formData });
+                    const resp = await fetch(`${API_BASE}/trial-submit`, { method: 'POST', body: formData });
                     if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
                     const result = await resp.json();
 
