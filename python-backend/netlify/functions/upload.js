@@ -37,9 +37,10 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const contentType = event.headers['content-type'] || event.headers['Content-Type'];
+    const contentTypeRaw = event.headers['content-type'] || event.headers['Content-Type'] || '';
+    const contentType = String(contentTypeRaw);
     
-    if (!contentType || !contentType.includes('multipart/form-data')) {
+    if (!contentType.includes('multipart/form-data')) {
       return {
         statusCode: 400,
         headers,
@@ -47,11 +48,17 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Normalize boundary and body encoding
+    let boundary = contentType.split('boundary=')[1] || '';
+    boundary = boundary.replace(/^"|"$/g, '');
+    const bodyBuffer = event.isBase64Encoded
+      ? Buffer.from(event.body || '', 'base64')
+      : Buffer.from(event.body || '', 'utf8');
+
     // Parse multipart form data
-    const boundary = contentType.split('boundary=')[1];
-    const parts = multipart.parse(Buffer.from(event.body, 'base64'), boundary);
+    const parts = multipart.parse(bodyBuffer, boundary);
     
-    const filePart = parts.find(part => part.name === 'file');
+    const filePart = parts.find(part => part.name === 'file' || part.name === 'businessData');
     const userIdPart = parts.find(part => part.name === 'userId');
     
     if (!filePart) {
