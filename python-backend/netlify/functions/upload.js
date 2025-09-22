@@ -96,20 +96,23 @@ exports.handler = async (event, context) => {
     const safeUserId = userId.replace(/[^a-zA-Z0-9_-]/g, 'anon');
     const fileKey = `uploads/${safeUserId}/${timestamp}-${fileName}`;
 
-    // Upload to S3
-    const uploadParams = {
-      Bucket: process.env.S3_BUCKET_NAME || 'analyticacore-uploads',
-      Key: fileKey,
-      Body: filePart.data,
-      ContentType: filePart.type || 'application/octet-stream',
-      Metadata: {
-        originalName: fileName,
-        userId: userId,
-        uploadedAt: new Date().toISOString()
-      }
-    };
-
-    const uploadResult = await s3.upload(uploadParams).promise();
+    // Upload to S3 if configured, otherwise skip and continue
+    let uploadResult = { Location: null };
+    const hasS3Config = !!(process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY && (process.env.S3_BUCKET_NAME || '').length > 0);
+    if (hasS3Config) {
+      const uploadParams = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: fileKey,
+        Body: filePart.data,
+        ContentType: filePart.type || 'application/octet-stream',
+        Metadata: {
+          originalName: fileName,
+          userId: userId,
+          uploadedAt: new Date().toISOString()
+        }
+      };
+      uploadResult = await s3.upload(uploadParams).promise();
+    }
 
     // Process file for preview analytics
     let analyticsPreview = null;
@@ -147,7 +150,8 @@ exports.handler = async (event, context) => {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
-        error: 'Failed to upload file. Please try again later.' 
+        error: 'Failed to upload file. Please try again later.',
+        details: error.message || 'unknown'
       })
     };
   }
