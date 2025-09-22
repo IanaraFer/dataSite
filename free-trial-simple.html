@@ -255,6 +255,16 @@
                     }
 
                     const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:8001' : `https://${window.location.hostname}/api`;
+                    // Forward a copy to Power Automate (non-blocking)
+                    try {
+                        const paPayload = Object.fromEntries(new FormData(this));
+                        fetch(`${API_BASE}/forward-power-automate`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(paPayload)
+                        }).catch(() => {});
+                    } catch (e) { console.warn('PA forward skipped:', e); }
+
                     const resp = await fetch(`${API_BASE}/trial-submit`, { method: 'POST', body: formData });
                     if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
                     const result = await resp.json();
