@@ -457,7 +457,7 @@ You'll receive your complete AI business health check with:
                 fd.append('userId', (document.getElementById('userEmail').value || 'anonymous'));
                 statusEl.textContent = 'Uploading...';
                 try {
-                    const resp = await fetch('/api/upload', { method: 'POST', body: fd });
+                    const resp = await fetch('https://analyticacoreai.netlify.app/.netlify/functions/upload', { method: 'POST', body: fd });
                     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                     const result = await resp.json();
                     statusEl.textContent = `Uploaded: ${result.fileName} (${Math.round(result.fileSize/1024)} KB)`;
