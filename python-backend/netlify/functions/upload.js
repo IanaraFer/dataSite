@@ -86,7 +86,8 @@ exports.handler = async (event, context) => {
 
     // Generate unique file key
     const timestamp = Date.now();
-    const fileKey = uploads//-;
+    const safeUserId = userId.replace(/[^a-zA-Z0-9_-]/g, 'anon');
+    const fileKey = `uploads/${safeUserId}/${timestamp}-${fileName}`;
 
     // Upload to S3
     const uploadParams = {
@@ -255,7 +256,7 @@ function generateInsights(columnAnalysis, rowCount) {
     insights.push({
       type: 'warning',
       title: 'Data Quality Alert',
-      message: Columns with missing data: . Consider data cleaning.
+      message: `Columns with missing data: ${lowQualityColumns.join(', ') || 'None'}. Consider data cleaning.`
     });
   }
   
@@ -268,7 +269,7 @@ function generateInsights(columnAnalysis, rowCount) {
     insights.push({
       type: 'opportunity',
       title: 'Analytics Potential',
-      message: ${numericColumns.length} numeric columns detected. Perfect for trend analysis, forecasting, and statistical modeling.
+      message: `${numericColumns.length} numeric columns detected. Perfect for trend analysis, forecasting, and statistical modeling.`
     });
   }
   
@@ -281,7 +282,7 @@ function generateInsights(columnAnalysis, rowCount) {
     insights.push({
       type: 'info',
       title: 'Unique Identifiers',
-      message: Columns likely containing IDs: . These can be used for data linking.
+      message: `Columns likely containing IDs: ${highCardinalityColumns.join(', ') || 'None'}. These can be used for data linking.`
     });
   }
   
