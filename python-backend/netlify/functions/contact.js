@@ -1,4 +1,4 @@
-const sgMail = require('@sendgrid/mail');
+const nodemailer = require('nodemailer');
 
 exports.handler = async (event, context) => {
   // CORS headers
@@ -48,13 +48,23 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Set SendGrid API key
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    // Configure Microsoft 365 SMTP via Nodemailer
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.office365.com',
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+      },
+      tls: { ciphers: 'TLSv1.2' }
+    });
 
     // Email to admin
     const adminEmail = {
-  to: 'information@analyticacoreai.ie',
-  from: 'information@analyticacoreai.ie',
+      to: 'information@analyticacoreai.ie',
+      from: process.env.SMTP_USER || 'information@analyticacoreai.ie',
+      replyTo: email,
       subject: 'New Contact Form Submission',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -74,7 +84,8 @@ exports.handler = async (event, context) => {
     // Confirmation email to user
     const userEmail = {
       to: email,
-  from: 'information@analyticacoreai.ie',
+      from: process.env.SMTP_USER || 'information@analyticacoreai.ie',
+      replyTo: process.env.SMTP_USER || 'information@analyticacoreai.ie',
       subject: 'Thank you for contacting AnalyticaCore AI',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -100,8 +111,8 @@ exports.handler = async (event, context) => {
 
     // Send both emails
     await Promise.all([
-      sgMail.send(adminEmail),
-      sgMail.send(userEmail)
+      transporter.sendMail(adminEmail),
+      transporter.sendMail(userEmail)
     ]);
 
     return {

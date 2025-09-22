@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 const multipart = require('parse-multipart-data');
-const sgMail = require('@sendgrid/mail');
+const nodemailer = require('nodemailer');
 
 // Optional S3 setup (only used if AWS creds are present)
 const s3 = new AWS.S3({
@@ -9,7 +9,14 @@ const s3 = new AWS.S3({
   region: process.env.AWS_REGION || 'eu-west-1'
 });
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// SMTP transporter (Microsoft 365)
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'smtp.office365.com',
+  port: Number(process.env.SMTP_PORT) || 587,
+  secure: false,
+  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+  tls: { ciphers: 'TLSv1.2' }
+});
 
 exports.handler = async (event, context) => {
   const headers = {
@@ -111,14 +118,15 @@ exports.handler = async (event, context) => {
 
     const adminEmail = {
       to: 'information@analyticacoreai.ie',
-      from: 'information@analyticacoreai.ie',
+      from: process.env.SMTP_USER || 'information@analyticacoreai.ie',
       subject: `New Trial Lead - ${firstName} ${lastName} (${company})`,
       html: adminHtml
     };
 
     const userEmailMsg = {
       to: email,
-      from: 'information@analyticacoreai.ie',
+      from: process.env.SMTP_USER || 'information@analyticacoreai.ie',
+      replyTo: process.env.SMTP_USER || 'information@analyticacoreai.ie',
       subject: 'We received your request — AnalyticaCore AI',
       html: `
         <h2>Thanks, ${firstName}!</h2>
@@ -129,8 +137,8 @@ exports.handler = async (event, context) => {
     };
 
     // Send both emails (do not fail the whole request if user email fails)
-    try { await sgMail.send(adminEmail); } catch (e) { console.error('Admin email failed', e); }
-    try { await sgMail.send(userEmailMsg); } catch (e) { console.error('User email failed', e); }
+    try { await transporter.sendMail(adminEmail); } catch (e) { console.error('Admin email failed', e); }
+    try { await transporter.sendMail(userEmailMsg); } catch (e) { console.error('User email failed', e); }
 
     return {
       statusCode: 200,
