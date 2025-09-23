@@ -41,7 +41,11 @@
                 <p class="text-muted">Get your AI-powered business analysis in 15 minutes</p>
             </div>
             
-            <form id="simpleForm">
+            <form id="simpleForm" name="free-trial" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" enctype="multipart/form-data">
+                <input type="hidden" name="form-name" value="free-trial">
+                <p style="display:none">
+                    <label>Don’t fill this out: <input name="bot-field"></label>
+                </p>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">First Name *</label>
@@ -235,6 +239,7 @@
 
                 try {
                     const formData = new FormData(this);
+                    if (!formData.get('form-name')) { formData.append('form-name', 'free-trial'); }
                     // Plain object copy for messages
                     const plainForm = {};
                     formData.forEach((v, k) => { if (typeof v === 'string') plainForm[k] = v; });
@@ -269,6 +274,9 @@
                     if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
                     const result = await resp.json();
 
+                    // Also submit to Netlify Forms for capture + notification
+                    try { await fetch('/', { method: 'POST', body: formData }); } catch(e) { console.warn('Netlify Forms capture failed', e); }
+
                     submitButton.innerHTML = originalText;
                     submitButton.disabled = false;
 
@@ -279,6 +287,9 @@
                     console.error('❌ Submission error:', err);
                     submitButton.innerHTML = originalText;
                     submitButton.disabled = false;
+
+                    // Also submit to Netlify Forms so submission is captured even on failure
+                    try { await fetch('/', { method: 'POST', body: new FormData(this) }); } catch(e2) { console.warn('Netlify Forms capture (fallback) failed', e2); }
 
                     // Fallback to email
                     const formData = new FormData(this);
