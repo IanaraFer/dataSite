@@ -58,7 +58,8 @@ exports.handler = async (event, context) => {
     // Parse multipart form data
     const parts = multipart.parse(bodyBuffer, boundary);
     
-    const filePart = parts.find(part => part.name === 'file' || part.name === 'businessData');
+    // Accept multiple possible field names for compatibility
+    const filePart = parts.find(part => ['file','businessData','dataset','datasetFile'].includes(part.name));
     const userIdPart = parts.find(part => part.name === 'userId');
     
     if (!filePart) {
