@@ -336,27 +336,12 @@
 
             try {
                 // Create Stripe Checkout Session
-                const response = await fetch('/api/create-checkout-session', {
+                const response = await fetch('/.netlify/functions/create-checkout-session', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        price_data: {
-                            currency: 'eur',
-                            product_data: {
-                                name: `AnalyticaCore AI - ${plan.name}`,
-                                description: plan.description,
-                            },
-                            unit_amount: priceInCents,
-                            recurring: {
-                                interval: 'month'
-                            }
-                        },
-                        success_url: `${window.location.origin}/working-payment.html?success=true`,
-                        cancel_url: `${window.location.origin}/working-payment.html`,
-                        mode: 'subscription'
-                    })
+                    body: JSON.stringify({ plan: planId })
                 });
 
                 if (!response.ok) {
