@@ -335,8 +335,9 @@
             hideMessages();
 
             try {
-                // Create Stripe Checkout Session
-                const response = await fetch('/.netlify/functions/create-checkout-session', {
+                // Create Stripe Checkout Session (use absolute Netlify Functions URL so it works on Vercel too)
+                const API_BASE = 'https://analyticacoreai.netlify.app/.netlify/functions';
+                const response = await fetch(`${API_BASE}/create-checkout-session`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -345,10 +346,14 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to create checkout session');
+                    const errText = await response.text().catch(() => '');
+                    throw new Error(`Failed to create checkout session (${response.status}) ${errText}`);
                 }
 
-                const session = await response.json();
+                const session = await response.json().catch(async () => {
+                    const t = await response.text();
+                    throw new Error(`Invalid JSON from server: ${t.substring(0,120)}`);
+                });
 
                 if (session.error) {
                     throw new Error(session.error);
