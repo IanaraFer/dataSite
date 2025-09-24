@@ -34,21 +34,26 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const contentType = event.headers['content-type'] || event.headers['Content-Type'] || '';
+    const contentTypeRaw = event.headers['content-type'] || event.headers['Content-Type'] || '';
+    const contentType = String(contentTypeRaw);
 
     let form = {};
     let filePart = null;
 
     if (contentType.includes('multipart/form-data')) {
-      const boundary = contentType.split('boundary=')[1];
-      const parts = multipart.parse(Buffer.from(event.body, 'base64'), boundary);
+      let boundary = contentType.split('boundary=')[1] || '';
+      boundary = boundary.replace(/^"|"$/g, '');
+      const bodyBuffer = event.isBase64Encoded
+        ? Buffer.from(event.body || '', 'base64')
+        : Buffer.from(event.body || '', 'utf8');
+      const parts = multipart.parse(bodyBuffer, boundary);
       for (const p of parts) {
         if (p.filename) {
-          if (p.name === 'businessData' || p.name === 'file') {
+          if (['file','businessData','dataset','datasetFile','dataFile'].includes(p.name)) {
             filePart = p;
           }
-        } else {
-          form[p.name] = p.data.toString();
+        } else if (p && p.name) {
+          form[p.name] = p.data != null ? p.data.toString() : '';
         }
       }
     } else if (contentType.includes('application/json')) {
