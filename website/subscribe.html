@@ -81,26 +81,41 @@
             e.preventDefault();
             // Collect customer info
             const email = document.getElementById('email') ? document.getElementById('email').value : '';
-            const firstName = document.getElementById('firstName') ? document.getElementById('firstName').value : '';
-            const lastName = document.getElementById('lastName') ? document.getElementById('lastName').value : '';
-            // Backend URL (adjust if needed)
+            const fullName = document.getElementById('fullName') ? document.getElementById('fullName').value : '';
+            // TODO: Get product_id and account_id for the selected plan (replace with your logic)
+            let product_id = '';
+            let account_id = '';
+            if (selectedPlan === 'starter') {
+                product_id = 'prod_T4oZo26VAUPVr4';
+                account_id = 'acct_1RyYPuEPS0ev8tki';
+            } else if (selectedPlan === 'professional') {
+                product_id = 'prod_T4oGTMkE7nGz9H';
+                account_id = 'acct_1RyYPuEPS0ev8tki';
+            } else if (selectedPlan === 'enterprise') {
+                product_id = 'prod_SyKLqJpOBu2rtJ';
+                account_id = 'acct_1RyYPuEPS0ev8tki';
+            }
+            if (!product_id || !account_id) {
+                alert('Payment error: Product or account not configured.');
+                return;
+            }
             const API_BASE = window.location.hostname === 'localhost' ? 
-                'http://localhost:8001' : 
+                'http://localhost:8888/.netlify/functions' : 
                 `https://${window.location.hostname}/api`;
-            fetch(`${API_BASE}/payment/subscribe`, {
+            fetch(`${API_BASE}/stripe_connect_checkout`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    plan: selectedPlan,
-                    amount: plan.price,
-                    currency: 'EUR',
+                    product_id: product_id,
+                    account_id: account_id,
+                    quantity: 1,
                     customer_email: email,
-                    customer_name: firstName + ' ' + lastName
+                    customer_name: fullName
                 })
             })
             .then(res => res.json())
             .then(data => {
-                if (data.success && data.checkout_url) {
+                if (data.checkout_url) {
                     window.location.href = data.checkout_url;
                 } else {
                     alert('Payment error: ' + (data.error || 'Unknown error'));
