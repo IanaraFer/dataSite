@@ -14,18 +14,17 @@ def handler(event, context):
 
     try:
         body = json.loads(event["body"])
-        product_id = body.get("product_id")
+        price_id = body.get("price_id")
         quantity = body.get("quantity", 1)
         account_id = body.get("account_id")
-        if not all([product_id, account_id]):
+        if not all([price_id, account_id]):
             return {
                 "statusCode": 400,
-                "body": json.dumps({"error": "Missing product_id or account_id."})
+                "body": json.dumps({"error": "Missing price_id or account_id."})
             }
-        product = stripe.Product.retrieve(product_id)
         session = stripe.checkout.Session.create(
             line_items=[{
-                "price": product.default_price,
+                "price": price_id,
                 "quantity": quantity
             }],
             payment_intent_data={

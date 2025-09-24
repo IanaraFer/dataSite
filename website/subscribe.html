@@ -84,19 +84,20 @@
             const fullName = document.getElementById('fullName') ? document.getElementById('fullName').value : '';
             // TODO: Get product_id and account_id for the selected plan (replace with your logic)
             let product_id = '';
+            let price_id = '';
             let account_id = '';
             if (selectedPlan === 'starter') {
-                product_id = 'prod_T4oZo26VAUPVr4';
+                price_id = 'price_1S8ewNEPS0ev8tkiblRxCDPh';
                 account_id = 'acct_1RyYPuEPS0ev8tki';
             } else if (selectedPlan === 'professional') {
-                product_id = 'prod_T4oGTMkE7nGz9H';
+                price_id = 'price_1S8edcEPS0ev8tkiQkPVUq2F';
                 account_id = 'acct_1RyYPuEPS0ev8tki';
             } else if (selectedPlan === 'enterprise') {
-                product_id = 'prod_SyKLqJpOBu2rtJ';
+                price_id = 'price_1S2NgSEPS0ev8tkiRuu9Xbtb';
                 account_id = 'acct_1RyYPuEPS0ev8tki';
             }
-            if (!product_id || !account_id) {
-                alert('Payment error: Product or account not configured.');
+            if (!price_id || !account_id) {
+                alert('Payment error: Price or account not configured.');
                 return;
             }
             const API_BASE = window.location.hostname === 'localhost' ? 
@@ -106,7 +107,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    product_id: product_id,
+                    price_id: price_id,
                     account_id: account_id,
                     quantity: 1,
                     customer_email: email,
