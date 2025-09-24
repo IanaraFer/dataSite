@@ -1,24 +1,7 @@
 {
   "version": 2,
-  "functions": {
-    "api/**/*.py": {
-      "runtime": "python3.9"
-    }
-  },
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/website/$1"
-    }
-  ],
-  "ignore": [
-    "python-backend/**",
-    "**/*.php",
-    "**/form-handler.php",
-    "**/send-email.php"
+    { "source": "/", "destination": "/website/index.html" },
+    { "source": "/(.*)", "destination": "/website/$1" }
   ]
 }
