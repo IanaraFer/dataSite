@@ -37,9 +37,10 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const contentType = event.headers['content-type'] || event.headers['Content-Type'];
+    const contentTypeRaw = event.headers['content-type'] || event.headers['Content-Type'] || '';
+    const contentType = String(contentTypeRaw);
     
-    if (!contentType || !contentType.includes('multipart/form-data')) {
+    if (!contentType.includes('multipart/form-data')) {
       return {
         statusCode: 400,
         headers,
@@ -47,11 +48,18 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Normalize boundary and body encoding
+    let boundary = contentType.split('boundary=')[1] || '';
+    boundary = boundary.replace(/^"|"$/g, '');
+    const bodyBuffer = event.isBase64Encoded
+      ? Buffer.from(event.body || '', 'base64')
+      : Buffer.from(event.body || '', 'utf8');
+
     // Parse multipart form data
-    const boundary = contentType.split('boundary=')[1];
-    const parts = multipart.parse(Buffer.from(event.body, 'base64'), boundary);
+    const parts = multipart.parse(bodyBuffer, boundary);
     
-    const filePart = parts.find(part => part.name === 'file');
+    // Accept multiple possible field names for compatibility
+    const filePart = parts.find(part => ['file','businessData','dataset','datasetFile'].includes(part.name));
     const userIdPart = parts.find(part => part.name === 'userId');
     
     if (!filePart) {
@@ -86,22 +94,26 @@ exports.handler = async (event, context) => {
 
     // Generate unique file key
     const timestamp = Date.now();
-    const fileKey = uploads//-;
+    const safeUserId = userId.replace(/[^a-zA-Z0-9_-]/g, 'anon');
+    const fileKey = `uploads/${safeUserId}/${timestamp}-${fileName}`;
 
-    // Upload to S3
-    const uploadParams = {
-      Bucket: process.env.S3_BUCKET_NAME || 'analyticacore-uploads',
-      Key: fileKey,
-      Body: filePart.data,
-      ContentType: filePart.type || 'application/octet-stream',
-      Metadata: {
-        originalName: fileName,
-        userId: userId,
-        uploadedAt: new Date().toISOString()
-      }
-    };
-
-    const uploadResult = await s3.upload(uploadParams).promise();
+    // Upload to S3 if configured, otherwise skip and continue
+    let uploadResult = { Location: null };
+    const hasS3Config = !!(process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY && (process.env.S3_BUCKET_NAME || '').length > 0);
+    if (hasS3Config) {
+      const uploadParams = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: fileKey,
+        Body: filePart.data,
+        ContentType: filePart.type || 'application/octet-stream',
+        Metadata: {
+          originalName: fileName,
+          userId: userId,
+          uploadedAt: new Date().toISOString()
+        }
+      };
+      uploadResult = await s3.upload(uploadParams).promise();
+    }
 
     // Process file for preview analytics
     let analyticsPreview = null;
@@ -139,7 +151,8 @@ exports.handler = async (event, context) => {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
-        error: 'Failed to upload file. Please try again later.' 
+        error: 'Failed to upload file. Please try again later.',
+        details: error.message || 'unknown'
       })
     };
   }
@@ -255,7 +268,7 @@ function generateInsights(columnAnalysis, rowCount) {
     insights.push({
       type: 'warning',
       title: 'Data Quality Alert',
-      message: Columns with missing data: . Consider data cleaning.
+      message: `Columns with missing data: ${lowQualityColumns.join(', ') || 'None'}. Consider data cleaning.`
     });
   }
   
@@ -268,7 +281,7 @@ function generateInsights(columnAnalysis, rowCount) {
     insights.push({
       type: 'opportunity',
       title: 'Analytics Potential',
-      message: ${numericColumns.length} numeric columns detected. Perfect for trend analysis, forecasting, and statistical modeling.
+      message: `${numericColumns.length} numeric columns detected. Perfect for trend analysis, forecasting, and statistical modeling.`
     });
   }
   
@@ -281,7 +294,7 @@ function generateInsights(columnAnalysis, rowCount) {
     insights.push({
       type: 'info',
       title: 'Unique Identifiers',
-      message: Columns likely containing IDs: . These can be used for data linking.
+      message: `Columns likely containing IDs: ${highCardinalityColumns.join(', ') || 'None'}. These can be used for data linking.`
     });
   }
   

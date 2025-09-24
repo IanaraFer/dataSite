@@ -41,7 +41,11 @@
                 <p class="text-muted">Get your AI-powered business analysis in 15 minutes</p>
             </div>
             
-            <form id="simpleForm">
+            <form id="simpleForm" name="free-trial" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" enctype="multipart/form-data">
+                <input type="hidden" name="form-name" value="free-trial">
+                <p style="display:none">
+                    <label>Don’t fill this out: <input name="bot-field"></label>
+                </p>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">First Name *</label>
@@ -103,17 +107,11 @@
                     <div class="upload-area" onclick="console.log('Upload area clicked'); document.getElementById('businessData').click()">
                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                         <h6>Upload CSV, Excel, or Data File</h6>
-<<<<<<< HEAD
-                        <input type="file" id="businessData" name="businessData" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
-                        <div id="uploadedFile" class="mt-2 text-success">
-=======
                         <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
-                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="console.log('File input changed'); handleFileUpload(this)">
+                        <input type="file" id="businessData" name="file" accept=".csv,.xlsx,.xls,.json" onchange="console.log('File input changed'); handleFileUpload(this)">
                         <div id="uploadedFile" class="mt-2 text-success" style="display: none;">
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
                             <i class="fas fa-check-circle me-1"></i>
                             <span id="fileName"></span>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -137,363 +135,177 @@
     <script>
         console.log('🧪 Simple Free Trial Page Loaded');
 
-        // File upload handler with client-side processing
         function handleFileUpload(input) {
             console.log('🔍 handleFileUpload called');
-            console.log('📁 Input files:', input.files);
-            
-            const file = input.files[0];
-            if (file) {
-                console.log('📄 File selected:', file.name, file.size, file.type);
-                
-                // Validate file
-                const validation = validateFile(file);
-                console.log('✅ Validation result:', validation);
-                
-                if (!validation.valid) {
-                    alert(validation.message);
-                    input.value = '';
-                    return;
-                }
-                
-                const fileNameElement = document.getElementById('fileName');
-                const uploadedFileElement = document.getElementById('uploadedFile');
-                
-                if (fileNameElement) {
-                    fileNameElement.textContent = file.name;
-                } else {
-                    console.error('❌ fileName element not found');
-                }
-                
-                if (uploadedFileElement) {
-                    uploadedFileElement.style.display = 'block';
-                } else {
-                    console.error('❌ uploadedFile element not found');
-                }
-                
-                console.log('✅ File uploaded:', file.name);
-<<<<<<< HEAD
-                // Store file reference for submission
-                window.uploadedDataset = file;
-=======
-                
-                // Process file client-side
-                processFileClientSide(file);
-            } else {
+            const file = input.files && input.files[0];
+            if (!file) {
                 console.log('❌ No file selected');
+                return;
             }
+
+            console.log('📄 File selected:', file.name, file.size, file.type);
+            const validation = validateFile(file);
+            if (!validation.valid) {
+                alert(validation.message);
+                input.value = '';
+                return;
+            }
+
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('uploadedFile').style.display = 'block';
+
+            // Keep a reference for submission and optional preview
+            window.uploadedDatasetFile = file;
+            processFileClientSide(file).catch(err => console.warn('Preview processing failed:', err));
         }
-        
-        // Validate uploaded file
+
         function validateFile(file) {
-            const maxSize = 10 * 1024 * 1024; // 10MB
-            const allowedExtensions = ['.csv', '.xlsx', '.xls', '.json'];
-            
-            if (file.size > maxSize) {
-                return { valid: false, message: 'File size must be less than 10MB' };
-            }
-            
-            const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
-            if (!allowedExtensions.includes(fileExtension)) {
-                return { valid: false, message: 'Only CSV, Excel, and JSON files are supported' };
-            }
-            
+            const maxSizeBytes = 10 * 1024 * 1024; // 10MB
+            const allowed = ['.csv', '.xlsx', '.xls', '.json'];
+            const ext = '.' + (file.name.split('.').pop() || '').toLowerCase();
+            if (file.size > maxSizeBytes) return { valid: false, message: 'File size must be less than 10MB' };
+            if (!allowed.includes(ext)) return { valid: false, message: 'Only CSV, Excel, and JSON files are supported' };
             return { valid: true };
         }
-        
-        // Process file client-side and generate preview
+
         async function processFileClientSide(file) {
-            try {
-                const fileExtension = file.name.split('.').pop().toLowerCase();
-                let data = null;
-                
-                if (fileExtension === 'csv') {
-                    data = await processCSVFile(file);
-                } else if (fileExtension === 'json') {
-                    data = await processJSONFile(file);
-                } else {
-                    data = { message: 'Excel file uploaded - will be processed by our team' };
-                }
-                
-                // Store file info and processed data
-                window.uploadedDataset = {
-                    name: file.name,
-                    size: file.size,
-                    type: file.type,
-                    processedData: data,
-                    preview: data ? generateDataPreview(data) : null
-                };
-                
-                console.log('✅ File processed:', data);
-                
-            } catch (error) {
-                console.error('File processing error:', error);
-                alert('Error processing file: ' + error.message);
-            }
+            const ext = (file.name.split('.').pop() || '').toLowerCase();
+            let data = null;
+            if (ext === 'csv') data = await processCSVFile(file);
+            else if (ext === 'json') data = await processJSONFile(file);
+            else data = { message: 'Excel file uploaded - will be processed by our team' };
+
+            window.uploadedDataset = {
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                preview: data ? generateDataPreview(data) : null
+            };
         }
-        
-        // Process CSV file
+
         function processCSVFile(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = e => {
                     try {
                         const csv = e.target.result;
-                        const lines = csv.split('\n');
-                        const headers = lines[0].split(',').map(h => h.trim());
+                        const lines = csv.split('\n').filter(Boolean);
+                        const headers = (lines[0] || '').split(',').map(h => h.trim());
                         const rows = lines.slice(1, 6).map(line => {
                             const values = line.split(',').map(v => v.trim());
                             const row = {};
-                            headers.forEach((header, index) => {
-                                row[header] = values[index] || '';
-                            });
+                            headers.forEach((h, i) => row[h] = values[i] || '');
                             return row;
                         });
-                        
-                        resolve({
-                            headers: headers,
-                            rows: rows,
-                            totalRows: lines.length - 1,
-                            type: 'csv'
-                        });
-                    } catch (error) {
-                        reject(new Error('Invalid CSV format'));
-                    }
+                        resolve({ headers, rows, totalRows: Math.max(lines.length - 1, 0), type: 'csv' });
+                    } catch (err) { reject(new Error('Invalid CSV format')); }
                 };
                 reader.onerror = () => reject(new Error('Error reading file'));
                 reader.readAsText(file);
             });
         }
-        
-        // Process JSON file
+
         function processJSONFile(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = e => {
                     try {
                         const json = JSON.parse(e.target.result);
-                        resolve({
-                            data: Array.isArray(json) ? json.slice(0, 5) : [json],
-                            totalItems: Array.isArray(json) ? json.length : 1,
-                            type: 'json'
-                        });
-                    } catch (error) {
-                        reject(new Error('Invalid JSON format'));
-                    }
+                        resolve({ data: Array.isArray(json) ? json.slice(0, 5) : [json], totalItems: Array.isArray(json) ? json.length : 1, type: 'json' });
+                    } catch (err) { reject(new Error('Invalid JSON format')); }
                 };
                 reader.onerror = () => reject(new Error('Error reading file'));
                 reader.readAsText(file);
             });
         }
-        
-        // Generate data preview
+
         function generateDataPreview(data) {
-            if (data.type === 'csv') {
-                return {
-                    summary: `${data.totalRows} rows, ${data.headers.length} columns`,
-                    headers: data.headers,
-                    sampleRows: data.rows
-                };
-            } else if (data.type === 'json') {
-                return {
-                    summary: `${data.totalItems} items`,
-                    sampleData: data.data
-                };
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
-            }
+            if (data.type === 'csv') return { summary: `${data.totalRows} rows, ${data.headers.length} columns`, headers: data.headers, sampleRows: data.rows };
+            if (data.type === 'json') return { summary: `${data.totalItems} items`, sampleData: data.data };
             return null;
         }
 
-        // Form submission handler - Updated to use backend API
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('simpleForm');
-            
-            if (!form) {
-                console.error('❌ Form not found!');
-                return;
-            }
-            
-            console.log('✅ Form found, attaching event listener');
-            
+            if (!form) return console.error('❌ Form not found!');
+
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                console.log('🚀 Form submitted - preventDefault called');
-                
-                // Show loading state
+
                 const submitButton = this.querySelector('button[type="submit"]');
                 const originalText = submitButton.innerHTML;
                 submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
                 submitButton.disabled = true;
-                
+
                 try {
-                    // Get form data
                     const formData = new FormData(this);
-<<<<<<< HEAD
-                    // Attach file if uploaded
-                    if (window.uploadedDataset) {
-                        formData.append('businessData', window.uploadedDataset);
-=======
-                    const data = Object.fromEntries(formData);
-                    
-                    // Check if file was actually selected
+                    if (!formData.get('form-name')) { formData.append('form-name', 'free-trial'); }
+                    // Plain object copy for messages
+                    const plainForm = {};
+                    formData.forEach((v, k) => { if (typeof v === 'string') plainForm[k] = v; });
+
+                    // Attach file if present
                     const fileInput = document.getElementById('businessData');
-                    const actualFile = fileInput.files[0];
-                    
-                    console.log('📁 File input files:', fileInput.files);
-                    console.log('📄 Actual file:', actualFile);
-                    console.log('💾 Window uploaded dataset:', window.uploadedDataset);
-                    
-                    // Add file info if uploaded
-                    if (window.uploadedDataset || actualFile) {
-                        const dataset = window.uploadedDataset || {
-                            name: actualFile.name,
-                            size: actualFile.size,
-                            type: actualFile.type
-                        };
-                        
-                        data.datasetName = dataset.name;
-                        data.datasetSize = Math.round(dataset.size / 1024) + 'KB';
-                        data.datasetType = dataset.type;
-                        data.datasetPreview = dataset.preview ? JSON.stringify(dataset.preview) : null;
-                        
-                        // Also add the actual file to FormData if it exists
-                        if (actualFile) {
-                            formData.append('businessData', actualFile);
-                            console.log('✅ File added to FormData:', actualFile.name);
-                        }
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
+                    const actualFile = (fileInput && fileInput.files && fileInput.files[0]) || window.uploadedDatasetFile;
+                    if (actualFile) {
+                        formData.append('businessData', actualFile);
+                        plainForm.datasetName = actualFile.name;
+                        plainForm.datasetSize = Math.round(actualFile.size / 1024) + 'KB';
+                        plainForm.datasetType = actualFile.type;
+                        plainForm.datasetPreview = window.uploadedDataset && window.uploadedDataset.preview ? JSON.stringify(window.uploadedDataset.preview) : null;
                     }
-                    console.log('📊 FormData keys:', Array.from(formData.keys()));
-                    // Track trial form submission attempt
+
                     if (typeof gtag !== 'undefined') {
-                        gtag('event', 'trial_form_submit', {
-                            event_category: 'engagement',
-                            event_label: 'form_submission',
-                            company: formData.get('company'),
-                            industry: formData.get('industry')
-                        });
+                        gtag('event', 'trial_form_submit', { event_category: 'engagement', event_label: 'form_submission', company: formData.get('company'), industry: formData.get('industry') });
                     }
-                    // Submit to backend API with dynamic URL
-                    const API_BASE = window.location.hostname === 'localhost' ? 
-                        'http://localhost:8001' : 
-                        `https://${window.location.hostname}/api`;
-                    console.log('🔄 Sending request to backend...', API_BASE);
-                    const response = await fetch(`${API_BASE}/trial/submit`, {
-                        method: 'POST',
-                        body: formData
-                    });
-                    
-                    console.log('📡 Response received:', response.status);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    const result = await response.json();
-                    console.log('✅ Backend response:', result);
-                    
-                    // Reset button
+
+                    const API_BASE = 'https://analyticacoreai.netlify.app/.netlify/functions';
+                    // Forward a copy to Power Automate (non-blocking)
+                    try {
+                        const paPayload = Object.fromEntries(new FormData(this));
+                        fetch(`${API_BASE}/forward-power-automate`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(paPayload)
+                        }).catch(() => {});
+                    } catch (e) { console.warn('PA forward skipped:', e); }
+
+                    const resp = await fetch(`${API_BASE}/trial-submit`, { method: 'POST', body: formData });
+                    if (!resp.ok) throw new Error(`HTTP error ${resp.status}`);
+                    const result = await resp.json();
+
+                    // Also submit to Netlify Forms for capture + notification
+                    try { await fetch('/', { method: 'POST', body: formData }); } catch(e) { console.warn('Netlify Forms capture failed', e); }
+
                     submitButton.innerHTML = originalText;
                     submitButton.disabled = false;
-                    
-                    // Show success message
-                    const datasetMessage = window.uploadedDataset ? 
-                        ` Your ${window.uploadedDataset.name} file has been received and will be analyzed within 2 hours.` : 
-                        '';
-                    
-                    alert(`✅ SUCCESS! Your free AI business health check request has been submitted.${datasetMessage}
 
-${result.message}
-
-You'll receive your comprehensive report at ${data.email}.`);
-                    
-                    // Redirect to thank you page
-                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}&hasDataset=${!!window.uploadedDataset}&customerId=${encodeURIComponent(result.customer_id || '')}`;
-                    
-                } catch (error) {
-                    console.error('❌ Submission error:', error);
-                    
-                    // Reset button
+                    const dsMsg = actualFile ? ` Your ${actualFile.name} file has been received and will be analyzed within 2 hours.` : '';
+                    alert(`✅ SUCCESS! Your free AI business health check request has been submitted.${dsMsg}\n\n${result.message || ''}\n\nYou'll receive your comprehensive report at ${plainForm.email}.`);
+                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(plainForm.firstName || '')}&company=${encodeURIComponent(plainForm.company || '')}&hasDataset=${!!actualFile}&customerId=${encodeURIComponent(result.customer_id || '')}`;
+                } catch (err) {
+                    console.error('❌ Submission error:', err);
                     submitButton.innerHTML = originalText;
                     submitButton.disabled = false;
-                    
-                    // Fallback to email method if API fails
-                    console.log('🔄 Falling back to email method...');
-                    
-                    // Get form data for fallback
+
+                    // Also submit to Netlify Forms so submission is captured even on failure
+                    try { await fetch('/', { method: 'POST', body: new FormData(this) }); } catch(e2) { console.warn('Netlify Forms capture (fallback) failed', e2); }
+
+                    // Fallback to email
                     const formData = new FormData(this);
-                    const data = Object.fromEntries(formData);
-                    
-                    // Add file info if uploaded
-                    if (window.uploadedDataset) {
-                        data.datasetName = window.uploadedDataset.name;
-                        data.datasetSize = Math.round(window.uploadedDataset.size / 1024) + 'KB';
+                    const plain = Object.fromEntries(formData);
+                    if (window.uploadedDatasetFile) {
+                        plain.datasetName = window.uploadedDatasetFile.name;
+                        plain.datasetSize = Math.round(window.uploadedDatasetFile.size / 1024) + 'KB';
                     }
-                    
-                    // Create email content for fallback
-                    const emailSubject = `🚀 URGENT: New DataSight AI Lead - ${data.firstName} from ${data.company}`;
-                    const emailBody = `
-🚀 NEW DATASIGHT AI LEAD ALERT!
-${window.uploadedDataset ? '📊 INCLUDES DATASET FOR ANALYSIS!' : ''}
-
-👤 CONTACT INFORMATION:
-Name: ${data.firstName} ${data.lastName}
-Company: ${data.company}
-Email: ${data.email}
-Phone: ${data.phone}
-
-🏢 BUSINESS DETAILS:
-Industry: ${data.industry}
-Annual Revenue: ${data.revenue}
-Main Challenge: ${data.challenge || 'Not specified'}
-
-${window.uploadedDataset ? `📊 DATASET UPLOADED:
-File: ${data.datasetName}
-Size: ${data.datasetSize}
-🔥 PRIORITY: High - Customer uploaded data for analysis!` : '📝 No dataset uploaded - offer to analyze sample data'}
-
-⏰ SUBMISSION TIME: ${new Date().toLocaleString()}
-
-📋 IMMEDIATE ACTION REQUIRED:
-${window.uploadedDataset ? 
-`1. 🔥 CALL WITHIN 15 MINUTES: ${data.phone} (they uploaded data!)
-2. 📊 Download and analyze their dataset immediately  
-3. 📧 Send personalized analysis within 2 hours
-4. 💰 This is a HOT LEAD - they're ready to see results!` :
-`1. 📞 Call within 24 hours: ${data.phone}
-2. 📧 Send demo analysis to: ${data.email}
-3. 💼 Offer to analyze their data
-4. 🎯 Schedule demo call`}
-
----
-⚡ RESPOND IMMEDIATELY for highest conversion rates!
-This lead was generated from your DataSight AI free trial page.
-                    `.trim();
-
-                    // Open email client with lead notification
-                    const mailtoLink = `mailto:information@analyticacoreai.ie?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-                    window.open(mailtoLink);
-                    
-                    // Show fallback message
-                    const datasetMessage = window.uploadedDataset ? 
-                        ` Your ${window.uploadedDataset.name} file has been received and will be analyzed within 2 hours.` : 
-                        '';
-                    
-                    alert(`⚠️ Connection issue detected, but don't worry!${datasetMessage} 
-
-📧 IMPORTANT: An email will open now - please click SEND to notify our team immediately.
-You'll receive your comprehensive report within ${window.uploadedDataset ? '2 hours' : '24 hours'} at ${data.email}.`);
-                    
-                    // Redirect to thank you page
-                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(data.firstName)}&company=${encodeURIComponent(data.company)}&hasDataset=${!!window.uploadedDataset}`;
+                    const emailSubject = `🚀 URGENT: New DataSight AI Lead - ${plain.firstName} from ${plain.company}`;
+                    const emailBody = `🚀 NEW DATASIGHT AI LEAD ALERT!\n${window.uploadedDatasetFile ? '📊 INCLUDES DATASET FOR ANALYSIS!' : ''}\n\n👤 CONTACT INFORMATION:\nName: ${plain.firstName} ${plain.lastName}\nCompany: ${plain.company}\nEmail: ${plain.email}\nPhone: ${plain.phone}\n\n🏢 BUSINESS DETAILS:\nIndustry: ${plain.industry}\nAnnual Revenue: ${plain.revenue}\nMain Challenge: ${plain.challenge || 'Not specified'}\n\n${window.uploadedDatasetFile ? `📊 DATASET UPLOADED:\nFile: ${plain.datasetName}\nSize: ${plain.datasetSize}\n🔥 PRIORITY: High - Customer uploaded data for analysis!` : '📝 No dataset uploaded - offer to analyze sample data'}\n\n⏰ SUBMISSION TIME: ${new Date().toLocaleString()}\n\n📋 IMMEDIATE ACTION REQUIRED:\n${window.uploadedDatasetFile ? `1. 🔥 CALL WITHIN 15 MINUTES: ${plain.phone} (they uploaded data!)\n2. 📊 Download and analyze their dataset immediately\n3. 📧 Send personalized analysis within 2 hours\n4. 💰 This is a HOT LEAD - they're ready to see results!` : `1. 📞 Call within 24 hours: ${plain.phone}\n2. 📧 Send demo analysis to: ${plain.email}\n3. 💼 Offer to analyze their data\n4. 🎯 Schedule demo call`}\n\n---\n⚡ RESPOND IMMEDIATELY for highest conversion rates!\nThis lead was generated from your DataSight AI free trial page.`;
+                    window.open(`mailto:information@analyticacoreai.ie?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`);
+                    alert(`⚠️ Connection issue detected. You'll receive your report within ${window.uploadedDatasetFile ? '2 hours' : '24 hours'} at ${plain.email}.`);
+                    window.location.href = `thank-you.html?firstName=${encodeURIComponent(plain.firstName || '')}&company=${encodeURIComponent(plain.company || '')}&hasDataset=${!!window.uploadedDatasetFile}`;
                 }
             });
-            
-            console.log('✅ All event listeners attached successfully');
         });
-// ...existing code...
-        // The fallback email logic and thank you redirect are already handled above. No stray lines or invalid characters remain.
-        console.log('✅ All event listeners attached successfully');
     </script>
 </body>
 </html>

@@ -69,6 +69,15 @@
                 </div>
             </div>
             
+            <div class="mb-4">
+                <label class="form-label fw-bold">Upload Your Business Data (CSV, Excel, JSON)</label>
+                <div class="input-group">
+                    <input type="file" id="analysisFile" class="form-control" accept=".csv,.xlsx,.xls,.json">
+                    <button id="uploadBtn" class="btn btn-outline-primary" type="button"><i class="fas fa-cloud-upload-alt me-1"></i>Upload</button>
+                </div>
+                <small id="uploadStatus" class="text-muted"></small>
+            </div>
+
             <div class="text-center mb-4">
                 <button onclick="generateAnalysis()" class="btn btn-primary-custom btn-lg">
                     <i class="fas fa-robot me-2"></i>Generate My AI Business Analysis
@@ -400,7 +409,7 @@ Business Health Scores:
 This is a qualified lead ready for conversion.
             `.trim();
             
-            const businessMailtoLink = `mailto:analyticacoreai@outlook.com?subject=${encodeURIComponent(businessEmailSubject)}&body=${encodeURIComponent(businessEmailBody)}`;
+            const businessMailtoLink = `mailto:information@analyticacoreai.ie?subject=${encodeURIComponent(businessEmailSubject)}&body=${encodeURIComponent(businessEmailBody)}`;
             
             // Open both emails
             setTimeout(() => {
@@ -433,6 +442,32 @@ You'll receive your complete AI business health check with:
                 if (lastLead.industry) document.getElementById('industry').value = lastLead.industry;
                 if (lastLead.revenue) document.getElementById('revenue').value = lastLead.revenue;
             }
+
+            // Wire upload button to Netlify function
+            const uploadBtn = document.getElementById('uploadBtn');
+            const fileInput = document.getElementById('analysisFile');
+            const statusEl = document.getElementById('uploadStatus');
+            uploadBtn?.addEventListener('click', async () => {
+                const file = fileInput?.files && fileInput.files[0];
+                if (!file) { alert('Please choose a file first.'); return; }
+                const maxSize = 10 * 1024 * 1024; // 10MB
+                if (file.size > maxSize) { alert('File must be under 10MB.'); return; }
+                const fd = new FormData();
+                fd.append('file', file);
+                fd.append('userId', (document.getElementById('userEmail').value || 'anonymous'));
+                statusEl.textContent = 'Uploading...';
+                try {
+                    const resp = await fetch('https://analyticacoreai.netlify.app/.netlify/functions/upload', { method: 'POST', body: fd });
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    const result = await resp.json();
+                    statusEl.textContent = `Uploaded: ${result.fileName} (${Math.round(result.fileSize/1024)} KB)`;
+                    statusEl.className = 'text-success';
+                } catch (e) {
+                    statusEl.textContent = 'Upload failed. Please try again.';
+                    statusEl.className = 'text-danger';
+                    console.error('Upload error:', e);
+                }
+            });
         });
     </script>
 </body>

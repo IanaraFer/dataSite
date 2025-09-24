@@ -1,7 +1,5 @@
-﻿const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const sgMail = require('@sendgrid/mail');
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const nodemailer = require('nodemailer');
 
 exports.handler = async (event, context) => {
   const headers = {
@@ -106,7 +104,7 @@ exports.handler = async (event, context) => {
       }
     });
 
-    // Send confirmation emails
+    // Send confirmation emails via SMTP
     await sendConfirmationEmails(customer, subscription, selectedPlan, customerData);
 
     return {
@@ -135,10 +133,18 @@ exports.handler = async (event, context) => {
 
 async function sendConfirmationEmails(customer, subscription, plan, customerData) {
   try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.office365.com',
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: false,
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      tls: { ciphers: 'TLSv1.2' }
+    });
     // Email to customer
     const customerEmail = {
       to: customer.email,
-  from: 'information@analyticacoreai.ie',
+      from: process.env.SMTP_USER || 'information@analyticacoreai.ie',
+      replyTo: process.env.SMTP_USER || 'information@analyticacoreai.ie',
       subject: 'Welcome to AnalyticaCore AI - Subscription Confirmed!',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -161,7 +167,7 @@ async function sendConfirmationEmails(customer, subscription, plan, customerData
             <li>Access your dashboard at: <a href="https://analyticacoreai.netlify.app/platform.html">Dashboard</a></li>
             <li>Upload your data files for AI analysis</li>
             <li>Generate powerful business insights</li>
-            <li>Contact support if you need help: analyticacoreai@outlook.com</li>
+            <li>Contact support if you need help: information@analyticacoreai.ie</li>
           </ul>
           
           <p>You can manage your subscription anytime in your account dashboard.</p>
@@ -173,8 +179,8 @@ async function sendConfirmationEmails(customer, subscription, plan, customerData
 
     // Email to admin
     const adminEmail = {
-  to: 'information@analyticacoreai.ie',
-  from: 'information@analyticacoreai.ie',
+      to: 'information@analyticacoreai.ie',
+      from: process.env.SMTP_USER || 'information@analyticacoreai.ie',
       subject: `New Subscription: ${plan.name} - ${customer.email}`,
       html: `
         <h2>New Subscription Created</h2>
@@ -189,8 +195,8 @@ async function sendConfirmationEmails(customer, subscription, plan, customerData
     };
 
     await Promise.all([
-      sgMail.send(customerEmail),
-      sgMail.send(adminEmail)
+      transporter.sendMail(customerEmail),
+      transporter.sendMail(adminEmail)
     ]);
 
   } catch (error) {

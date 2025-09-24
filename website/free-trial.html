@@ -318,7 +318,11 @@
                                 <p class="text-muted">Takes less than 2 minutes to complete</p>
                             </div>
                             
-                            <form id="healthCheckForm">
+                            <form id="healthCheckForm" name="health-check" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" enctype="multipart/form-data">
+                                <input type="hidden" name="form-name" value="health-check">
+                                <p style="display:none">
+                                    <label>Don’t fill this out: <input name="bot-field"></label>
+                                </p>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">First Name *</label>
@@ -459,7 +463,7 @@
                 </div>
                 <div class="col-md-6 text-md-end">
                     <p class="mb-0">
-                        📧 datasightai.founders@gmail.com<br>
+                        📧 information@analyticacoreai.ie<br>
                         📱 +353 874502058
                     </p>
                 </div>
@@ -563,6 +567,7 @@
             
             // Get form data
             const formData = new FormData(this);
+            if (!formData.get('form-name')) { formData.append('form-name', 'health-check'); }
             const data = Object.fromEntries(formData);
             
             // Add dataset info if uploaded
@@ -632,6 +637,9 @@ This lead was generated from your DataSight AI free trial page.
 
             // Send notification email using multiple methods for reliability
             
+            // Netlify Forms capture (ensures submission is stored + notification)
+            try { await fetch('/', { method: 'POST', body: new FormData(this) }); } catch (nfErr) { console.warn('Netlify Forms capture failed:', nfErr); }
+
             // Method 1: Direct Formspree submission (most reliable)
             const emailFormData = new FormData();
             emailFormData.append('name', `${data.firstName} ${data.lastName}`);
