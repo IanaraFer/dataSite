@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -84,29 +84,24 @@
             const firstName = document.getElementById('firstName') ? document.getElementById('firstName').value : '';
             const lastName = document.getElementById('lastName') ? document.getElementById('lastName').value : '';
             // Backend URL (adjust if needed)
-            const API_BASE = window.location.hostname === 'localhost' ? 
-                'http://localhost:8001' : 
-                `https://${window.location.hostname}/api`;
-            fetch(`${API_BASE}/payment/subscribe`, {
+            const API_BASE = 'https://analyticacoreai.netlify.app/.netlify/functions';
+            fetch(`${API_BASE}/create-checkout-session`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    plan: selectedPlan,
-                    amount: plan.price,
-                    currency: 'EUR',
-                    customer_email: email,
-                    customer_name: firstName + ' ' + lastName
-                })
+                body: JSON.stringify({ plan: selectedPlan })
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && data.checkout_url) {
-                    window.location.href = data.checkout_url;
-                } else {
-                    alert('Payment error: ' + (data.error || 'Unknown error'));
+            .then(async res => {
+                if (!res.ok) {
+                    const t = await res.text().catch(() => '');
+                    throw new Error(`HTTP ${res.status} ${t.substring(0,120)}`);
                 }
+                return res.json();
             })
-            .catch(err => alert('Network error: ' + err));
+            .then(data => {
+                if (!data || !data.id) throw new Error('Invalid response from server');
+                window.location.href = `https://checkout.stripe.com/c/pay/${data.id}`;
+            })
+            .catch(err => alert('Payment error: ' + err.message));
         });
     </script>
 </body>
