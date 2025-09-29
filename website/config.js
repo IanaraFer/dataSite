@@ -1,5 +1,5 @@
-﻿const PLATFORM_CONFIG = {
-    api: { baseUrl: 'https://analyticacoreai.netlify.app/.netlify/functions' },
+const PLATFORM_CONFIG = {
+    api: { baseUrl: '/api' },
     pricing: {
         starter: { name: 'Starter', price: 199 },
         professional: { name: 'Professional', price: 399 },
