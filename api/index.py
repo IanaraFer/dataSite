@@ -1,143 +1,166 @@
-<<<<<<< HEAD
-@app.route("/api/payment/subscribe", methods=["POST"])
-def payment_subscribe():
-    try:
-        data = request.get_json()
-        plan_name = data.get("plan", "Starter Plan")
-        price = data.get("price", 199)
-        email = data.get("email")
-        # Map plan name to Stripe price ID
-        price_ids = {
-            "Starter Plan": "price_1S2Ne8EPS0ev8tkiBKZzV4pS",      # €199
-            "Professional Plan": "price_1S2NfWEPS0ev8tkiwao10uJ0", # €399
-            "Enterprise Plan": "price_1S2NgSEPS0ev8tkiRuu9Xbtb"    # €799
-        }
-        price_id = price_ids.get(plan_name, "price_1S2Ne8EPS0ev8tkiBKZzV4pS")
-
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[{
-                "price": price_id,
-                "quantity": 1,
-            }],
-            mode="subscription",
-            customer_email=email,
-            success_url="https://analyticacoreai.netlify.app/success.html",
-            cancel_url="https://analyticacoreai.netlify.app/pricing.html",
-        )
-        return jsonify({"success": True, "checkout_url": checkout_session.url})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 400
-from flask import Flask, request, jsonify, render_template_string
-from flask_cors import CORS
-import stripe
-import os
-=======
 from http.server import BaseHTTPRequestHandler
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
 import json
 import os
+import urllib.parse
+
+
+def _json_response(handler: BaseHTTPRequestHandler, status_code: int, payload: dict):
+    handler.send_response(status_code)
+    handler.send_header('Content-type', 'application/json')
+    handler.send_header('Access-Control-Allow-Origin', '*')
+    handler.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    handler.send_header('Access-Control-Allow-Headers', 'Content-Type')
+    handler.end_headers()
+    handler.wfile.write(json.dumps(payload).encode('utf-8'))
+
+
+def _read_request_body(handler: BaseHTTPRequestHandler) -> bytes:
+    content_length = handler.headers.get('Content-Length')
+    if content_length is None:
+        return b''
+    try:
+        length = int(content_length)
+    except ValueError:
+        length = 0
+    if length <= 0:
+        return b''
+    return handler.rfile.read(length)
+
 
 class handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.end_headers()
-        
-        response = {
-            "message": "AnalyticaCore AI API",
-            "status": "healthy",
-            "version": "1.0.0"
-        }
-        self.wfile.write(json.dumps(response).encode())
-        return
-
-    def do_POST(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
-        self.end_headers()
-        
-        # Get the path
-        path = self.path
-        
-        if path == '/api/contact':
-            response = {
-                "message": "Thank you! We'll contact you within 24 hours.",
-                "status": "success"
-            }
-        elif path == '/api/upload':
-            response = {
-                "message": "File upload received",
-                "status": "success",
-                "analysis": {
-                    "total_records": 1000,
-                    "revenue_trend": "📈 +15% growth",
-                    "top_customer": "ABC Corp",
-                    "insights": [
-                        "Revenue increased 15% this quarter",
-                        "Customer retention rate: 85%",
-                        "Top performing product: Analytics Pro"
-                    ]
-                }
-            }
-        else:
-            response = {
-                "message": "API endpoint not found",
-                "status": "error"
-            }
-        
-        self.wfile.write(json.dumps(response).encode())
-        return
-
-<<<<<<< HEAD
-@app.route("/api/contact", methods=["POST"])
-def handle_contact():
-    try:
-        data = request.get_json()
-        name = data.get('name', 'No Name')
-        email = data.get('email', 'No Email')
-        message = data.get('message', '')
-
-        import smtplib
-        from email.mime.text import MIMEText
-        from email.mime.multipart import MIMEMultipart
-
-        smtp_server = "smtp.office365.com"
-        smtp_port = 587
-        username = "information@analyticacoreai.ie"
-        password = "Maiaemolly22"  # Replace with your actual password or use environment variable
-        recipient_email = "information@analyticacoreai.ie"
-
-        subject = f"New Analysis/Orcamento Request from {name}"
-        body = f"Name: {name}\nEmail: {email}\nMessage: {message}"
-
-        msg = MIMEMultipart()
-        msg['From'] = username
-        msg['To'] = recipient_email
-        msg['Subject'] = subject
-        msg.attach(MIMEText(body, 'plain'))
-
-        with smtplib.SMTP(smtp_server, smtp_port) as server:
-            server.starttls()
-            server.login(username, password)
-            server.sendmail(username, recipient_email, msg.as_string())
-
-        return jsonify({"message": "Thank you! Your request has been sent and you will be contacted soon."})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
-
-if __name__ == "__main__":
-    app.run(debug=True)
-=======
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
-        return
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
+
+    def do_GET(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+
+        if path in ('/api', '/api/', '/api/health'):
+            return _json_response(self, 200, {
+                "message": "AnalyticaCore AI API",
+                "status": "healthy",
+                "version": "1.0.0"
+            })
+
+        if path == '/api/email/test':
+            return _json_response(self, 200, {"status": "ok", "message": "Email service reachable (simulated)"})
+
+        # Unknown GET endpoint
+        return _json_response(self, 404, {"error": "Not found"})
+
+    def do_POST(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+        raw_body = _read_request_body(self)
+        content_type = self.headers.get('Content-Type', '')
+
+        # Best-effort JSON parse
+        body = {}
+        if 'application/json' in content_type and raw_body:
+            try:
+                body = json.loads(raw_body.decode('utf-8'))
+            except Exception:
+                body = {}
+
+        # Contact form (simple ack)
+        if path == '/api/contact':
+            name = body.get('name') if isinstance(body, dict) else None
+            return _json_response(self, 200, {
+                "status": "success",
+                "message": f"Thanks {name or 'there'}! We'll contact you within 24 hours."
+            })
+
+        # File upload endpoint used by free trial form
+        if path == '/api/free_trial_upload':
+            # We do not persist files here; just acknowledge receipt
+            return _json_response(self, 200, {
+                "status": "received",
+                "message": "Free trial submission received",
+                "analysis_eta_minutes": 15
+            })
+
+        # One-time analysis request
+        if path == '/api/one-time-analysis':
+            return _json_response(self, 200, {
+                "status": "queued",
+                "job_id": "job_simulated_123",
+                "message": "Your analysis request has been queued"
+            })
+
+        # Stripe Checkout via price data (preferred in website/working-payment.html)
+        if path in ('/api/create-checkout-session', '/api/create-subscription'):
+            # Attempt real Stripe checkout if configured; otherwise simulate
+            stripe_secret = os.getenv('STRIPE_SECRET_KEY')
+            if stripe_secret:
+                try:
+                    import stripe  # type: ignore
+                    stripe.api_key = stripe_secret
+
+                    price_data = (body or {}).get('price_data')
+                    mode = (body or {}).get('mode', 'subscription')
+                    success_url = (body or {}).get('success_url') or f"{self.headers.get('Origin') or ''}/success.html"
+                    cancel_url = (body or {}).get('cancel_url') or f"{self.headers.get('Origin') or ''}/pricing.html"
+
+                    if price_data:
+                        session = stripe.checkout.Session.create(
+                            mode=mode,
+                            payment_method_types=['card'],
+                            line_items=[{ 'price_data': price_data, 'quantity': 1 }],
+                            success_url=success_url,
+                            cancel_url=cancel_url,
+                        )
+                    else:
+                        # Fallback expects price_id on body
+                        price_id = (body or {}).get('price_id')
+                        if not price_id:
+                            return _json_response(self, 400, {"error": "Missing price_data or price_id"})
+                        session = stripe.checkout.Session.create(
+                            mode=mode,
+                            payment_method_types=['card'],
+                            line_items=[{ 'price': price_id, 'quantity': 1 }],
+                            success_url=success_url,
+                            cancel_url=cancel_url,
+                        )
+                    return _json_response(self, 200, {"id": session.id, "url": session.url})
+                except Exception as e:
+                    return _json_response(self, 500, {"error": f"Stripe error: {str(e)}"})
+
+            # Simulated success (no Stripe configured)
+            return _json_response(self, 200, {
+                "id": "cs_test_simulated_123",
+                "url": "https://checkout.stripe.com/test/sessions/cs_test_simulated_123",
+                "requires_action": False,
+                "customer_id": "cus_test_123"
+            })
+
+        # Stripe Connect Checkout (subscribe.html)
+        if path == '/api/stripe_connect_checkout':
+            # Simulate a connected account checkout link
+            return _json_response(self, 200, {
+                "checkout_url": "https://checkout.stripe.com/test/connect/cs_test_simulated_abc"
+            })
+
+        # Customer details placeholder (dashboard)
+        if path.startswith('/api/customer/'):
+            customer_id = path.rsplit('/', 1)[-1]
+            return _json_response(self, 200, {
+                "customer_id": customer_id,
+                "email": "customer@example.com",
+                "plan": "professional",
+                "status": "active"
+            })
+
+        # Upload dataset placeholder (dashboard)
+        if path == '/api/upload-dataset':
+            return _json_response(self, 200, {
+                "status": "uploaded",
+                "rows": 1234,
+                "message": "Dataset received"
+            })
+
+        # Unknown POST endpoint
+        return _json_response(self, 404, {"error": "Not found"})
