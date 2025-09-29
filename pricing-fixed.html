@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -348,7 +348,7 @@
 
             try {
                 // Create Stripe Checkout Session
-                const response = await fetch('/api/create-checkout-session', {
+                const response = await fetch('/api/checkout', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
