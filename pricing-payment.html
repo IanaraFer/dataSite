@@ -436,7 +436,7 @@
                 }
                 
                 // Send to backend for subscription creation
-                const response = await fetch('http://localhost:8001/api/create-subscription', {
+                const response = await fetch('/api/create-subscription', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
