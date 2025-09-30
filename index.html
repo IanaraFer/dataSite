@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id=GTM-XXXXXXX'+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytica Core AI - AI-Powered Business Analytics Platform</title>
-    <meta name="description" content="Transform your data into decisions automatically with Analytica Core AI. AI-powered business analytics for SMEs. Get insights in minutes, not weeks.">
+    <meta name="description" content="AI-powered analytics for small and medium businesses. Instantly turn your data into actionable insights. Trusted by 500+ professionals. Try free.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -43,8 +50,8 @@
         /* Navigation */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
-            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0,0,0,0.1);
             padding: 1rem 0;
             transition: all 0.3s ease;
@@ -315,10 +322,119 @@
         }
     </style>
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FQQHWKG6SY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FQQHWKG6SY');
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FQQHWKG6SY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FQQHWKG6SY');
+</script>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+// GA4/Tag Manager Event Tracking for CTAs and Forms
+document.addEventListener('DOMContentLoaded', function() {
+    // Track main CTA button clicks
+    var ctaButtons = document.querySelectorAll('.btn-hero, .btn-primary, .btn-light, .btn-outline-light');
+    ctaButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'cta_click', {
+                    event_category: 'engagement',
+                    event_label: btn.textContent.trim(),
+                    page_location: window.location.pathname
+                });
+            }
+        });
+    });
+    // Track all form submissions
+    var forms = document.querySelectorAll('form');
+    forms.forEach(function(form) {
+        form.addEventListener('submit', function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'form_submit', {
+                    event_category: 'form',
+                    event_label: form.getAttribute('name') || form.id || 'unnamed',
+                    page_location: window.location.pathname
+                });
+            }
+        });
+    });
+});
+    <!--
+    Google Analytics/Tag Manager Visitor Source Tracking:
+    - GA4 automatically tracks source/medium (see Acquisition > Traffic acquisition in GA4 dashboard).
+    - For advanced attribution, use UTM parameters in your marketing links.
+    - Google Tag Manager can be used to set up custom triggers for source/medium if needed.
+    -->
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
+    <!-- Free AI Analytics Checklist Download Section -->
+    <section class="py-5 bg-light border-top border-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-3">Free Download: AI Analytics Success Checklist <span class="badge bg-success align-middle fs-6">PDF</span></h2>
+                    <p class="lead text-muted mb-3">Unlock your business growth with our expert, step-by-step AI analytics checklist. Enter your email to get instant access (PDF, 1 page).</p>
+                    <form name="checklist-download" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center gap-2" aria-label="Download AI Analytics Checklist" style="max-width: 420px;">
+                        <input type="hidden" name="form-name" value="checklist-download">
+                        <p class="d-none"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+                        <input type="email" name="email" class="form-control" placeholder="Your email address" aria-label="Email address for checklist download" required>
+                        <button type="submit" class="btn btn-primary" aria-label="Download Checklist PDF">Download PDF</button>
+                    </form>
+                    <div id="checklist-success" class="text-success mt-3" style="display:none;">Check your email for the download link!</div>
+                    <small class="text-muted d-block mt-2"><i class="fas fa-lock me-1"></i>Your email is safe. We never share or spam.</small>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="/assets/ai-analytics-checklist.png" alt="Preview of AI Analytics Checklist PDF" class="img-fluid rounded shadow" style="max-width:340px;">
+                    <div class="mt-3">
+                        <a href="/assets/ai-analytics-checklist.pdf" class="btn btn-outline-secondary btn-sm" target="_blank" rel="noopener" download="AI-Analytics-Checklist.pdf">
+                            <i class="fas fa-file-pdf me-1"></i>Preview PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+// Checklist download form handler (Netlify Forms + instant download)
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form[name="checklist-download"]');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = form.querySelector('input[name="email"]').value;
+            if (localStorage.getItem('checklist_downloaded_' + email)) {
+                document.getElementById('checklist-success').textContent = 'You have already downloaded the checklist.';
+                document.getElementById('checklist-success').style.display = 'block';
+                return;
+            }
+            const formData = new FormData(form);
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            }).then(() => {
+                localStorage.setItem('checklist_downloaded_' + email, '1');
+                document.getElementById('checklist-success').textContent = 'Check your email for the download link!';
+                document.getElementById('checklist-success').style.display = 'block';
+                // Download PDF version
+                window.open('/assets/ai-analytics-checklist.pdf', '_blank');
+                form.reset();
+            });
+        });
+    }
+});
             <a class="navbar-brand" href="#home">
                 <i class="fas fa-chart-line me-2"></i>Analytica Core AI
             </a>
@@ -333,7 +449,7 @@
                     <li class="nav-item"><a class="nav-link" href="#demo">Demo</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-3 rounded-pill ms-2" href="free-trial-simple.html">
+                        <a class="nav-link btn btn-primary text-white px-3 rounded-pill ms-2" href="working-payment.html">
                             Start Free Trial
                         </a>
                     </li>
@@ -348,14 +464,14 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="hero-content fade-in">
-                        <h1>Transform Your Data Into <span class="text-warning">Decisions</span> Automatically</h1>
-                        <p class="lead">AI-powered business analytics that turns complex data into actionable insights. No technical skills required. Get results in minutes, not weeks.</p>
-                        <div class="mt-4">
-                            <a href="free-trial-simple.html" class="btn-hero btn-primary-hero btn-lg">
+                        <h1>AI-powered analytics for SMEs: Cut reporting time by 80% and unlock growth</h1>
+                        <p class="lead">Instantly turn your business data into actionable insights. Designed for small and medium businesses—no technical skills needed.</p>
+                        <div class="mt-4 d-flex flex-wrap gap-3">
+                            <a href="working-payment.html" class="btn-hero btn-primary-hero btn-lg">
                                 <i class="fas fa-rocket me-2"></i>Start Free Trial
                             </a>
                             <a href="#demo" class="btn-hero btn-lg">
-                                <i class="fas fa-play me-2"></i>Watch Demo
+                                <i class="fas fa-play me-2"></i>See How It Works
                             </a>
                         </div>
                         <div class="mt-4">
@@ -402,79 +518,6 @@
             </div>
         </div>
     </section>
-        <!-- One-Time Data Analysis Subscription Section -->
-        <section id="one-time-analysis" class="pricing">
-                <div class="container">
-                        <div class="row justify-content-center">
-                                <div class="col-lg-6 text-center">
-                                        <div class="card p-4 shadow-sm mb-4">
-                                                <h3 class="fw-bold mb-3">One-Time Data Analysis</h3>
-                                                <p class="text-muted mb-3">Get a complete, custom data analysis for a single project. No subscription required.</p>
-                                                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#oneTimeModal">
-                                                        Request One-Time Analysis
-                                                </button>
-                                        </div>
-                                </div>
-                        </div>
-                </div>
-        </section>
-
-        <!-- One-Time Analysis Modal -->
-        <div class="modal fade" id="oneTimeModal" tabindex="-1" aria-labelledby="oneTimeModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form id="oneTimeForm">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="oneTimeModalLabel">Request One-Time Data Analysis</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" class="form-control" name="fullName" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Email Address</label>
-                                <input type="email" class="form-control" name="email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Company (optional)</label>
-                                <input type="text" class="form-control" name="company">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Upload Data File (CSV, PDF, DOC, XLSX, etc.)</label>
-                                <input type="file" class="form-control" name="dataFile" accept=".csv,.pdf,.doc,.docx,.xlsx,.xls,.json,.txt" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Select Analysis Types</label>
-                                <select class="form-select" name="analysisTypes" multiple required>
-                                    <option value="business-overview">Business Overview</option>
-                                    <option value="revenue-forecasting">Revenue Forecasting</option>
-                                    <option value="customer-segmentation">Customer Segmentation</option>
-                                    <option value="anomaly-detection">Anomaly Detection</option>
-                                    <option value="comparative-analysis">Comparative Analysis</option>
-                                    <option value="churn-prediction">Churn Prediction</option>
-                                    <option value="rfm-analysis">RFM Analysis</option>
-                                    <option value="custom-dashboard">Custom Dashboard</option>
-                                    <option value="api-integration">API Integration</option>
-                                    <option value="white-label-reporting">White-label Reporting</option>
-                                    <option value="other">Other (describe in message)</option>
-                                </select>
-                                <small class="text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple options.</small>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Additional Message (optional)</label>
-                                <textarea class="form-control" name="message" rows="3" placeholder="Describe your project or specific needs..."></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Submit Request</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
     <!-- Stats Section -->
     <section class="stats">
@@ -585,11 +628,11 @@
                         <h2 class="mb-4">See Analytica Core AI in Action</h2>
                         <p class="lead mb-4">Watch how easy it is to transform your business data into actionable insights</p>
                         <div class="mb-4">
-                            <a href="platform.html" class="btn btn-primary btn-lg me-3" target="_blank">
+                            <a href="working-platform.html" class="btn btn-primary btn-lg me-3" target="_blank">
                                 <i class="fas fa-desktop me-2"></i>Try Live Demo
                             </a>
-                            <a href="generate-analysis.html" class="btn btn-outline-light btn-lg" target="_blank">
-                                <i class="fas fa-magic me-2"></i>Generate Sample Analysis
+                            <a href="working-payment.html" class="btn btn-outline-light btn-lg" target="_blank">
+                                <i class="fas fa-credit-card me-2"></i>View Pricing
                             </a>
                         </div>
                         <div class="row text-center mt-5">
@@ -702,6 +745,65 @@
 
     <!-- Testimonials Section -->
     <section class="py-5" style="background: var(--light-bg);">
+    <!-- Social Proof: Trusted by statement and logos -->
+    <section class="py-4 bg-white border-bottom">
+        <div class="container text-center">
+            <div class="mb-3">
+                <span class="fw-bold text-secondary" style="font-size:1.2rem;">Trusted by 500+ professionals and growing</span>
+            </div>
+            <div class="d-flex flex-wrap justify-content-center align-items-center gap-4">
+                <img src="/assets/logo1.png" alt="Partner 1 Logo" style="height:40px;">
+                <img src="/assets/logo2.png" alt="Partner 2 Logo" style="height:40px;">
+                <img src="/assets/logo3.png" alt="Partner 3 Logo" style="height:40px;">
+                <img src="/assets/logo4.png" alt="Partner 4 Logo" style="height:40px;">
+                <img src="/assets/logo5.png" alt="Partner 5 Logo" style="height:40px;">
+            </div>
+        </div>
+    </section>
+                <!-- Case Study Card -->
+                <div class="col-lg-12 mb-4">
+                    <div class="card border-0 shadow-sm h-100 bg-light">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-2"><i class="fas fa-trophy text-warning me-2"></i>Case Study: RetailMax Boosts Revenue by 23%</h5>
+                            <p class="mb-2">After integrating Analytica Core AI, RetailMax identified new customer segments and optimized their marketing spend, resulting in a 23% increase in revenue within 6 months.</p>
+                            <ul class="mb-2">
+                                <li>Automated customer segmentation</li>
+                                <li>Actionable sales insights</li>
+                                <li>Easy-to-understand dashboards</li>
+                            </ul>
+                            <span class="badge bg-success">Success Story</span>
+                        </div>
+                    </div>
+                </div>
+    <!-- Blog/FAQ Section for SEO -->
+    <section class="py-5" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="display-5 fw-bold mb-3">Resources & Insights</h2>
+                    <p class="lead text-muted">Learn more about AI analytics for small businesses, dashboards, and automated data insights.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">What is AI-powered analytics?</h5>
+                            <p class="card-text">AI analytics uses machine learning to automatically analyze your business data, find patterns, and deliver insights—no manual work required. <a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">How can AI dashboards help my SME?</h5>
+                            <p class="card-text">AI dashboards give you a real-time view of your business performance, highlight trends, and recommend actions to grow your business. <a href="#">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center mb-5">
@@ -763,7 +865,7 @@
                     <h2 class="display-5 fw-bold mb-3">Ready to Transform Your Business?</h2>
                     <p class="lead mb-4">Join hundreds of businesses already using Analytica Core AI to make data-driven decisions.</p>
                     <div class="mb-4">
-                        <a href="free-trial-simple.html" class="btn btn-light btn-lg me-3">
+                        <a href="working-payment.html" class="btn btn-light btn-lg me-3">
                             <i class="fas fa-rocket me-2"></i>Start Free Trial
                         </a>
                         <a href="#contact" class="btn btn-outline-light btn-lg">
@@ -801,10 +903,14 @@
                         <div class="col-md-4">
                             <div class="text-center">
                                 <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                                    <i class="fab fa-linkedin-in fa-lg text-white"></i>
+                                    <a href="https://www.linkedin.com/company/analyticacoreai/?viewAsMember=true" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">
+                                        <i class="fab fa-linkedin-in fa-lg text-white"></i>
+                                    </a>
                                 </div>
                                 <h5>LinkedIn</h5>
-                                <p class="text-muted">Connect with Analytica Core AI</p>
+                                <p class="text-muted">Connect with Analytica Core AI<br>
+                                    <a href="https://www.linkedin.com/company/analyticacoreai/?viewAsMember=true" target="_blank" rel="noopener" class="btn btn-outline-success btn-sm mt-2">Visit LinkedIn</a>
+                                </p>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -832,11 +938,26 @@
                     </h5>
                     <p class="text-light">Making every business owner a data scientist. Transform your data into decisions automatically with AI-powered analytics.</p>
                     <div class="social-links">
-                        <a href="#" class="footer-link me-3" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.linkedin.com/company/analyticacoreai/?viewAsMember=true" class="footer-link me-3" title="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
                         <a href="#" class="footer-link me-3" title="Twitter"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="footer-link me-3" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                     </div>
+                    <!-- Newsletter Signup -->
+                    <div class="mt-4">
+                        <form name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="d-flex flex-column align-items-start">
+                            <input type="hidden" name="form-name" value="newsletter">
+                            <p class="d-none">
+                                <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                            </p>
+                            <label for="newsletter-email" class="mb-2 text-light">Subscribe for promotions & updates:</label>
+                            <div class="input-group mb-2">
+                                <input type="email" id="newsletter-email" name="email" class="form-control" placeholder="Your email address" required>
+                                <button type="submit" class="btn btn-success">Subscribe</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
+// ...existing code...
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="mb-3">Product</h6>
                     <ul class="list-unstyled">
