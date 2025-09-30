@@ -248,7 +248,7 @@
             }
 
             try {
-                const response = await fetch(`http://localhost:8001/api/customer/${customerId}`);
+                const response = await fetch(`/api/customer/${customerId}`);
                 if (response.ok) {
                     const customerData = await response.json();
                     
@@ -361,7 +361,7 @@
                 `;
 
                 // Upload to backend
-                const response = await fetch('http://localhost:8001/api/upload-dataset', {
+                const response = await fetch('/api/upload', {
                     method: 'POST',
                     body: formData
                 });
