@@ -923,6 +923,52 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Contact Form -->
+                    <div class="row mt-5">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="card shadow-lg border-0">
+                                <div class="card-body p-5">
+                                    <h4 class="card-title text-center mb-4">Send us a message</h4>
+                                    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                                        <input type="hidden" name="form-name" value="contact">
+                                        <p class="d-none">
+                                            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="name" class="form-label">Name *</label>
+                                                <input type="text" class="form-control" id="name" name="name" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="email" class="form-label">Email *</label>
+                                                <input type="email" class="form-control" id="email" name="email" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="company" class="form-label">Company</label>
+                                                <input type="text" class="form-control" id="company" name="company">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="phone" class="form-label">Phone</label>
+                                                <input type="tel" class="form-control" id="phone" name="phone">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message" class="form-label">Message *</label>
+                                            <textarea class="form-control" id="message" name="message" rows="4" required placeholder="Tell us about your data analytics needs..."></textarea>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

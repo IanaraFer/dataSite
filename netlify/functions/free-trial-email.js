@@ -14,8 +14,8 @@ exports.handler = async function(event, context) {
     port: 587,
     secure: false,
     auth: {
-      user: 'information@analyticacoreai.ie',
-      pass: 'Maiaemolly22' // Use environment variable in production
+      user: process.env.EMAIL_USER || 'information@analyticacoreai.ie',
+      pass: process.env.EMAIL_PASSWORD // Use environment variable in production
     }
   });
 
