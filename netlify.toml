@@ -1,38 +1,9 @@
 
 [build]
-  publish = "website"
-  command = "echo 'Build complete'"
-  functions = "netlify/functions"
-
-[build.environment]
-  NODE_VERSION = "18.20.4"
-  PYTHON_VERSION = "3.11.9"
-  MISE_VERBOSE = "0"
-
-[build.processing]
-  skip_processing = false
-
-[build.processing.css]
-  bundle = true
-  minify = true
-
-[build.processing.js]
-  bundle = true
-  minify = true
-
-[build.processing.html]
-  pretty_urls = true
+  publish = "."
+  command = "echo 'Static site - no build required'"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = false
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
