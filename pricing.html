@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -114,17 +114,9 @@
         }
     </style>
 <script>
-function subscribeToPlan(planName, price) {
-    console.log('Subscribe clicked:', planName, price);
-    let planType = 'starter';
-    if (planName === 'professional') planType = 'professional';
-    if (planName === 'business' || planName === 'enterprise') planType = 'enterprise';
-    console.log('Redirecting to plan:', planType);
-    window.location.href = 'subscribe.html?plan=' + planType;
+function subscribeToPlan(plan, price) {
+    window.location.href = 'subscribe.html?plan=' + plan + '&price=' + price;
 }
-</script>
-<script>
-function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?plan=' + plan + '&price=' + price; }
 </script>
 </head>
 <body>
@@ -150,7 +142,7 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
             <div class="col-lg-4">
                 <div class="pricing-card">
                     <h3 class="h4 fw-bold">Professional</h3>
-                    <div class="price">â‚¬199<small class="fs-6 text-muted">/month</small></div>
+                    <div class="price">€199<small class="fs-6 text-muted">/month</small></div>
                     <p class="text-muted">Perfect for growing SMEs</p>
                     
                     <ul class="list-unstyled feature-list">
@@ -169,7 +161,7 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
                         <i class="fas fa-rocket me-2"></i>Try Free First
                     </a>
                     <div class="mt-2">
-                        <small class="text-muted">â‚¬199/month + VAT</small>
+                        <small class="text-muted">€199/month + VAT</small>
                     </div>
                 </div>
             </div>
@@ -179,7 +171,7 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
                 <div class="pricing-card featured">
                     <div class="featured-badge">Most Popular</div>
                     <h3 class="h4 fw-bold">Business</h3>
-                    <div class="price">â‚¬399<small class="fs-6 text-muted">/month</small></div>
+                    <div class="price">€399<small class="fs-6 text-muted">/month</small></div>
                     <p class="text-muted">For scaling companies</p>
                     
                     <ul class="list-unstyled feature-list">
@@ -199,7 +191,7 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
                         <i class="fas fa-rocket me-2"></i>Try Free First
                     </a>
                     <div class="mt-2">
-                        <small class="text-muted">â‚¬399/month + VAT</small>
+                        <small class="text-muted">€399/month + VAT</small>
                     </div>
                 </div>
             </div>
@@ -208,7 +200,7 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
             <div class="col-lg-4">
                 <div class="pricing-card">
                     <h3 class="h4 fw-bold">Enterprise</h3>
-                    <div class="price">â‚¬799<small class="fs-6 text-muted">/month</small></div>
+                    <div class="price">€799<small class="fs-6 text-muted">/month</small></div>
                     <p class="text-muted">For large organizations</p>
                     
                     <ul class="list-unstyled feature-list">
@@ -261,8 +253,8 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
             
             <div class="mt-4">
                 <p class="text-muted">
-                    <i class="fas fa-lock me-1"></i>Your data is secure and GDPR compliant â€¢ 
-                    <i class="fas fa-times-circle me-1"></i>Cancel anytime â€¢ 
+                    <i class="fas fa-lock me-1"></i>Your data is secure and GDPR compliant • 
+                    <i class="fas fa-times-circle me-1"></i>Cancel anytime • 
                     <i class="fas fa-phone me-1"></i>Irish business hours support
                 </p>
             </div>
@@ -270,12 +262,12 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
     </div>
 
     <script>
-        console.log('ðŸ’° AnalyticaCore AI pricing page loaded');
-        console.log('ðŸŽ¯ All plans include 7-day free trial');
+        console.log('💰 AnalyticaCore AI pricing page loaded');
+        console.log('🎯 All plans include 7-day free trial');
         
         // Payment subscription function with Stripe integration
         async function subscribeToPlan(planName, price) {
-            console.log(`ðŸš€ Subscribe to ${planName} plan - â‚¬${price}/month`);
+            console.log(`🚀 Subscribe to ${planName} plan - €${price}/month`);
             
             // Track payment start event
             if (typeof gtag !== 'undefined') {
@@ -310,19 +302,19 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
                 button.disabled = false;
                 
                 // Show success and redirect to Stripe (simulation)
-                alert(`âœ… Payment Setup Complete!\\n\\nPlan: ${planName.toUpperCase()}\\nAmount: â‚¬${price}/month\\nEmail: ${customerEmail}\\n\\nðŸ”„ Redirecting to Stripe Checkout...\\n\\n(In production: Real Stripe payment processing)`);
+                alert(`✅ Payment Setup Complete!\n\nPlan: ${planName.toUpperCase()}\nAmount: €${price}/month\nEmail: ${customerEmail}\n\n🔍 Redirecting to Stripe Checkout...\n\n(In production: Real Stripe payment processing)`);
                 
                 // Simulate Stripe redirect - in production this would be real
                 const stripeUrl = `https://checkout.stripe.com/demo?plan=${planName}&amount=${price}&email=${encodeURIComponent(customerEmail)}`;
                 
                 // For demo, show what would happen
-                if (confirm('ðŸš€ Open Stripe Checkout Demo?\\n\\n(In production, this would process real payments)')) {
+                if (confirm('🚀 Open Stripe Checkout Demo?\n\n(In production, this would process real payments)')) {
                     // Redirect to a demo page or show success
                     showPaymentSuccess(planName, price, customerEmail);
                 }
                 
             } catch (error) {
-                console.error('âŒ Payment error:', error);
+                console.error('❌ Payment error:', error);
                 
                 // Reset button
                 const button = event.target;
@@ -360,16 +352,16 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
                     </h2>
                     <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
                         <h4>Welcome to ${planName.toUpperCase()} Plan!</h4>
-                        <p><strong>Amount:</strong> â‚¬${price}/month</p>
+                        <p><strong>Amount:</strong> €${price}/month</p>
                         <p><strong>Email:</strong> ${customerEmail}</p>
                     </div>
                     <div style="text-align: left; margin: 20px 0; background: #e8f5e8; padding: 15px; border-radius: 5px;">
                         <h6><i class="fas fa-gift"></i> What's Next:</h6>
                         <ul style="margin: 0; padding-left: 20px;">
-                            <li>âœ… Welcome email sent to ${customerEmail}</li>
-                            <li>ðŸ”‘ Platform access activated</li>
-                            <li>ðŸ“Š AI features unlocked</li>
-                            <li>ðŸ’¬ Priority support enabled</li>
+                            <li>✅ Welcome email sent to ${customerEmail}</li>
+                            <li>🔐 Platform access activated</li>
+                            <li>📊 AI features unlocked</li>
+                            <li>💬 Priority support enabled</li>
                         </ul>
                     </div>
                     <button onclick="this.parentElement.parentElement.remove()" 
@@ -399,33 +391,6 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
                 });
             }
         }
-                    window.location.href = result.checkout_url;
-                } else {
-                    throw new Error('No checkout URL received');
-                }
-                
-            } catch (error) {
-                console.error('âŒ Payment error:', error);
-                
-                // Reset button
-                const button = event.target;
-                button.innerHTML = originalText;
-                button.disabled = false;
-                
-                // Track error
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'checkout_error', {
-                        event_category: 'ecommerce',
-                        event_label: planName,
-                        error_message: error.message
-                    });
-                }
-                
-                // Fallback - redirect to trial form with plan info
-                alert(`Payment system temporarily unavailable. Starting with free trial for ${planName} plan.`);
-                window.location.href = `free-trial-simple.html?plan=${planName}&upgrade=true`;
-            }
-        }
         
         // Track pricing page views
         if (typeof gtag !== 'undefined') {
@@ -435,10 +400,8 @@ function subscribeToPlan(plan, price) { window.location.href = 'subscribe.html?p
             });
         }
     </script>
-            });
-        }
-    </script>
-<script src="config.js"></script></body>
+<script src="config.js"></script>
+</body>
 </html>
 
 
