@@ -3,6 +3,20 @@
   publish = "."
   command = "echo 'Static site - no build required'"
 
+# Configure Netlify Functions directory
+[functions]
+  directory = "python-backend/netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/generate-analysis"
+  to = "/generate-analysis.html"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
