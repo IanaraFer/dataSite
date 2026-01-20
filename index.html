@@ -709,17 +709,63 @@
             </div>
         </div>
     </section>
-        <!-- One-Time Data Analysis Subscription Section -->
-        <section id="one-time-analysis" class="pricing">
+        <!-- One-Time Data Analysis Section -->
+        <section id="one-time-analysis" class="py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                 <div class="container">
                         <div class="row justify-content-center">
-                                <div class="col-lg-6 text-center">
-                                        <div class="card p-4 shadow-sm mb-4">
-                                                <h3 class="fw-bold mb-3">One-Time Data Analysis</h3>
-                                                <p class="text-muted mb-3">Get a complete, custom data analysis for a single project. No subscription required.</p>
-                                                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#oneTimeModal">
-                                                        Request One-Time Analysis
-                                                </button>
+                                <div class="col-lg-8 text-center text-white mb-4">
+                                        <span class="badge bg-success mb-3">€29.99 - No Subscription</span>
+                                        <h2 class="fw-bold mb-3">One-Time Analysis - Complete Report</h2>
+                                        <p class="lead mb-4">Perfect for students, freelancers, personal finance tracking, thesis research, and one-off business projects. Get a comprehensive analysis with unlimited charts and visualizations.</p>
+                                </div>
+                        </div>
+                        <div class="row g-4">
+                                <div class="col-lg-6">
+                                        <div class="card h-100 shadow-lg">
+                                                <div class="card-body p-4">
+                                                        <h4 class="fw-bold mb-3"><i class="fas fa-check-circle text-success me-2"></i>What You Get</h4>
+                                                        <ul class="list-unstyled">
+                                                                <li class="mb-3"><i class="fas fa-chart-line text-primary me-2"></i><strong>Complete Analysis Report:</strong> Full insights with all necessary charts and visualizations</li>
+                                                                <li class="mb-3"><i class="fas fa-brain text-primary me-2"></i><strong>AI-Powered Insights:</strong> Patterns, trends, forecasts, and recommendations</li>
+                                                                <li class="mb-3"><i class="fas fa-file-export text-primary me-2"></i><strong>Multiple Formats:</strong> PDF report + Excel data + interactive charts</li>
+                                                                <li class="mb-3"><i class="fas fa-database text-primary me-2"></i><strong>Up to 50,000 rows:</strong> Enough for most personal and small projects</li>
+                                                                <li class="mb-3"><i class="fas fa-clock text-primary me-2"></i><strong>48-72h delivery:</strong> Fast turnaround for urgent projects</li>
+                                                                <li class="mb-3"><i class="fas fa-shield-alt text-primary me-2"></i><strong>GDPR compliant:</strong> Your data is secure and deleted after delivery</li>
+                                                        </ul>
+                                                        <div class="alert alert-info">
+                                                                <strong>Perfect for:</strong> College research, personal budgets, freelance projects, startup MVPs, hobby analytics, thesis data analysis
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div class="col-lg-6">
+                                        <div class="card h-100 shadow-lg" style="background: linear-gradient(135deg, #0f172a, #1f2937); color: white;">
+                                                <div class="card-body p-4">
+                                                        <div class="text-center mb-3">
+                                                                <div class="display-3 fw-bold text-success">€29.99</div>
+                                                                <p class="mb-0">One-time payment • No subscription</p>
+                                                        </div>
+                                                        <hr style="border-color: rgba(255,255,255,0.2);">
+                                                        <button class="btn btn-success btn-lg w-100 mb-3" data-bs-toggle="modal" data-bs-target="#oneTimeModal">
+                                                                <i class="fas fa-rocket me-2"></i>Order Your Analysis Now
+                                                        </button>
+                                                        <div class="text-center">
+                                                                <small><i class="fas fa-lock me-1"></i>Secure payment • Money-back guarantee if not satisfied</small>
+                                                        </div>
+                                                        <hr style="border-color: rgba(255,255,255,0.2);">
+                                                        <h5 class="mb-3">What analysis do you need?</h5>
+                                                        <div class="d-flex flex-wrap gap-2 mb-3">
+                                                                <span class="badge bg-primary">Revenue forecasting</span>
+                                                                <span class="badge bg-primary">Customer segmentation</span>
+                                                                <span class="badge bg-primary">Trend analysis</span>
+                                                                <span class="badge bg-primary">Anomaly detection</span>
+                                                                <span class="badge bg-primary">Statistical insights</span>
+                                                                <span class="badge bg-primary">Data visualization</span>
+                                                                <span class="badge bg-primary">Comparative analysis</span>
+                                                                <span class="badge bg-primary">Custom dashboards</span>
+                                                        </div>
+                                                        <p class="small mb-0"><strong>All analysis types included</strong> - We'll apply whatever makes sense for your data!</p>
+                                                </div>
                                         </div>
                                 </div>
                         </div>
@@ -728,55 +774,88 @@
 
         <!-- One-Time Analysis Modal -->
         <div class="modal fade" id="oneTimeModal" tabindex="-1" aria-labelledby="oneTimeModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <form id="oneTimeForm">
+                    <form id="oneTimeForm" novalidate>
                         <div class="modal-header">
-                            <h5 class="modal-title" id="oneTimeModalLabel">Request One-Time Data Analysis</h5>
+                            <h5 class="modal-title" id="oneTimeModalLabel">
+                                <i class="fas fa-chart-bar me-2 text-success"></i>Order One-Time Analysis - €29.99
+                            </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label class="form-label">Full Name</label>
-                                <input type="text" class="form-control" name="fullName" required>
+                            <div class="alert alert-success">
+                                <strong>What you'll receive:</strong> Complete analysis report with unlimited charts, AI insights, PDF + Excel export. Delivery in 48-72 hours.
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="fullName" required placeholder="Your name">
+                                        <div class="invalid-feedback">Please enter your name.</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" name="email" required placeholder="your@email.com">
+                                        <div class="invalid-feedback">Please enter a valid email.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" name="phone" placeholder="+353 or your number">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Project Type <span class="text-danger">*</span></label>
+                                        <select class="form-select" name="projectType" required>
+                                            <option value="">Select type</option>
+                                            <option value="personal-finance">Personal Finance</option>
+                                            <option value="college-research">College/Academic Research</option>
+                                            <option value="freelance-project">Freelance Project</option>
+                                            <option value="small-business">Small Business</option>
+                                            <option value="startup-mvp">Startup/MVP</option>
+                                            <option value="hobby-analytics">Hobby/Personal Analytics</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a project type.</div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Email Address</label>
-                                <input type="email" class="form-control" name="email" required>
+                                <label class="form-label">Upload Your Data File <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" name="dataFile" accept=".csv,.xlsx,.xls,.json,.txt" required>
+                                <small class="text-muted">Accepted: CSV, Excel, JSON, TXT (max 50k rows)</small>
+                                <div class="invalid-feedback">Please upload your data file.</div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Company (optional)</label>
-                                <input type="text" class="form-control" name="company">
+                                <label class="form-label">What insights are you looking for?</label>
+                                <textarea class="form-control" name="message" rows="3" placeholder="e.g., 'I need to forecast my monthly expenses' or 'Analyze sales trends for my side business' or 'Statistical analysis for my thesis'..."></textarea>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Upload Data File (CSV, PDF, DOC, XLSX, etc.)</label>
-                                <input type="file" class="form-control" name="dataFile" accept=".csv,.pdf,.doc,.docx,.xlsx,.xls,.json,.txt" required>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="gdprOneTime" required>
+                                <label class="form-check-label" for="gdprOneTime">
+                                    I agree to the analysis of my data. Data will be securely processed and deleted after delivery. <span class="text-danger">*</span>
+                                </label>
+                                <div class="invalid-feedback">You must agree to continue.</div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Select Analysis Types</label>
-                                <select class="form-select" name="analysisTypes" multiple required>
-                                    <option value="business-overview">Business Overview</option>
-                                    <option value="revenue-forecasting">Revenue Forecasting</option>
-                                    <option value="customer-segmentation">Customer Segmentation</option>
-                                    <option value="anomaly-detection">Anomaly Detection</option>
-                                    <option value="comparative-analysis">Comparative Analysis</option>
-                                    <option value="churn-prediction">Churn Prediction</option>
-                                    <option value="rfm-analysis">RFM Analysis</option>
-                                    <option value="custom-dashboard">Custom Dashboard</option>
-                                    <option value="api-integration">API Integration</option>
-                                    <option value="white-label-reporting">White-label Reporting</option>
-                                    <option value="other">Other (describe in message)</option>
-                                </select>
-                                <small class="text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple options.</small>
+                            <div class="alert alert-info mb-0">
+                                <strong>Next steps:</strong> After submitting, you'll receive a payment link (€29.99). Once paid, we'll start your analysis and deliver within 48-72 hours.
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Additional Message (optional)</label>
-                                <textarea class="form-control" name="message" rows="3" placeholder="Describe your project or specific needs..."></textarea>
+                            <div id="oneTimeSuccess" class="alert alert-success mt-3 d-none" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>Thank you! We've received your order. Check your email for payment details.
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-shopping-cart me-2"></i>Submit Order - €29.99
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -941,7 +1020,28 @@
                 </div>
             </div>
             <div class="row g-4 justify-content-center">
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-3 col-md-6">
+                    <div class="pricing-card fade-in" style="border: 2px solid #2ca02c;">
+                        <div class="text-center mb-2">
+                            <span class="badge bg-success">Best Value</span>
+                        </div>
+                        <h4>One-Time Analysis</h4>
+                        <div class="price text-success">€29.99<small class="fs-6 text-muted">/once</small></div>
+                        <p class="text-muted">For personal projects & one-off needs</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Complete data analysis report</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Unlimited charts & visualizations</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Up to 50k rows of data</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>All analysis types included</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>PDF + Excel export</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>48-72h turnaround</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Perfect for: Students, freelancers, personal finance, research projects</li>
+                        </ul>
+                        <a href="#one-time-analysis" class="btn btn-success btn-lg w-100 mt-3">Get Analysis Now</a>
+                        <small class="d-block mt-2 text-center text-muted">No subscription required</small>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
                     <div class="pricing-card fade-in">
                         <h4>Professional</h4>
                         <div class="price">€199<small class="fs-6 text-muted">/month</small></div>
@@ -956,7 +1056,7 @@
                         <a href="#sample-report" class="btn btn-outline-primary btn-lg w-100 mt-3">Start diagnostic</a>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-3 col-md-6">
                     <div class="pricing-card featured fade-in">
                         <div class="text-center mb-3">
                             <span class="badge bg-warning text-dark">Most Popular</span>
@@ -975,7 +1075,7 @@
                         <a href="#sample-report" class="btn btn-light btn-lg w-100 mt-3">Get sample report</a>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-3 col-md-6">
                     <div class="pricing-card fade-in">
                         <h4>Enterprise</h4>
                         <div class="price">€799<small class="fs-6 text-muted">/month</small></div>
@@ -1423,6 +1523,59 @@
         // Console log for analytics
         console.log('🚀 Analytica Core AI Website Loaded Successfully');
         console.log('📊 Ready to transform your business data!');
+        
+        // One-Time Analysis form handler
+        const oneTimeForm = document.getElementById('oneTimeForm');
+        const oneTimeSuccess = document.getElementById('oneTimeSuccess');
+        
+        if (oneTimeForm) {
+            oneTimeForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!oneTimeForm.checkValidity()) {
+                    oneTimeForm.classList.add('was-validated');
+                    return;
+                }
+
+                const formData = new FormData(oneTimeForm);
+                const data = {
+                    name: formData.get('fullName'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone') || 'Not provided',
+                    projectType: formData.get('projectType'),
+                    message: formData.get('message') || 'No specific message',
+                    timestamp: new Date().toISOString()
+                };
+
+                // Create mailto with order details
+                const subject = encodeURIComponent('One-Time Analysis Order (€29.99) - ' + data.name);
+                const body = encodeURIComponent(
+                    'ONE-TIME ANALYSIS ORDER\\n' +
+                    'Price: €29.99\\n\\n' +
+                    'Customer Details:\\n' +
+                    'Name: ' + data.name + '\\n' +
+                    'Email: ' + data.email + '\\n' +
+                    'Phone: ' + data.phone + '\\n' +
+                    'Project Type: ' + data.projectType + '\\n\\n' +
+                    'Analysis Request:\\n' + data.message + '\\n\\n' +
+                    'Note: Data file attached separately\\n' +
+                    'Ordered: ' + new Date().toLocaleString() + '\\n\\n' +
+                    'ACTION REQUIRED: Send payment link and confirm receipt of data file.'
+                );
+
+                window.location.href = 'mailto:information@analyticacoreai.ie?subject=' + subject + '&body=' + body;
+                
+                oneTimeSuccess.classList.remove('d-none');
+                oneTimeForm.reset();
+                oneTimeForm.classList.remove('was-validated');
+                
+                setTimeout(function() {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('oneTimeModal'));
+                    if (modal) modal.hide();
+                    oneTimeSuccess.classList.add('d-none');
+                }, 4000);
+            });
+        }
         
         // Track page load time
         window.addEventListener('load', function() {
