@@ -1073,8 +1073,8 @@
                         <a href="#sample-report" class="btn btn-light btn-lg me-3">
                             <i class="fas fa-rocket me-2"></i>Get my diagnostic
                         </a>
-                        <a href="#contact" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-calendar me-2"></i>Schedule Demo
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#consultationModal" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-calendar me-2"></i>Book Consultation
                         </a>
                     </div>
                     <p class="small opacity-75">
@@ -1107,20 +1107,24 @@
                         </div>
                         <div class="col-md-4">
                             <div class="text-center">
-                                <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                                    <i class="fab fa-linkedin-in fa-lg text-white"></i>
-                                </div>
-                                <h5>LinkedIn</h5>
-                                <p class="text-muted">Connect with Analytica Core AI</p>
+                                <a href="https://www.linkedin.com/company/analyticacoreai" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                                    <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                        <i class="fab fa-linkedin-in fa-lg text-white"></i>
+                                    </div>
+                                    <h5 class="text-dark">LinkedIn</h5>
+                                    <p class="text-muted">Connect with Analytica Core AI</p>
+                                </a>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="text-center">
-                                <div class="bg-info rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                                    <i class="fas fa-calendar fa-lg text-white"></i>
-                                </div>
-                                <h5>Book a Demo</h5>
-                                <p class="text-muted">30-minute consultation</p>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#consultationModal" class="text-decoration-none">
+                                    <div class="bg-info rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                        <i class="fas fa-calendar fa-lg text-white"></i>
+                                    </div>
+                                    <h5 class="text-dark">Book a Consultation</h5>
+                                    <p class="text-muted">Schedule your session</p>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1139,7 +1143,7 @@
                     </h5>
                     <p class="text-light">Making every business owner a data scientist. Transform your data into decisions automatically with AI-powered analytics.</p>
                     <div class="social-links">
-                        <a href="#" class="footer-link me-3" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.linkedin.com/company/analyticacoreai" target="_blank" rel="noopener noreferrer" class="footer-link me-3" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                         <a href="#" class="footer-link me-3" title="Twitter"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="footer-link me-3" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                     </div>
@@ -1192,6 +1196,69 @@
             </div>
         </div>
     </footer>
+
+    <!-- Consultation Booking Modal -->
+    <div class="modal fade" id="consultationModal" tabindex="-1" aria-labelledby="consultationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="consultationModalLabel">
+                        <i class="fas fa-calendar-check me-2 text-primary"></i>Book a Consultation
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted mb-4">Schedule a consultation with our team. We'll review your needs and show you how Analytica Core AI can help your business.</p>
+                    <form id="consultationForm" novalidate>
+                        <div class="mb-3">
+                            <label for="consultName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="consultName" name="name" required placeholder="Your name">
+                            <div class="invalid-feedback">Please enter your name.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="consultEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="consultEmail" name="email" required placeholder="you@company.com">
+                            <div class="invalid-feedback">Please enter a valid email address.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="consultPhone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="consultPhone" name="phone" placeholder="+353 or your number">
+                        </div>
+                        <div class="mb-3">
+                            <label for="consultCompany" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" id="consultCompany" name="company" placeholder="Your company">
+                        </div>
+                        <div class="mb-3">
+                            <label for="consultMessage" class="form-label">What would you like to discuss?</label>
+                            <textarea class="form-control" id="consultMessage" name="message" rows="3" placeholder="e.g., Revenue forecasting for retail, customer churn analysis..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="consultTimeframe" class="form-label">Preferred Timeframe</label>
+                            <select class="form-select" id="consultTimeframe" name="timeframe">
+                                <option value="">Select a preference</option>
+                                <option value="This week">This week</option>
+                                <option value="Next week">Next week</option>
+                                <option value="Within 2 weeks">Within 2 weeks</option>
+                                <option value="Flexible">Flexible</option>
+                            </select>
+                        </div>
+                        <div id="consultationSuccess" class="alert alert-success d-none" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>Thank you! We've received your consultation request and will contact you within 24 hours.
+                        </div>
+                        <div id="consultationError" class="alert alert-danger d-none" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>There was an error sending your request. Please email us directly at information@analyticacoreai.ie
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="consultationForm" class="btn btn-primary">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Request
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -1290,6 +1357,66 @@
                 sampleSuccess.classList.remove('d-none');
                 sampleForm.reset();
                 sampleForm.classList.remove('was-validated');
+            });
+        }
+
+        // Consultation form handling with email submission
+        const consultForm = document.getElementById('consultationForm');
+        const consultSuccess = document.getElementById('consultationSuccess');
+        const consultError = document.getElementById('consultationError');
+        
+        if (consultForm) {
+            consultForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!consultForm.checkValidity()) {
+                    consultForm.classList.add('was-validated');
+                    return;
+                }
+
+                // Hide any previous messages
+                consultSuccess.classList.add('d-none');
+                consultError.classList.add('d-none');
+
+                // Get form data
+                const formData = new FormData(consultForm);
+                const data = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone') || 'Not provided',
+                    company: formData.get('company') || 'Not provided',
+                    message: formData.get('message') || 'No specific message',
+                    timeframe: formData.get('timeframe') || 'Not specified',
+                    timestamp: new Date().toISOString()
+                };
+
+                // Create mailto link as fallback
+                const subject = encodeURIComponent('Consultation Request - ' + data.name);
+                const body = encodeURIComponent(
+                    'Consultation Request\\n\\n' +
+                    'Name: ' + data.name + '\\n' +
+                    'Email: ' + data.email + '\\n' +
+                    'Phone: ' + data.phone + '\\n' +
+                    'Company: ' + data.company + '\\n' +
+                    'Timeframe: ' + data.timeframe + '\\n\\n' +
+                    'Message:\\n' + data.message + '\\n\\n' +
+                    'Submitted: ' + new Date().toLocaleString()
+                );
+
+                // Send via mailto (opens user's email client)
+                window.location.href = 'mailto:information@analyticacoreai.ie?subject=' + subject + '&body=' + body;
+                
+                // Show success message
+                consultSuccess.classList.remove('d-none');
+                consultForm.reset();
+                consultForm.classList.remove('was-validated');
+                
+                // Close modal after 3 seconds
+                setTimeout(function() {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('consultationModal'));
+                    if (modal) modal.hide();
+                    consultSuccess.classList.add('d-none');
+                }, 3000);
             });
         }
 
