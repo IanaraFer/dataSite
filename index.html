@@ -313,6 +313,95 @@
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
         }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .list-checks {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .list-checks li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .pill-note {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(0,0,0,0.05);
+            font-weight: 600;
+            color: #333;
+        }
+
+        .card-plain {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 16px 50px rgba(0,0,0,0.08);
+            height: 100%;
+        }
+
+        .card-plain h5 {
+            margin-bottom: 12px;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-bg);
+            color: white;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .accent-card {
+            background: linear-gradient(135deg, #0f172a, #1f2937);
+            color: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        .accent-card .form-control {
+            background: rgba(255,255,255,0.08);
+            color: white;
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .accent-card .form-control:focus {
+            border-color: white;
+            box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.15);
+        }
+
+        .accent-card label {
+            color: rgba(255,255,255,0.9);
+            font-weight: 600;
+        }
+
+        .accent-card small {
+            color: rgba(255,255,255,0.75);
+        }
     </style>
 </head>
 <body>
@@ -328,13 +417,14 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#workflow">How it works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#proof">Results</a></li>
                     <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#demo">Demo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#sample-report">Sample report</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-3 rounded-pill ms-2" href="free-trial-simple.html">
-                            Start Free Trial
+                        <a class="nav-link btn btn-primary text-white px-3 rounded-pill ms-2" href="#sample-report">
+                            Get diagnostic
                         </a>
                     </li>
                 </ul>
@@ -348,21 +438,30 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="hero-content fade-in">
-                        <h1>Transform Your Data Into <span class="text-warning">Decisions</span> Automatically</h1>
-                        <p class="lead">AI-powered business analytics that turns complex data into actionable insights. No technical skills required. Get results in minutes, not weeks.</p>
-                        <div class="mt-4">
-                            <a href="free-trial-simple.html" class="btn-hero btn-primary-hero btn-lg">
-                                <i class="fas fa-rocket me-2"></i>Start Free Trial
+                        <div class="section-badge mb-3">
+                            <i class="fas fa-bolt"></i> Built for SME retail, wholesale, and services
+                        </div>
+                        <h1>Find revenue leaks, forecast demand, and stop churn in days.</h1>
+                        <p class="lead">Analytica Core AI ingests your spreadsheets and systems, spots the biggest opportunities, and hands you a prioritized action plan. No data team required.</p>
+                        <ul class="list-checks text-white-50 mt-3">
+                            <li><i class="fas fa-check-circle text-success"></i>7-day free diagnostic with a sample report</li>
+                            <li><i class="fas fa-check-circle text-success"></i>€10k+ revenue uplift targets or we keep working</li>
+                            <li><i class="fas fa-check-circle text-success"></i>GDPR-first, managed by EU data centers</li>
+                        </ul>
+                        <div class="mt-4 d-flex flex-wrap align-items-center gap-3">
+                            <a href="#sample-report" class="btn-hero btn-primary-hero btn-lg">
+                                <i class="fas fa-rocket me-2"></i>Get my free diagnostic
                             </a>
-                            <a href="#demo" class="btn-hero btn-lg">
-                                <i class="fas fa-play me-2"></i>Watch Demo
+                            <a href="#proof" class="btn-hero btn-lg">
+                                <i class="fas fa-file-alt me-2"></i>See sample findings
                             </a>
+                            <span class="pill-note"><i class="fas fa-clock me-2"></i>Setup in 2 minutes</span>
                         </div>
                         <div class="mt-4">
                             <small class="opacity-75">
                                 <i class="fas fa-shield-alt me-1"></i>GDPR Compliant • 
-                                <i class="fas fa-clock me-1"></i>Setup in 2 minutes • 
-                                <i class="fas fa-credit-card me-1"></i>No credit card required
+                                <i class="fas fa-credit-card me-1"></i>No credit card required • 
+                                <i class="fas fa-sync-alt me-1"></i>Cancel anytime
                             </small>
                         </div>
                     </div>
@@ -397,6 +496,214 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-8 mx-auto text-center">
+                    <span class="badge bg-info text-dark mb-2">Questions answered</span>
+                    <h2 class="fw-bold">FAQs</h2>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card-plain h-100">
+                        <h5>Do I need to upload data for the diagnostic?</h5>
+                        <p class="text-muted mb-0">No. We start with your goals and systems, then share a sample findings pack. If you proceed, we set up secure transfers or connect to your POS/CRM/ERP using GDPR-safe methods.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-plain h-100">
+                        <h5>How fast do I see value?</h5>
+                        <p class="text-muted mb-0">You get a prioritized action list in 72 hours. Most SMEs ship their first experiment within a week and see measurable lift in 30 days.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-plain h-100">
+                        <h5>Is my data secure?</h5>
+                        <p class="text-muted mb-0">We follow GDPR-first practices, encrypted transit/storage, least-privilege access, and can run in EU regions. Managed identity and Key Vault friendly.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-plain h-100">
+                        <h5>What if the findings aren’t useful?</h5>
+                        <p class="text-muted mb-0">If you don’t see actionable insight from the diagnostic, you pay nothing. We also iterate until you have a clear, quantified plan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sample Report / Lead Magnet -->
+    <section id="sample-report" class="py-5" style="background: var(--light-bg);">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <div class="mb-3">
+                        <span class="badge bg-primary">Free 7-day diagnostic</span>
+                        <span class="badge bg-success ms-2">No credit card</span>
+                    </div>
+                    <h2 class="fw-bold mb-3">Get a sample report tailored to your business</h2>
+                    <p class="lead text-muted">Upload nothing yet—tell us your goal and we generate a mini insight pack with the exact KPIs we will improve. Perfect for retail, wholesale, hospitality, and services.</p>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="pill-note"><i class="fas fa-lock me-2"></i>GDPR-first handling</span>
+                        <span class="pill-note"><i class="fas fa-shield-check me-2"></i>Managed identity ready</span>
+                    </div>
+                    <ul class="list-checks">
+                        <li><i class="fas fa-check-circle text-success"></i>Action plan with top 3 revenue moves</li>
+                        <li><i class="fas fa-check-circle text-success"></i>Forecast + anomaly highlights</li>
+                        <li><i class="fas fa-check-circle text-success"></i>Follow-up consult if fit</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="accent-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h4 class="mb-0">Request sample findings</h4>
+                            <span class="badge bg-light text-dark">Avg turnaround: 24h</span>
+                        </div>
+                        <form id="sampleReportForm" novalidate>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="name" required placeholder="Jane Doe">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Work email</label>
+                                    <input type="email" class="form-control" name="email" required placeholder="you@company.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" class="form-control" name="company" required placeholder="Acme Retail">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Industry</label>
+                                    <select class="form-select" name="industry" required>
+                                        <option value="">Select one</option>
+                                        <option>Retail / eCommerce</option>
+                                        <option>Wholesale / Distribution</option>
+                                        <option>Hospitality</option>
+                                        <option>Professional Services</option>
+                                        <option>Other SME</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Primary goal</label>
+                                    <select class="form-select" name="goal" required>
+                                        <option value="">Choose goal</option>
+                                        <option>Increase revenue</option>
+                                        <option>Reduce churn</option>
+                                        <option>Improve margin</option>
+                                        <option>Forecast demand</option>
+                                        <option>Detect anomalies/fraud</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Data source size</label>
+                                    <select class="form-select" name="dataSize" required>
+                                        <option value="">Select size</option>
+                                        <option>&lt;50k rows</option>
+                                        <option>50k-250k rows</option>
+                                        <option>250k-1M rows</option>
+                                        <option>&gt;1M rows</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">What’s the biggest bottleneck?</label>
+                                    <textarea class="form-control" rows="3" name="bottleneck" placeholder="e.g., seasonal stockouts, VIP churn, fraud chargebacks"></textarea>
+                                </div>
+                                <div class="col-12 d-flex align-items-start gap-2">
+                                    <input type="checkbox" class="form-check-input mt-1" id="gdprCheck" required>
+                                    <label for="gdprCheck" class="form-check-label">I agree to secure processing of my details for the sample report. No data is uploaded.</label>
+                                </div>
+                            </div>
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-light text-dark fw-bold">
+                                    <i class="fas fa-download me-2"></i>Send me the sample report
+                                </button>
+                            </div>
+                            <div id="sampleReportSuccess" class="alert alert-success mt-3 d-none" role="alert">
+                                Thanks! Your sample report brief is in. Expect a response within one business day.
+                            </div>
+                        </form>
+                        <small class="d-block mt-3"><i class="fas fa-lock me-2"></i>We never sell or share your data. GDPR and SOC2-ready practices.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="workflow" class="py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-8 mx-auto text-center">
+                    <span class="badge bg-dark mb-2">3-step onboarding</span>
+                    <h2 class="fw-bold">From data to decisions in 72 hours</h2>
+                    <p class="text-muted">We do the heavy lifting while you keep running the business.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card-plain h-100">
+                        <div class="step-number">1</div>
+                        <h5>Share context</h5>
+                        <p class="text-muted mb-0">Tell us your goals and connect spreadsheets or your POS/CRM. No engineering effort needed.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-plain h-100">
+                        <div class="step-number">2</div>
+                        <h5>AI analysis</h5>
+                        <p class="text-muted mb-0">We run forecasting, segmentation, anomalies, and profitability deep dives—validated by a data lead.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-plain h-100">
+                        <div class="step-number">3</div>
+                        <h5>Action plan</h5>
+                        <p class="text-muted mb-0">Receive a ranked playbook with projected impact, ready-to-run experiments, and a weekly scorecard.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proof / Outcomes -->
+    <section id="proof" class="py-5" style="background: white;">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-8 mx-auto text-center">
+                    <span class="badge bg-success mb-2">Outcome-first</span>
+                    <h2 class="fw-bold">What we deliver in the first month</h2>
+                    <p class="text-muted">Real wins from SMEs like yours.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card-plain">
+                        <h5 class="mb-2"><i class="fas fa-store me-2 text-success"></i>Retail & eCom</h5>
+                        <p class="mb-2">+18% margin from bundle pricing and dead-stock alerts.</p>
+                        <small class="text-muted">Region: EU • Data: POS + Shopify</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-plain">
+                        <h5 class="mb-2"><i class="fas fa-truck me-2 text-primary"></i>Wholesale</h5>
+                        <p class="mb-2">€240k pipeline unlocked via churn-risk alerts on top 50 accounts.</p>
+                        <small class="text-muted">Region: UK • Data: ERP + invoices</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-plain">
+                        <h5 class="mb-2"><i class="fas fa-concierge-bell me-2 text-warning"></i>Hospitality</h5>
+                        <p class="mb-2">12% uplift in repeat visits using cohort promos and anomaly flagging.</p>
+                        <small class="text-muted">Region: IE • Data: bookings + POS</small>
                     </div>
                 </div>
             </div>
@@ -646,7 +953,7 @@
                             <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Weekly business reports</li>
                             <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Priority email support (24h response)</li>
                         </ul>
-                        <a href="pricing.html" class="btn btn-outline-primary btn-lg w-100 mt-3">Choose Plan</a>
+                        <a href="#sample-report" class="btn btn-outline-primary btn-lg w-100 mt-3">Start diagnostic</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
@@ -665,7 +972,7 @@
                             <li class="mb-2"><i class="fas fa-check me-2"></i>Daily automated reports</li>
                             <li class="mb-2"><i class="fas fa-check me-2"></i>Phone support (4h response)</li>
                         </ul>
-                        <a href="pricing.html" class="btn btn-light btn-lg w-100 mt-3">Choose Plan</a>
+                        <a href="#sample-report" class="btn btn-light btn-lg w-100 mt-3">Get sample report</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
@@ -760,11 +1067,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center text-white">
-                    <h2 class="display-5 fw-bold mb-3">Ready to Transform Your Business?</h2>
-                    <p class="lead mb-4">Join hundreds of businesses already using Analytica Core AI to make data-driven decisions.</p>
+                    <h2 class="display-5 fw-bold mb-3">Ready to see your own numbers?</h2>
+                    <p class="lead mb-4">Get a free diagnostic and a sample report with the top opportunities for your business.</p>
                     <div class="mb-4">
-                        <a href="free-trial-simple.html" class="btn btn-light btn-lg me-3">
-                            <i class="fas fa-rocket me-2"></i>Start Free Trial
+                        <a href="#sample-report" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-rocket me-2"></i>Get my diagnostic
                         </a>
                         <a href="#contact" class="btn btn-outline-light btn-lg">
                             <i class="fas fa-calendar me-2"></i>Schedule Demo
@@ -968,6 +1275,22 @@
             }, { threshold: 0.5 });
 
             statsObserver.observe(statsSection);
+        }
+
+        // Sample report form handling (client-side only)
+        const sampleForm = document.getElementById('sampleReportForm');
+        const sampleSuccess = document.getElementById('sampleReportSuccess');
+        if (sampleForm && sampleSuccess) {
+            sampleForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (!sampleForm.checkValidity()) {
+                    sampleForm.classList.add('was-validated');
+                    return;
+                }
+                sampleSuccess.classList.remove('d-none');
+                sampleForm.reset();
+                sampleForm.classList.remove('was-validated');
+            });
         }
 
         // Console log for analytics
