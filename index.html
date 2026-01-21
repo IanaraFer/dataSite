@@ -689,6 +689,22 @@
             transition: all 0.6s ease;
         }
 
+        /* Modal usability for long forms */
+        .modal-dialog.modal-dialog-scrollable {
+            max-height: calc(100vh - 2rem);
+        }
+
+        .modal-dialog-scrollable .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        @media (max-width: 576px) {
+            .modal-dialog {
+                margin: 1rem;
+            }
+        }
+
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
@@ -1234,7 +1250,7 @@
                                 <textarea class="form-control" name="message" rows="3" placeholder="e.g., 'I need to forecast my monthly expenses' or 'Analyze sales trends for my side business' or 'Statistical analysis for my thesis'..."></textarea>
                             </div>
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="gdprOneTime" required>
+                                <input type="checkbox" class="form-check-input" id="gdprOneTime" name="gdprConsent" value="yes" required>
                                 <label class="form-check-label" for="gdprOneTime">
                                     I agree to the analysis of my data. Data will be securely processed and deleted after delivery. <span class="text-danger">*</span>
                                 </label>
