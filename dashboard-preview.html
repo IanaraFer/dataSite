@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Preview - Analytica Core AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1f77b4;
+            --secondary-color: #ff7f0e;
+            --success-color: #2ca02c;
+            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --dark-bg: #1a1a2e;
+            --light-bg: #f8f9fa;
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: var(--light-bg);
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: #333 !important;
+            margin: 0 0.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-bg);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero .lead {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        /* Dashboard Preview Sections */
+        .dashboard-preview {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dashboard-title i {
+            font-size: 2.5rem;
+            background: var(--gradient-bg);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Feature Comparison */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: var(--light-bg);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h4 {
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark-bg);
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        /* Mock Dashboard */
+        .mock-dashboard {
+            background: #f0f2f5;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px dashed #ddd;
+        }
+
+        .mock-dashboard h5 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark-bg);
+        }
+
+        .chart-placeholder {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #999;
+        }
+
+        .chart-placeholder i {
+            font-size: 3rem;
+            opacity: 0.3;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Tier Cards */
+        .tier-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            border: 2px solid #eee;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .tier-card.featured {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(31, 119, 180, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            transform: scale(1.05);
+        }
+
+        .tier-card:hover {
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .tier-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark-bg);
+        }
+
+        .tier-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .tier-price small {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .tier-features {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .tier-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tier-features li:last-child {
+            border-bottom: none;
+        }
+
+        .tier-features i {
+            color: var(--success-color);
+            font-size: 1.2rem;
+        }
+
+        .tier-cta {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .tier-cta:hover {
+            background: #155a8f;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(31, 119, 180, 0.3);
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-bg);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-link {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .dashboard-preview {
+                padding: 20px;
+            }
+
+            .tier-card.featured {
+                transform: scale(1);
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-chart-line me-2"></i>Analytica Core AI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#pricing">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div>
+                <h1>See What You'll Get Inside</h1>
+                <p class="lead">Dashboard preview for Professional, Business, and Enterprise plans. Fully personalized to your business.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <!-- Professional Tier -->
+        <section class="dashboard-preview">
+            <div class="dashboard-title">
+                <i class="fas fa-chart-line"></i> Professional Plan (€199/month)
+            </div>
+            <p class="text-muted mb-4">Everything you need to monitor your business KPIs, spot trends, and make data-driven decisions.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-dashboard"></i>
+                    <h4>Main Dashboard</h4>
+                    <p>Real-time view of your top 5 KPIs: revenue, growth rate, customer count, churn rate, and profit margin. Updated daily.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-bar"></i>
+                    <h4>Trend Analysis</h4>
+                    <p>7-day, 30-day, and 90-day trend charts. Spot seasonality, sudden drops, or growth opportunities instantly.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>Anomaly Alerts</h4>
+                    <p>Get notified when something unusual happens (e.g., sudden spike/drop in sales, unexpected churn).</p>
+                </div>
+            </div>
+
+            <div class="mock-dashboard">
+                <h5><i class="fas fa-mobile-alt me-2"></i>Dashboard Preview</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Revenue Trend Chart (30 days)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-pie"></i>
+                            <p>Customer Segments Pie Chart</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-arrow-up"></i>
+                            <p style="font-size: 2rem; color: var(--success-color);">€45.2K</p>
+                            <p>This Month's Revenue</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-percentage"></i>
+                            <p style="font-size: 2rem; color: var(--primary-color);">+18%</p>
+                            <p>Month-over-Month Growth</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-exclamation-triangle" style="color: #ff7f0e;"></i>
+                            <p style="font-size: 2rem; color: #ff7f0e;">3</p>
+                            <p>Anomalies Detected</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business Tier -->
+        <section class="dashboard-preview">
+            <div class="dashboard-title">
+                <i class="fas fa-brain"></i> Business Plan (€399/month)
+            </div>
+            <p class="text-muted mb-4">Everything in Professional, plus AI-powered forecasting, deep segmentation, and predictive alerts.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-magic"></i>
+                    <h4>AI Forecasting</h4>
+                    <p>Predict next month's revenue, customer churn, inventory needs. Forecast confidence levels help you plan better.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h4>Customer Segmentation</h4>
+                    <p>Automatically grouped customers by behavior: VIPs, At-Risk, Loyal, New. See patterns and tailor actions.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h4>Predictive Alerts</h4>
+                    <p>ML-powered early warnings: who might churn, which products will spike, where margin is dropping.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-download"></i>
+                    <h4>Custom Reports</h4>
+                    <p>Generate PDF/Excel reports on demand. Share with stakeholders with one click. Scheduled reports available.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-cogs"></i>
+                    <h4>Customizable Metrics</h4>
+                    <p>Define your own KPIs and thresholds. Create watchlists for products, regions, or customer tiers.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-phone"></i>
+                    <h4>Priority Support</h4>
+                    <p>Email support with 24-hour response time. Monthly check-in call to review dashboards and optimize.</p>
+                </div>
+            </div>
+
+            <div class="mock-dashboard">
+                <h5><i class="fas fa-mobile-alt me-2"></i>Dashboard Preview (Expanded)</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-crystal-ball"></i>
+                            <p>Revenue Forecast (Next 3 Months)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-network-wired"></i>
+                            <p>Customer Segments Overview</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-robot"></i>
+                            <p>Predictive Alerts & Recommendations (Auto-generated by AI)</p>
+                            <small style="display: block; margin-top: 10px;">
+                                🔴 High-risk alert: 12 VIP customers show churn signals | 
+                                🟡 Margin watch: Product X dropped 8% in profitability | 
+                                🟢 Opportunity: Bundle proposal could increase basket size by 15%
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enterprise Tier -->
+        <section class="dashboard-preview">
+            <div class="dashboard-title">
+                <i class="fas fa-crown"></i> Enterprise Plan (€799/month)
+            </div>
+            <p class="text-muted mb-4">Everything in Business, plus dedicated account manager, API access, custom integrations, and white-label options.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-user-tie"></i>
+                    <h4>Dedicated Account Manager</h4>
+                    <p>Personal point of contact who understands your business. Bi-weekly strategy calls, proactive recommendations.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-plug"></i>
+                    <h4>API & Webhooks</h4>
+                    <p>Full API access to pull data, trigger actions, integrate with your existing tools. Webhooks for real-time events.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-link"></i>
+                    <h4>Custom Integrations</h4>
+                    <p>Direct connectors to your Shopify, ERP, CRM, or custom database. Real-time data sync, no manual uploads.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-paint-brush"></i>
+                    <h4>White-Label Dashboard</h4>
+                    <p>Brand it as your own. Custom logo, colors, domain. Share insights with clients under your brand.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users-cog"></i>
+                    <h4>Multi-User Access</h4>
+                    <p>Unlimited team members. Role-based permissions (viewer, analyst, admin). Audit logs for compliance.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-sliders-h"></i>
+                    <h4>Advanced Customization</h4>
+                    <p>Custom ML models trained on your historical data. Bespoke alerts and recommendations. Your own feature requests.</p>
+                </div>
+            </div>
+
+            <div class="mock-dashboard">
+                <h5><i class="fas fa-mobile-alt me-2"></i>Dashboard Preview (Full Suite)</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-area"></i>
+                            <p>Real-time Multi-Region Sales</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-scatter"></i>
+                            <p>Customer Lifetime Value Prediction</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-heatmap"></i>
+                            <p>Correlation Heatmap (Advanced)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-cogs"></i>
+                            <p>Custom ML Model Performance Tracker + A/B Testing Framework</p>
+                            <small style="display: block; margin-top: 10px;">
+                                Plus: Multi-user workspace, team collaboration, audit logs, custom data connectors, white-label branding
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Comparison -->
+        <section class="py-5">
+            <h2 class="text-center fw-bold mb-5">Plan Comparison</h2>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="tier-card">
+                        <div class="tier-name">Professional</div>
+                        <div class="tier-price">€199 <small>/month</small></div>
+                        <p class="text-muted">Perfect for growing businesses</p>
+                        <ul class="tier-features">
+                            <li><i class="fas fa-check"></i> Real-time KPI dashboard</li>
+                            <li><i class="fas fa-check"></i> Trend analysis (7/30/90 day)</li>
+                            <li><i class="fas fa-check"></i> Anomaly alerts</li>
+                            <li><i class="fas fa-check"></i> Daily updates</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                            <li><i class="fas fa-times" style="color: #ccc;"></i> Forecasting</li>
+                            <li><i class="fas fa-times" style="color: #ccc;"></i> Integrations</li>
+                        </ul>
+                        <a href="index.html#consultationModal" class="tier-cta">
+                            <i class="fas fa-calendar me-2"></i>Schedule Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="tier-card featured">
+                        <span class="badge bg-primary mb-3">Most Popular</span>
+                        <div class="tier-name">Business</div>
+                        <div class="tier-price">€399 <small>/month</small></div>
+                        <p class="text-muted">For ambitious teams</p>
+                        <ul class="tier-features">
+                            <li><i class="fas fa-check"></i> Everything in Professional</li>
+                            <li><i class="fas fa-check"></i> AI-powered forecasting</li>
+                            <li><i class="fas fa-check"></i> Customer segmentation</li>
+                            <li><i class="fas fa-check"></i> Predictive alerts</li>
+                            <li><i class="fas fa-check"></i> Custom reports (PDF/Excel)</li>
+                            <li><i class="fas fa-check"></i> Customizable metrics</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-times" style="color: #ccc;"></i> API access</li>
+                        </ul>
+                        <a href="index.html#consultationModal" class="tier-cta">
+                            <i class="fas fa-calendar me-2"></i>Schedule Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="tier-card">
+                        <div class="tier-name">Enterprise</div>
+                        <div class="tier-price">€799 <small>/month</small></div>
+                        <p class="text-muted">Complete custom solution</p>
+                        <ul class="tier-features">
+                            <li><i class="fas fa-check"></i> Everything in Business</li>
+                            <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                            <li><i class="fas fa-check"></i> API & webhooks</li>
+                            <li><i class="fas fa-check"></i> Custom integrations</li>
+                            <li><i class="fas fa-check"></i> White-label dashboard</li>
+                            <li><i class="fas fa-check"></i> Multi-user access</li>
+                            <li><i class="fas fa-check"></i> Advanced ML customization</li>
+                            <li><i class="fas fa-check"></i> 24/7 priority support</li>
+                        </ul>
+                        <a href="index.html#contact" class="tier-cta">
+                            <i class="fas fa-envelope me-2"></i>Contact Sales
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="text-center py-5">
+            <h2 class="fw-bold mb-3">Ready to transform your data?</h2>
+            <p class="lead text-muted mb-4">Start with a free diagnostic, or book a demo to see the dashboard in action.</p>
+            <a href="index.html#sample-report" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-rocket me-2"></i>Free Diagnostic
+            </a>
+            <a href="index.html#consultationModal" class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#consultationModal">
+                <i class="fas fa-calendar me-2"></i>Book a Demo
+            </a>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-chart-line me-2"></i>Analytica Core AI
+                    </h5>
+                    <p class="text-light">Making every business owner a data scientist.</p>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="mb-3">Product</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html#features" class="footer-link">Features</a></li>
+                        <li class="mb-2"><a href="index.html#pricing" class="footer-link">Pricing</a></li>
+                        <li class="mb-2"><a href="dashboard-preview.html" class="footer-link">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="mb-3">Company</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="footer-link">About</a></li>
+                        <li class="mb-2"><a href="#" class="footer-link">Blog</a></li>
+                        <li class="mb-2"><a href="index.html#contact" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h6 class="mb-3">Get Started</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html#sample-report" class="footer-link">Free Diagnostic</a></li>
+                        <li class="mb-2"><a href="index.html#one-time-analysis" class="footer-link">One-Time Analysis</a></li>
+                        <li class="mb-2"><a href="https://www.linkedin.com/company/analyticacoreai" target="_blank" rel="noopener noreferrer" class="footer-link"><i class="fab fa-linkedin me-1"></i>LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.2);">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0 text-muted">&copy; 2025 Analytica Core AI. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0 text-muted">
+                        <i class="fas fa-shield-alt me-1"></i>GDPR compliant • 
+                        <i class="fas fa-lock me-1"></i>SOC2 ready
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
