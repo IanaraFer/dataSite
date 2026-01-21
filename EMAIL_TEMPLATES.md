@@ -114,9 +114,11 @@ Hi [Customer Name],
 Your complete analysis is ready! 
 
 DOWNLOAD YOUR REPORTS:
-📊 Full PDF Report → [Google Drive link]
-📈 Excel Data Export → [Google Drive link]
-💡 Interactive Dashboard → [Google Drive link] (open in browser)
+📊 Full PDF Report → [OneDrive link]
+📈 Excel Data Export → [OneDrive link]
+💡 Interactive Dashboard → [OneDrive link]
+
+(Links are view-only and expire in 30 days)
 
 KEY INSIGHTS AT A GLANCE:
 • [Top finding #1 - e.g., "Revenue forecasted to grow 18% next quarter"]
@@ -367,6 +369,18 @@ The insights were clear and actionable." - [Your Name], [Company]
 **Payment Link:**
 ```
 https://buy.stripe.com/6oUbJ1ebW0d5h30d6Q5c400
+```
+
+**OneDrive Share Instructions:**
+```
+1. Upload file to OneDrive: https://onedrive.live.com
+2. Right-click file → Share
+3. Click "Copy Link"
+4. Select "View only" permission
+5. Paste link in email
+
+Example link:
+https://1drv.ms/f/s!AxxxxxxxxxxxxxxxxxxCxxxxx?e=xxxxxxxx
 ```
 
 **Data Upload Instructions:**

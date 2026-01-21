@@ -225,8 +225,13 @@ Ianara
 ## 🛠️ Tools You'll Need
 
 ### File Storage & Sharing:
-- **Google Drive** (15GB free) - For delivery links
-- **WeTransfer** (Free, 2GB transfers) - For large files
+- **OneDrive** (Microsoft - 5GB free) - RECOMMENDED for you!
+  - Sign in at: https://onedrive.live.com
+  - Integrated with your Microsoft account
+  - Easy share links with permission controls
+  
+- **Google Drive** (15GB free) - Alternative
+- **WeTransfer** (Free, 2GB transfers) - For receiving large files
 - **Dropbox** (Free, 2GB) - Alternative
 
 ### Analysis Tools:
@@ -234,6 +239,40 @@ Ianara
 - **Jupyter Notebook**: Great for creating reports
 - **Excel/Google Sheets**: Quick calculations
 - **Your Streamlit app**: If deployed
+
+### OneDrive Setup (Recommended for you):
+**Step 1: Sign in**
+- Go to: https://onedrive.live.com
+- Use your Microsoft account
+- Or access via Windows File Explorer
+
+**Step 2: Create folder structure**
+```
+OneDrive
+  └── Analytica-Reports/
+      └── Customer-Name-2026-01-21/
+          ├── Report.pdf
+          ├── Data-Export.xlsx
+          └── Dashboard.html
+```
+
+**Step 3: Share files with customers**
+1. Right-click file → **Share**
+2. Click **"Copy Link"** 
+3. Choose: **"View only"** (recommended for security)
+4. Paste link in delivery email
+
+**Step 4: Set expiration (optional)**
+- In share settings, set link to expire after 30 days
+- Ensures data isn't accessible forever
+
+**Advantages of OneDrive:**
+✓ Already have Microsoft account
+✓ 5GB free storage
+✓ Integrates with Windows
+✓ Professional appearance
+✓ Easy permission control
+✓ GDPR-compliant
 
 ### PDF Creation:
 - **Google Docs** → Export as PDF
