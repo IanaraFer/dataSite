@@ -1562,6 +1562,8 @@
                         headers: { 'Accept': 'application/json' }
                     });
 
+                    console.log('Formspree response:', response.status, response.statusText);
+
                     if (response.ok) {
                         // Show success message with payment button
                         oneTimeSuccess.classList.remove('d-none');
@@ -1572,15 +1574,61 @@
                         
                         // Keep modal open for payment
                     } else {
+                        const errorText = await response.text();
+                        console.error('Formspree error:', response.status, errorText);
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = '<i class="fas fa-shopping-cart me-2"></i>Submit Order - €29.99';
-                        alert('Form submission failed. Please try again.');
+                        
+                        // Fallback: open mailto with form data
+                        const formDataObj = {
+                            name: formData.get('fullName'),
+                            email: formData.get('email'),
+                            phone: formData.get('phone') || 'Not provided',
+                            projectType: formData.get('projectType'),
+                            message: formData.get('message') || 'No message'
+                        };
+                        
+                        const subject = encodeURIComponent('One-Time Analysis Order - ' + formDataObj.name);
+                        const body = encodeURIComponent(
+                            'ONE-TIME ANALYSIS ORDER (€29.99)\\n\\n' +
+                            'Name: ' + formDataObj.name + '\\n' +
+                            'Email: ' + formDataObj.email + '\\n' +
+                            'Phone: ' + formDataObj.phone + '\\n' +
+                            'Project Type: ' + formDataObj.projectType + '\\n' +
+                            'Details: ' + formDataObj.message + '\\n\\n' +
+                            'Note: Please upload your data file separately or use the cloud link.'
+                        );
+                        
+                        alert('Our form processor had a temporary issue. Opening email to send your order details instead. Click the email button to complete submission.');
+                        window.location.href = 'mailto:information@analyticacoreai.ie?subject=' + subject + '&body=' + body;
                     }
                 } catch (err) {
                     console.error('Form submission error:', err);
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fas fa-shopping-cart me-2"></i>Submit Order - €29.99';
-                    alert('Connection error. Please check your internet and try again.');
+                    
+                    // Fallback to mailto
+                    const formDataObj = {
+                        name: formData.get('fullName'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone') || 'Not provided',
+                        projectType: formData.get('projectType'),
+                        message: formData.get('message') || 'No message'
+                    };
+                    
+                    const subject = encodeURIComponent('One-Time Analysis Order - ' + formDataObj.name);
+                    const body = encodeURIComponent(
+                        'ONE-TIME ANALYSIS ORDER (€29.99)\\n\\n' +
+                        'Name: ' + formDataObj.name + '\\n' +
+                        'Email: ' + formDataObj.email + '\\n' +
+                        'Phone: ' + formDataObj.phone + '\\n' +
+                        'Project Type: ' + formDataObj.projectType + '\\n' +
+                        'Details: ' + formDataObj.message + '\\n\\n' +
+                        'Note: Please upload your data file separately.'
+                    );
+                    
+                    alert('Connection error. Opening email to submit your order. Please send the data file separately to information@analyticacoreai.ie');
+                    window.location.href = 'mailto:information@analyticacoreai.ie?subject=' + subject + '&body=' + body;
                 }
             });
         }
