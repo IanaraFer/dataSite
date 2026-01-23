@@ -1,0 +1,128 @@
+
+======================================================================
+           REVOLUT BANK STATEMENT - FINANCIAL ANALYSIS REPORT
+======================================================================
+Generated: 2026-01-21 16:14:29
+Account: IANARA ARAUJO FERNANDES
+Period: 1 January 2025 to 27 November 2025
+======================================================================
+
+EXECUTIVE SUMMARY
+----------------------------------------------------------------------
+Your account shows a NET DECREASE of €1,040.07 over 11 months.
+
+Opening Balance:  €1,328.29
+Closing Balance:  €288.22
+Total Income:     €59,299.56
+Total Expenses:   €60,339.63
+Transactions:     3293
+
+MONTHLY BREAKDOWN
+----------------------------------------------------------------------
+Month              Income     Expenses          Net
+----------------------------------------------------------------------
+2025-01      €  4,020.52 €  2,736.68 €  1,283.84
+2025-02      €  3,880.20 €  2,682.20 €  1,198.00
+2025-03      €  1,849.80 €  1,380.86 €    468.94
+2025-04      €  3,941.73 €    993.66 €  2,948.07
+2025-05      €  4,584.69 €  1,014.20 €  3,570.49
+2025-06      € 10,086.91 €  1,223.97 €  8,862.94
+2025-07      € 17,011.93 €  3,281.01 € 13,730.92
+2025-08      €  9,175.38 €  1,549.45 €  7,625.93
+2025-10      € 33,730.09 €  2,697.40 € 31,032.69
+2025-11      €  5,816.96 €  1,035.80 €  4,781.16
+
+----------------------------------------------------------------------
+Average/Month:   €  9,409.82 €  1,859.52 €  7,550.30
+
+SPENDING BY CATEGORY
+----------------------------------------------------------------------
+Other                €  8,677.35 ( 14.4%)
+Savings              €  5,345.60 (  8.9%)
+Fuel                 €  1,371.21 (  2.3%)
+Groceries            €  1,174.51 (  1.9%)
+Transfers Out        €    842.63 (  1.4%)
+Shopping             €    575.65 (  1.0%)
+Transport            €    537.59 (  0.9%)
+Entertainment        €     40.60 (  0.1%)
+Restaurants          €     29.72 (  0.0%)
+Crypto               €      0.37 (  0.0%)
+
+----------------------------------------------------------------------
+Total Spending:  €60,339.63
+
+TOP 5 LARGEST EXPENSES
+----------------------------------------------------------------------
+1. Booking.com                                        €1,059.68
+   Date: 24 Jul 2025
+
+2. IKEA                                               €  761.00
+   Date: 12 Oct 2025
+
+3. Allianz                                            €  612.71
+   Date: 21 Jan 2025
+
+4. Tst Foxhunter Elepha                               €  357.92
+   Date: 19 Oct 2025
+
+5. Ryanair                                            €  314.32
+   Date: 17 Apr 2025
+
+
+BALANCE INSIGHTS
+----------------------------------------------------------------------
+Average Balance:  €181.25
+Highest Balance:  €4,736.14 (on 07 Oct 2025)
+Lowest Balance:   €0.00 (on 13 Feb 2025)
+
+FINANCIAL HEALTH ALERTS
+----------------------------------------------------------------------
+⚠ Balance decreased by €1,040.07 (78.3%)
+⚠ Current balance is low (€288.22)
+⚠ Spending exceeds income by €1,040.07
+
+
+RECOMMENDATIONS
+----------------------------------------------------------------------
+1. INCREASE SAVINGS ALLOCATION
+   You're transferring to pockets regularly - great habit! Consider 
+   automating 10-15% of incoming transfers directly to savings.
+
+2. MONITOR SMALL RECURRING EXPENSES
+   Small daily expenses (€2-€20) add up significantly. Track these 
+   more closely to identify potential savings.
+
+3. BUILD AN EMERGENCY FUND
+   Aim for 3-6 months of expenses (€5,578.57 - €11,157.14)
+   in a separate savings account.
+
+4. REVIEW CATEGORY SPENDING
+   Your top spending categories are:
+   - Other: €8,677.35
+   - Savings: €5,345.60
+   - Fuel: €1,371.21
+
+   Consider if these align with your financial goals.
+
+5. BALANCE MANAGEMENT
+   Your balance fluctuates significantly. Consider maintaining a 
+   minimum buffer of €90.63 to avoid low balances.
+
+======================================================================
+ANALYSIS COMPLETE
+======================================================================
+
+All charts and data have been exported to:
+- 01-monthly-income-expenses.png
+- 02-category-breakdown.png
+- 03-balance-timeline.png
+- 04-top-expenses.png
+- 05-revolut-analysis.xlsx
+- 06-financial-report.txt
+
+For questions or to schedule a detailed consultation, contact:
+Analytica Core AI
+Email: information@analyticacoreai.ie
+Website: https://analiticacoreai.netlify.app
+
+======================================================================
