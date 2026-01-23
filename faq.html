@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Analytica Core AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        .navbar { background: rgba(255, 255, 255, 0.95); border-bottom: 1px solid rgba(0,0,0,0.1); padding: 1rem 0; }
+        .navbar-brand { font-weight: 700; color: #1f77b4 !important; }
+        .nav-link { color: #333 !important; font-weight: 500; }
+        .page-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 0 60px; }
+        .accordion-button { font-weight: 500; color: #333; }
+        .accordion-button:not(.collapsed) { background: #f8f9fa; color: #1f77b4; }
+        footer { background: #1a1a1a; color: #999; padding: 3rem 0 1rem; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chart-line me-2"></i>Analytica Core AI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="how-it-works.html">How it works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="examples.html">Examples</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Founder</a></li>
+                    <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3 rounded-pill ms-2" href="index.html#cta">Get Started</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p class="lead">Got questions? We've got answers.</p>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Getting Started -->
+                    <h2 class="mb-4">Getting Started</h2>
+                    <div class="accordion mb-5" id="startedAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1">
+                                    <i class="fas fa-upload me-2"></i> What data can I analyze?
+                                </button>
+                            </h2>
+                            <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#startedAccordion">
+                                <div class="accordion-body">
+                                    <p>We accept CSV, Excel (XLS/XLSX), JSON, and other structured data formats. Files up to 50,000 rows. Your data can be anything:</p>
+                                    <ul class="mb-0">
+                                        <li>Sales transactions & revenue data</li>
+                                        <li>Customer lists & engagement metrics</li>
+                                        <li>Financial statements & bank records</li>
+                                        <li>Inventory & operational data</li>
+                                        <li>Survey responses & feedback</li>
+                                        <li>Time series & forecasting data</li>
+                                        <li>Any structured business data</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
+                                    <i class="fas fa-check-circle me-2"></i> Do I need to upload data for a diagnostic?
+                                </button>
+                            </h2>
+                            <div id="q2" class="accordion-collapse collapse" data-bs-parent="#startedAccordion">
+                                <div class="accordion-body">
+                                    <p>Yes. Your actual data is what we analyze. We can't provide meaningful insights without seeing your specific numbers, patterns, and context. Don't worry—your data is completely secure and GDPR compliant. We never share it or use it for anything else.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q3">
+                                    <i class="fas fa-credit-card me-2"></i> Do I need a credit card to start?
+                                </button>
+                            </h2>
+                            <div id="q3" class="accordion-collapse collapse" data-bs-parent="#startedAccordion">
+                                <div class="accordion-body">
+                                    <p>No credit card required for initial consultation. You only pay €29.99 when you decide to move forward with a full analysis. Simple as that.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Speed & Delivery -->
+                    <h2 class="mb-4">Speed & Delivery</h2>
+                    <div class="accordion mb-5" id="speedAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q4">
+                                    <i class="fas fa-hourglass-end me-2"></i> How fast do I see value?
+                                </button>
+                            </h2>
+                            <div id="q4" class="accordion-collapse collapse" data-bs-parent="#speedAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>48-72 hours.</strong> Once you upload your data, our AI goes to work immediately. You'll receive a complete analysis PDF, Excel file, and action plan within 3 business days. Most analyses are completed within 48 hours.</p>
+                                    <p class="small text-muted mb-0">Complex datasets or custom analyses may take longer. We'll update you on the timeline.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q5">
+                                    <i class="fas fa-download me-2"></i> What formats do I get the results in?
+                                </button>
+                            </h2>
+                            <div id="q5" class="accordion-collapse collapse" data-bs-parent="#speedAccordion">
+                                <div class="accordion-body">
+                                    <p>You receive:</p>
+                                    <ul class="mb-0">
+                                        <li><strong>Professional PDF Report</strong> — Full analysis with charts, tables, and plain-English insights</li>
+                                        <li><strong>Excel Export</strong> — Raw data and calculations for your records</li>
+                                        <li><strong>Action Plan</strong> — Your top 3 opportunities ranked by impact</li>
+                                        <li><strong>Email Summary</strong> — Key findings in your inbox</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security & Privacy -->
+                    <h2 class="mb-4">Security & Privacy</h2>
+                    <div class="accordion mb-5" id="securityAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q6">
+                                    <i class="fas fa-lock me-2"></i> Is my data secure?
+                                </button>
+                            </h2>
+                            <div id="q6" class="accordion-collapse collapse" data-bs-parent="#securityAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>Yes, absolutely.</strong> Your data security is our top priority:</p>
+                                    <ul>
+                                        <li>✅ GDPR compliant (EU data centers)</li>
+                                        <li>✅ AES-256 encryption in transit</li>
+                                        <li>✅ Data deleted after 90 days</li>
+                                        <li>✅ No third-party access</li>
+                                        <li>✅ ISO 27001 standards</li>
+                                        <li>✅ Regular security audits</li>
+                                    </ul>
+                                    <p class="small text-muted mb-0">We never sell, share, or use your data for any other purpose.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q7">
+                                    <i class="fas fa-eye-slash me-2"></i> What happens to my data after analysis?
+                                </button>
+                            </h2>
+                            <div id="q7" class="accordion-collapse collapse" data-bs-parent="#securityAccordion">
+                                <div class="accordion-body">
+                                    <p>We keep your data for 90 days (in case you need it re-analyzed), then permanently delete it. You can request deletion anytime. Your report and results are yours to keep forever.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guarantees -->
+                    <h2 class="mb-4">Guarantees & Support</h2>
+                    <div class="accordion mb-5" id="guaranteeAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q8">
+                                    <i class="fas fa-money-bill-wave me-2"></i> What's your money-back guarantee?
+                                </button>
+                            </h2>
+                            <div id="q8" class="accordion-collapse collapse" data-bs-parent="#guaranteeAccordion">
+                                <div class="accordion-body">
+                                    <p><strong>100% money-back guarantee.</strong> If you don't find actionable insights in your analysis within 7 days, we refund the full €29.99. No questions asked. No hidden terms.</p>
+                                    <p class="small text-muted mb-0">We're confident in our work. Your success is our success.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q9">
+                                    <i class="fas fa-comments me-2"></i> What if the findings aren't useful for my business?
+                                </button>
+                            </h2>
+                            <div id="q9" class="accordion-collapse collapse" data-bs-parent="#guaranteeAccordion">
+                                <div class="accordion-body">
+                                    <p>Our analyses are built to be actionable—not just pretty reports. We focus on opportunities you can actually use. But if the results don't fit your specific situation, we offer:</p>
+                                    <ul class="mb-3">
+                                        <li><strong>Free Follow-up Consultation</strong> — We'll discuss the findings with you</li>
+                                        <li><strong>Re-analysis Option</strong> — We can dig into a different angle</li>
+                                        <li><strong>Full Refund</strong> — If nothing works, your money back</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q10">
+                                    <i class="fas fa-headset me-2"></i> How do I get support?
+                                </button>
+                            </h2>
+                            <div id="q10" class="accordion-collapse collapse" data-bs-parent="#guaranteeAccordion">
+                                <div class="accordion-body">
+                                    <p>Email us directly at <strong>information@analyticacoreai.ie</strong> and Ianara will respond personally. Average response time: 24 hours.</p>
+                                    <p class="small text-muted mb-0">We treat every customer as part of our community, not just a transaction.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multiple Orders -->
+                    <h2 class="mb-4">Scaling Your Analysis</h2>
+                    <div class="accordion" id="scalingAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q11">
+                                    <i class="fas fa-chart-line me-2"></i> Can I order multiple analyses?
+                                </button>
+                            </h2>
+                            <div id="q11" class="accordion-collapse collapse" data-bs-parent="#scalingAccordion">
+                                <div class="accordion-body">
+                                    <p>Absolutely! Many clients order multiple analyses for different datasets or timeframes. Each order is €29.99.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q12">
+                                    <i class="fas fa-percentage me-2"></i> Do you offer bulk discounts?
+                                </button>
+                            </h2>
+                            <div id="q12" class="accordion-collapse collapse" data-bs-parent="#scalingAccordion">
+                                <div class="accordion-body">
+                                    <p>Yes! Orders of 5+ analyses receive <strong>20% off</strong>. Contact us at <strong>information@analyticacoreai.ie</strong> for bulk pricing.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q13">
+                                    <i class="fas fa-sync me-2"></i> Can you do recurring monthly analyses?
+                                </button>
+                            </h2>
+                            <div id="q13" class="accordion-collapse collapse" data-bs-parent="#scalingAccordion">
+                                <div class="accordion-body">
+                                    <p>For now, analyses are one-time orders. But if you need recurring monthly analysis (e.g., tracking business metrics), <a href="mailto:information@analyticacoreai.ie">email us</a> to discuss custom subscription options.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Still Have Questions? -->
+            <div class="row mt-5 pt-5 border-top text-center">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="mb-3">Still Have Questions?</h2>
+                    <p class="lead text-muted mb-4">Can't find the answer? Reach out directly. Ianara responds to all inquiries personally.</p>
+                    <a href="mailto:information@analyticacoreai.ie" class="btn btn-primary btn-lg"><i class="fas fa-envelope me-2"></i>Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-5">
+        <div class="container">
+            <div class="row g-5 mb-4">
+                <div class="col-md-3">
+                    <h6><i class="fas fa-chart-line me-2"></i>Analytica Core AI</h6>
+                    <p class="small text-muted">Transform your data into decisions with AI-powered analytics.</p>
+                </div>
+                <div class="col-md-3">
+                    <h6>Product</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="how-it-works.html">How it works</a></li>
+                        <li><a href="examples.html">Examples</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Company</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="about.html">Founder Story</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="mailto:information@analyticacoreai.ie">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Get in Touch</h6>
+                    <p class="small text-muted">information@analyticacoreai.ie</p>
+                </div>
+            </div>
+            <hr style="border-color: #333;">
+            <p class="text-center small text-muted mb-0">© 2026 Analytica Core AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
