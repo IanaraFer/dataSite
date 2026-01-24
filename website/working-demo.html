@@ -114,6 +114,30 @@
             padding: 20px;
             margin-bottom: 20px;
         }
+        .cta-button { 
+            background: white; 
+            color: #667eea; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 25px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin: 10px; 
+            transition: transform 0.3s ease; 
+        }
+        .cta-button:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+        }
+        .download-section {
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            margin: 30px 0; 
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -174,6 +198,26 @@
 
             <!-- Results Section -->
             <div id="resultsSection" style="display: none;"></div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="download-section">
+            <h3><i class="fas fa-download me-2"></i>Download Demo Reports</h3>
+            <p style="margin-bottom: 30px; color: #666;">Get these sample reports to see the depth of analysis AnalyticaCore AI provides</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <button class="cta-button" onclick="downloadReportEnhanced('full-report')" style="display: block; width: 100%;">
+                    <i class="fas fa-file-pdf"></i> Full Analysis Report
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Complete 15-page business analysis</div>
+                </button>
+                <button class="cta-button" onclick="downloadReportEnhanced('forecast')" style="display: block; width: 100%;">
+                    <i class="fas fa-chart-line"></i> Forecast Data (CSV)
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">6-month revenue predictions</div>
+                </button>
+                <button class="cta-button" onclick="downloadReportEnhanced('insights')" style="display: block; width: 100%;">
+                    <i class="fas fa-lightbulb"></i> AI Insights Report
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.8;">Actionable recommendations</div>
+                </button>
+            </div>
         </div>
 
         <!-- Payment Section -->
@@ -526,5 +570,6 @@
         console.log('✅ AI analysis: WORKING');
         console.log('💰 Pricing: Professional €199, Business €399, Enterprise €799');
     </script>
+    <script src="demo-downloads.js"></script>
 </body>
 </html>
