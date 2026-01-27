@@ -25,11 +25,13 @@ user_store = UserStore(DIAGNOSIS_DB_PATH)
 
 # Upload configuration
 UPLOAD_FOLDER = 'uploads/financial_diagnosis'
-ALLOWED_EXTENSIONS = {'csv', 'xlsx', 'xls', 'pdf'}
+# Accept all file types - the system will attempt to parse what it can
+ALLOWED_EXTENSIONS = None
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    # Accept all files with extensions
+    return '.' in filename
 
 def login_required(f):
     """Decorator for routes requiring authentication"""
@@ -130,7 +132,7 @@ def upload_file():
         return jsonify({'error': 'No file selected'}), 400
     
     if not allowed_file(file.filename):
-        return jsonify({'error': 'Invalid file type. Allowed: CSV, Excel, PDF'}), 400
+        return jsonify({'error': 'Invalid file format'}), 400
     
     try:
         # Save file
