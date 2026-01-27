@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Diagnosis - Analytica Core AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .diagnosis-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .feature-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .upload-zone {
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .upload-zone:hover {
+            border-color: #764ba2;
+            background: #e9ecef;
+        }
+        
+        .upload-zone.dragover {
+            border-color: #2ca02c;
+            background: #d4edda;
+        }
+        
+        .analysis-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .metric-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .alert-card {
+            border-left: 4px solid;
+            padding-left: 20px;
+        }
+        
+        .alert-warning {
+            border-color: #ff7f0e;
+            background: #fff3cd;
+        }
+        
+        .alert-success {
+            border-color: #2ca02c;
+            background: #d4edda;
+        }
+        
+        .alert-danger {
+            border-color: #d62728;
+            background: #f8d7da;
+        }
+        
+        #authSection {
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        
+        #analysisSection {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: rgba(0,0,0,0.9);">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-brain me-2"></i>Analytica Core AI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="financial-diagnosis.html">Financial Diagnosis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="platform.html">Platform</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#pricing">Pricing</a></li>
+                    <li class="nav-item" id="logoutNav" style="display:none;">
+                        <a class="nav-link" href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="diagnosis-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-3">Personal Finance Diagnosis</h1>
+                    <p class="lead mb-4">Get comprehensive insights into your financial health. Upload your bank statements and receive instant analysis with actionable recommendations.</p>
+                    <div class="mb-3">
+                        <i class="fas fa-check me-2"></i>Automated transaction categorization<br>
+                        <i class="fas fa-check me-2"></i>Income & expense tracking<br>
+                        <i class="fas fa-check me-2"></i>Savings rate analysis<br>
+                        <i class="fas fa-check me-2"></i>Budget recommendations<br>
+                        <i class="fas fa-check me-2"></i>Emergency fund calculator
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23ffffff' opacity='0.1' width='400' height='300' rx='12'/%3E%3Ctext x='200' y='150' font-family='Arial' font-size='48' fill='%23ffffff' text-anchor='middle'%3E📊💰📈%3C/text%3E%3C/svg%3E" alt="Financial Analysis" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-5" style="margin-top: -40px;">
+        <div class="container">
+            <!-- Authentication Section -->
+            <div id="authSection" class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h3 class="text-center mb-4">Get Started</h3>
+                    
+                    <!-- Login Form -->
+                    <div id="loginForm">
+                        <h5 class="mb-3">Login</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="your@email.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword">
+                        </div>
+                        <button class="btn btn-primary w-100 mb-3" onclick="login()">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </button>
+                        <p class="text-center mb-0">
+                            Don't have an account? <a href="#" onclick="showRegister()">Register here</a>
+                        </p>
+                    </div>
+
+                    <!-- Register Form -->
+                    <div id="registerForm" style="display:none;">
+                        <h5 class="mb-3">Create Account</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" id="registerName" placeholder="Your Name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" placeholder="your@email.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword">
+                        </div>
+                        <button class="btn btn-success w-100 mb-3" onclick="register()">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </button>
+                        <p class="text-center mb-0">
+                            Already have an account? <a href="#" onclick="showLogin()">Login here</a>
+                        </p>
+                    </div>
+
+                    <div id="authMessage" class="alert mt-3" style="display:none;"></div>
+                </div>
+            </div>
+
+            <!-- Analysis Section (Shown after login) -->
+            <div id="analysisSection">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <h4 class="mb-3"><i class="fas fa-upload me-2"></i>Upload Your Financial Data</h4>
+                                <div id="uploadZone" class="upload-zone">
+                                    <i class="fas fa-cloud-upload-alt fa-4x mb-3" style="color: #667eea;"></i>
+                                    <h5>Drag & Drop Your Bank Statement</h5>
+                                    <p class="text-muted">or click to browse</p>
+                                    <p class="small">Supports: CSV, Excel, PDF</p>
+                                    <input type="file" id="fileInput" style="display:none;" accept=".csv,.xlsx,.xls,.pdf">
+                                </div>
+                                <div id="uploadMessage" class="alert mt-3" style="display:none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Results -->
+                <div id="resultsSection" style="display:none;">
+                    <h3 class="mb-4"><i class="fas fa-chart-line me-2"></i>Your Financial Analysis</h3>
+                    
+                    <!-- Key Metrics -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <div class="metric-box">
+                                <div class="metric-value" id="totalIncome">€0</div>
+                                <div class="metric-label">Total Income</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-box" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <div class="metric-value" id="totalExpenses">€0</div>
+                                <div class="metric-label">Total Expenses</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-box" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <div class="metric-value" id="netSavings">€0</div>
+                                <div class="metric-label">Net Savings</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="metric-box" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                <div class="metric-value" id="savingsRate">0%</div>
+                                <div class="metric-label">Savings Rate</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diagnostics & Recommendations -->
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="analysis-card">
+                                <h5 class="mb-3"><i class="fas fa-lightbulb me-2 text-warning"></i>Recommendations</h5>
+                                <div id="recommendations"></div>
+                            </div>
+
+                            <div class="analysis-card">
+                                <h5 class="mb-3"><i class="fas fa-chart-pie me-2 text-info"></i>Spending Breakdown</h5>
+                                <div id="spendingBreakdown"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="analysis-card">
+                                <h5 class="mb-3"><i class="fas fa-bell me-2 text-danger"></i>Alerts</h5>
+                                <div id="alerts"></div>
+                            </div>
+
+                            <div class="analysis-card">
+                                <h5 class="mb-3"><i class="fas fa-download me-2"></i>Export</h5>
+                                <button class="btn btn-primary w-100 mb-2" onclick="exportPDF()">
+                                    <i class="fas fa-file-pdf me-2"></i>Download PDF Report
+                                </button>
+                                <button class="btn btn-outline-secondary w-100" onclick="exportCSV()">
+                                    <i class="fas fa-file-csv me-2"></i>Export as CSV
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:5001' : '/api';
+        let currentAnalysis = null;
+
+        // Auth Functions
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        async function register() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/diagnosis/register`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({name, email, password})
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage('authMessage', 'Registration successful! Please login.', 'success');
+                    setTimeout(showLogin, 2000);
+                } else {
+                    showMessage('authMessage', data.error, 'danger');
+                }
+            } catch (error) {
+                showMessage('authMessage', 'Connection error. Please try again.', 'danger');
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/diagnosis/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email, password}),
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showAnalysisSection();
+                } else {
+                    showMessage('authMessage', data.error, 'danger');
+                }
+            } catch (error) {
+                showMessage('authMessage', 'Connection error. Please try again.', 'danger');
+            }
+        }
+
+        async function logout() {
+            try {
+                await fetch(`${API_BASE}/api/diagnosis/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                location.reload();
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        function showAnalysisSection() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('analysisSection').style.display = 'block';
+            document.getElementById('logoutNav').style.display = 'block';
+        }
+
+        // File Upload
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) handleFileUpload(files[0]);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) handleFileUpload(e.target.files[0]);
+        });
+
+        async function handleFileUpload(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            showMessage('uploadMessage', 'Uploading and analyzing...', 'info');
+
+            try {
+                const uploadResponse = await fetch(`${API_BASE}/api/diagnosis/upload`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+
+                const uploadData = await uploadResponse.json();
+
+                if (uploadResponse.ok) {
+                    // Quick analyze the uploaded file
+                    const analyzeResponse = await fetch(`${API_BASE}/api/diagnosis/quick-analyze`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({filename: uploadData.filename}),
+                        credentials: 'include'
+                    });
+
+                    const analysisData = await analyzeResponse.json();
+
+                    if (analyzeResponse.ok) {
+                        currentAnalysis = analysisData;
+                        displayResults(analysisData);
+                        showMessage('uploadMessage', 'Analysis complete!', 'success');
+                    } else {
+                        showMessage('uploadMessage', analysisData.error, 'danger');
+                    }
+                } else {
+                    showMessage('uploadMessage', uploadData.error, 'danger');
+                }
+            } catch (error) {
+                showMessage('uploadMessage', 'Error processing file. Please try again.', 'danger');
+            }
+        }
+
+        function displayResults(data) {
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            // Update metrics
+            document.getElementById('totalIncome').textContent = `€${(data.total_income || 0).toLocaleString()}`;
+            document.getElementById('totalExpenses').textContent = `€${(data.total_expenses || 0).toLocaleString()}`;
+            document.getElementById('netSavings').textContent = `€${(data.net_savings || 0).toLocaleString()}`;
+            document.getElementById('savingsRate').textContent = `${(data.savings_rate || 0).toFixed(1)}%`;
+
+            // Display recommendations
+            const recommendations = data.diagnostics?.recommendations || ['No recommendations available'];
+            document.getElementById('recommendations').innerHTML = recommendations.map(r => 
+                `<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>${r}</div>`
+            ).join('');
+
+            // Display alerts
+            const alerts = data.diagnostics?.alerts || ['All good!'];
+            document.getElementById('alerts').innerHTML = alerts.map(a => 
+                `<div class="alert alert-warning"><i class="fas fa-exclamation-triangle me-2"></i>${a}</div>`
+            ).join('');
+
+            // Display spending breakdown
+            const categories = data.expense_by_category || {};
+            document.getElementById('spendingBreakdown').innerHTML = Object.entries(categories)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10)
+                .map(([cat, amount]) => `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>${cat}</span>
+                        <strong>€${amount.toLocaleString()}</strong>
+                    </div>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" style="width: ${(amount / data.total_expenses * 100)}%"></div>
+                    </div>
+                `).join('');
+        }
+
+        async function exportPDF() {
+            if (!currentAnalysis) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/diagnosis/export-report`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({analysis: currentAnalysis}),
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `financial_report_${new Date().toISOString().split('T')[0]}.txt`;
+                    a.click();
+                }
+            } catch (error) {
+                alert('Export error. Please try again.');
+            }
+        }
+
+        function exportCSV() {
+            alert('CSV export feature coming soon!');
+        }
+
+        function showMessage(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.className = `alert alert-${type}`;
+            el.textContent = message;
+            el.style.display = 'block';
+        }
+
+        // Check if already logged in
+        fetch(`${API_BASE}/api/diagnosis/profile`, {credentials: 'include'})
+            .then(r => r.ok ? showAnalysisSection() : null)
+            .catch(() => {});
+    </script>
+</body>
+</html>

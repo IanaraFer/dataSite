@@ -1,0 +1,64 @@
+# Analytica Core AI - Unified Requirements
+# Includes dependencies for main platform and financial diagnosis module
+
+# Web Framework
+flask==2.3.3
+werkzeug==3.0.3
+flask-login==0.6.3
+flask-cors==4.0.0
+streamlit==1.31.0
+fastapi==0.109.0
+uvicorn==0.27.0
+
+# Data Processing & Analysis
+pandas==2.1.4
+numpy==1.26.4
+scikit-learn==1.4.0
+scipy==1.12.0
+
+# Data Visualization
+plotly==5.24.1
+matplotlib==3.8.2
+seaborn==0.13.1
+
+# Machine Learning & AI
+prophet==1.1.5
+xgboost==2.0.3
+statsmodels==0.14.1
+
+# File Processing
+openpyxl==3.1.5
+pdfplumber==0.11.4
+pypdf2==3.0.1
+python-docx==1.1.0
+
+# Azure Integration
+azure-identity==1.17.1
+azure-keyvault-secrets==4.7.0
+azure-storage-blob==12.19.0
+
+# Payment Processing
+stripe==8.0.0
+
+# Database
+sqlalchemy==2.0.25
+alembic==1.13.1
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.31.0
+aiohttp==3.9.3
+pydantic==2.5.3
+
+# Server & Deployment
+gunicorn==21.2.0
+waitress==3.0.2
+
+# Development & Testing
+pytest==8.0.0
+pytest-asyncio==0.23.3
+black==24.1.1
+flake8==7.0.0
+
+# Logging & Monitoring
+python-json-logger==2.0.7
