@@ -72,6 +72,42 @@
             transform: translateY(-1px);
         }
 
+        /* Dropdown Menu Styling */
+        .dropdown-menu {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: slideDown 0.2s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            padding: 0.7rem 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0f2f5;
+            color: var(--primary-color);
+            padding-left: 1.2rem;
+        }
+
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            opacity: 0.5;
+        }
+
         /* Hero Section */
         .hero {
             background: var(--gradient-bg);
@@ -824,15 +860,35 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="financial-diagnosis.html">
-                        <i class="fas fa-heartbeat me-1"></i>Financial Diagnosis
-                    </a></li>
-                    <li class="nav-item"><a class="nav-link" href="#workflow">How it works</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#sample-outputs">Examples</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#proof-credibility">Proof & Results</a></li>
+                    
+                    <!-- Services Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                            <li><a class="dropdown-item" href="#workflow">How it Works</a></li>
+                            <li><a class="dropdown-item" href="financial-diagnosis.html">
+                                <i class="fas fa-heartbeat me-1"></i>Financial Diagnosis
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="dashboard-preview.html">Dashboard Preview</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Resources Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="resourcesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Resources
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="resourcesDropdown">
+                            <li><a class="dropdown-item" href="#sample-outputs">Examples</a></li>
+                            <li><a class="dropdown-item" href="#proof-credibility">Proof & Results</a></li>
+                            <li><a class="dropdown-item" href="#sample-report">Sample Report</a></li>
+                        </ul>
+                    </li>
+                    
                     <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboard-preview.html">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#sample-report">Sample report</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary text-white px-3 rounded-pill ms-2" href="#sample-report">
