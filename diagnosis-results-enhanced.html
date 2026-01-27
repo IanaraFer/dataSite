@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Financial Analysis - Analytica Core AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #2ca02c;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --info-color: #2196F3;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 0 40px;
+            margin-bottom: 40px;
+        }
+
+        .results-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            color: #999;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-change {
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .metric-change.positive {
+            color: var(--success-color);
+        }
+
+        .metric-change.negative {
+            color: var(--danger-color);
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 30px;
+        }
+
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .category-row {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+
+        .category-row:last-child {
+            border-bottom: none;
+        }
+
+        .category-icon {
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .progress-modern {
+            height: 8px;
+            border-radius: 10px;
+            background: #e9ecef;
+            overflow: hidden;
+        }
+
+        .progress-modern .progress-bar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, #f0f2ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .insight-card h6 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .alert-card {
+            background: #fff3cd;
+            border-left: 4px solid var(--warning-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-item {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .badge-custom {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .transaction-table {
+            font-size: 0.9rem;
+        }
+
+        .transaction-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .transaction-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar no-print">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-chart-line me-2"></i>Analytica Core AI
+            </a>
+            <div>
+                <a href="diagnosis-dashboard.html" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                </a>
+                <button class="btn btn-primary" onclick="downloadPDF()">
+                    <i class="fas fa-download me-1"></i>Download PDF
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="results-header">
+        <div class="container">
+            <h1><i class="fas fa-chart-pie me-3"></i>Complete Financial Analysis</h1>
+            <p class="lead mb-0">Comprehensive AI-Powered Financial Health Report</p>
+            <div class="mt-3">
+                <span class="badge bg-light text-dark me-2"><i class="fas fa-user me-1"></i><span id="displayName">-</span></span>
+                <span class="badge bg-light text-dark me-2"><i class="fas fa-envelope me-1"></i><span id="displayEmail">-</span></span>
+                <span class="badge bg-light text-dark"><i class="fas fa-calendar me-1"></i><span id="displayDate">-</span></span>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pb-5">
+        <!-- Executive Summary -->
+        <div class="section-card">
+            <h2 class="section-title"><i class="fas fa-clipboard-list me-2"></i>Executive Summary</h2>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <div class="metric-card" style="border-left: 4px solid var(--success-color);">
+                        <div class="metric-value text-success" id="totalIncome">€0</div>
+                        <div class="metric-label">Total Income</div>
+                        <div class="metric-change positive" id="incomeChange">
+                            <i class="fas fa-arrow-up"></i> +0% vs last period
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="metric-card" style="border-left: 4px solid var(--danger-color);">
+                        <div class="metric-value text-danger" id="totalExpenses">€0</div>
+                        <div class="metric-label">Total Expenses</div>
+                        <div class="metric-change negative" id="expenseChange">
+                            <i class="fas fa-arrow-up"></i> +0% vs last period
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="metric-card" style="border-left: 4px solid var(--primary-color);">
+                        <div class="metric-value" style="color: var(--primary-color);" id="netSavings">€0</div>
+                        <div class="metric-label">Net Savings</div>
+                        <div class="metric-change" id="savingsChange">
+                            <i class="fas fa-equals"></i> 0% savings rate
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="metric-card" style="border-left: 4px solid var(--info-color);">
+                        <div class="metric-value" style="color: var(--info-color);" id="currentBalance">€0</div>
+                        <div class="metric-label">Current Balance</div>
+                        <div class="metric-change" id="balanceChange">
+                            <i class="fas fa-wallet"></i> Available funds
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="section-card">
+                    <h3 class="section-title"><i class="fas fa-chart-pie me-2"></i>Spending Distribution</h3>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="spendingPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="section-card">
+                    <h3 class="section-title"><i class="fas fa-chart-line me-2"></i>Income vs Expenses Trend</h3>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="trendLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-card">
+            <h2 class="section-title"><i class="fas fa-list-ul me-2"></i>Detailed Spending Breakdown</h2>
+            <div id="categoryBreakdown"></div>
+        </div>
+
+        <!-- Monthly Comparison Table -->
+        <div class="section-card">
+            <h2 class="section-title"><i class="fas fa-table me-2"></i>Monthly Financial Summary</h2>
+            <div class="table-responsive">
+                <table class="table table-hover transaction-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Income</th>
+                            <th>Expenses</th>
+                            <th>Savings</th>
+                            <th>Savings Rate</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monthlyTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Top Transactions -->
+        <div class="section-card">
+            <h2 class="section-title"><i class="fas fa-money-bill-wave me-2"></i>Top 10 Largest Transactions</h2>
+            <div class="table-responsive">
+                <table class="table table-hover transaction-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topTransactionsBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- AI Insights -->
+        <div class="section-card">
+            <h2 class="section-title"><i class="fas fa-brain me-2"></i>AI-Powered Financial Insights</h2>
+            <div id="aiInsights"></div>
+        </div>
+
+        <!-- Alerts & Warnings -->
+        <div class="section-card">
+            <h2 class="section-title"><i class="fas fa-exclamation-triangle me-2"></i>Financial Alerts</h2>
+            <div id="financialAlerts"></div>
+        </div>
+
+        <!-- Savings Analysis -->
+        <div class="section-card">
+            <h2 class="section-title"><i class="fas fa-piggy-bank me-2"></i>Savings Analysis</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="savingsChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="savingsDetails"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="section-card">
+            <h2 class="section-title"><i class="fas fa-lightbulb me-2"></i>Personalized Recommendations</h2>
+            <div id="recommendations"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center mt-5 no-print">
+            <button class="btn btn-primary btn-lg me-3" onclick="downloadPDF()">
+                <i class="fas fa-file-pdf me-2"></i>Download Full Report
+            </button>
+            <a href="financial-diagnosis.html" class="btn btn-outline-primary btn-lg me-3">
+                <i class="fas fa-plus me-2"></i>New Analysis
+            </a>
+            <a href="diagnosis-dashboard.html" class="btn btn-outline-secondary btn-lg">
+                <i class="fas fa-home me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - in production, this would come from actual file analysis
+        const financialData = {
+            totalIncome: 5280,
+            totalExpenses: 4120,
+            currentBalance: 3450,
+            incomeChange: 8.5,
+            expenseChange: 12.3,
+            
+            categories: [
+                { name: 'Rent/Mortgage', amount: 1200, percentage: 29.1, icon: 'fa-home', color: '#667eea', transactions: 1 },
+                { name: 'Groceries & Food', amount: 650, percentage: 15.8, icon: 'fa-shopping-cart', color: '#2ca02c', transactions: 28 },
+                { name: 'Restaurants', amount: 480, percentage: 11.7, icon: 'fa-utensils', color: '#ff7f0e', transactions: 15 },
+                { name: 'Transportation', amount: 420, percentage: 10.2, icon: 'fa-car', color: '#764ba2', transactions: 12 },
+                { name: 'Utilities', amount: 380, percentage: 9.2, icon: 'fa-bolt', color: '#1f77b4', transactions: 4 },
+                { name: 'Entertainment', amount: 320, percentage: 7.8, icon: 'fa-film', color: '#e377c2', transactions: 9 },
+                { name: 'Healthcare', amount: 250, percentage: 6.1, icon: 'fa-heartbeat', color: '#d62728', transactions: 3 },
+                { name: 'Shopping', amount: 220, percentage: 5.3, icon: 'fa-shopping-bag', color: '#9467bd', transactions: 7 },
+                { name: 'Insurance', amount: 150, percentage: 3.6, icon: 'fa-shield-alt', color: '#8c564b', transactions: 1 },
+                { name: 'Other', amount: 50, percentage: 1.2, icon: 'fa-ellipsis-h', color: '#7f7f7f', transactions: 6 }
+            ],
+            
+            monthlyData: [
+                { month: 'January 2026', income: 5280, expenses: 4120, savings: 1160, rate: 22.0 },
+                { month: 'December 2025', income: 4850, expenses: 3680, savings: 1170, rate: 24.1 },
+                { month: 'November 2025', income: 5100, expenses: 3850, savings: 1250, rate: 24.5 },
+            ],
+            
+            topTransactions: [
+                { date: '2026-01-02', description: 'Monthly Rent Payment', category: 'Rent/Mortgage', amount: 1200 },
+                { date: '2026-01-15', description: 'Restaurant - Fine Dining', category: 'Restaurants', amount: 185 },
+                { date: '2026-01-20', description: 'Grocery Store', category: 'Groceries', amount: 165 },
+                { date: '2026-01-05', description: 'Insurance Premium', category: 'Insurance', amount: 150 },
+                { date: '2026-01-12', description: 'Electricity Bill', category: 'Utilities', amount: 145 },
+                { date: '2026-01-08', description: 'Gas Station', category: 'Transportation', amount: 130 },
+                { date: '2026-01-18', description: 'Healthcare Consultation', category: 'Healthcare', amount: 120 },
+                { date: '2026-01-22', description: 'Online Shopping', category: 'Shopping', amount: 110 },
+                { date: '2026-01-10', description: 'Cinema & Dinner', category: 'Entertainment', amount: 95 },
+                { date: '2026-01-25', description: 'Water Bill', category: 'Utilities', amount: 85 }
+            ]
+        };
+
+        function loadAnalysis() {
+            const data = JSON.parse(sessionStorage.getItem('diagnosisData')) || {};
+            
+            // Display user info
+            document.getElementById('displayName').textContent = data.fullName || localStorage.getItem('userName') || 'Ianara Fernandes';
+            document.getElementById('displayEmail').textContent = data.email || localStorage.getItem('userEmail') || 'ianarafer@gmail.com';
+            document.getElementById('displayDate').textContent = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Display summary metrics
+            const netSavings = financialData.totalIncome - financialData.totalExpenses;
+            const savingsRate = ((netSavings / financialData.totalIncome) * 100).toFixed(1);
+
+            document.getElementById('totalIncome').textContent = `€${financialData.totalIncome.toLocaleString()}`;
+            document.getElementById('totalExpenses').textContent = `€${financialData.totalExpenses.toLocaleString()}`;
+            document.getElementById('netSavings').textContent = `€${netSavings.toLocaleString()}`;
+            document.getElementById('currentBalance').textContent = `€${financialData.currentBalance.toLocaleString()}`;
+
+            document.getElementById('incomeChange').innerHTML = `<i class="fas fa-arrow-up"></i> +${financialData.incomeChange}% vs last period`;
+            document.getElementById('expenseChange').innerHTML = `<i class="fas fa-arrow-up"></i> +${financialData.expenseChange}% vs last period`;
+            document.getElementById('savingsChange').innerHTML = `<i class="fas fa-chart-line"></i> ${savingsRate}% savings rate`;
+
+            // Create charts
+            createSpendingPieChart();
+            createTrendLineChart();
+            createSavingsChart();
+
+            // Create category breakdown
+            createCategoryBreakdown();
+
+            // Create monthly table
+            createMonthlyTable();
+
+            // Create top transactions
+            createTopTransactions();
+
+            // Generate AI insights
+            generateAIInsights();
+
+            // Generate alerts
+            generateAlerts();
+
+            // Generate savings details
+            generateSavingsDetails();
+
+            // Generate recommendations
+            generateRecommendations();
+        }
+
+        function createSpendingPieChart() {
+            const ctx = document.getElementById('spendingPieChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: financialData.categories.map(c => c.name),
+                    datasets: [{
+                        data: financialData.categories.map(c => c.amount),
+                        backgroundColor: financialData.categories.map(c => c.color),
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                padding: 15,
+                                font: { size: 11 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': €' + context.parsed.toLocaleString() + ' (' + financialData.categories[context.dataIndex].percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createTrendLineChart() {
+            const ctx = document.getElementById('trendLineChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: financialData.monthlyData.map(m => m.month).reverse(),
+                    datasets: [{
+                        label: 'Income',
+                        data: financialData.monthlyData.map(m => m.income).reverse(),
+                        borderColor: '#2ca02c',
+                        backgroundColor: 'rgba(44, 160, 44, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Expenses',
+                        data: financialData.monthlyData.map(m => m.expenses).reverse(),
+                        borderColor: '#f44336',
+                        backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '€' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createSavingsChart() {
+            const ctx = document.getElementById('savingsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: financialData.monthlyData.map(m => m.month).reverse(),
+                    datasets: [{
+                        label: 'Monthly Savings',
+                        data: financialData.monthlyData.map(m => m.savings).reverse(),
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: '#667eea',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '€' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createCategoryBreakdown() {
+            const container = document.getElementById('categoryBreakdown');
+            let html = '';
+
+            financialData.categories.forEach(cat => {
+                html += `
+                    <div class="category-row d-flex align-items-center">
+                        <div class="category-icon" style="background: ${cat.color}15; color: ${cat.color};">
+                            <i class="fas ${cat.icon}"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>
+                                    <strong>${cat.name}</strong>
+                                    <small class="text-muted ms-2">(${cat.transactions} transactions)</small>
+                                </div>
+                                <div>
+                                    <strong style="color: ${cat.color};">€${cat.amount.toLocaleString()}</strong>
+                                    <small class="text-muted ms-2">${cat.percentage}%</small>
+                                </div>
+                            </div>
+                            <div class="progress-modern">
+                                <div class="progress-bar" style="width: ${cat.percentage}%; background: ${cat.color};"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function createMonthlyTable() {
+            const tbody = document.getElementById('monthlyTableBody');
+            let html = '';
+
+            financialData.monthlyData.forEach(month => {
+                const statusClass = month.rate > 20 ? 'success' : month.rate > 10 ? 'warning' : 'danger';
+                const statusText = month.rate > 20 ? 'Excellent' : month.rate > 10 ? 'Good' : 'Needs Improvement';
+                
+                html += `
+                    <tr>
+                        <td><strong>${month.month}</strong></td>
+                        <td class="text-success">€${month.income.toLocaleString()}</td>
+                        <td class="text-danger">€${month.expenses.toLocaleString()}</td>
+                        <td><strong>€${month.savings.toLocaleString()}</strong></td>
+                        <td>${month.rate}%</td>
+                        <td><span class="badge bg-${statusClass}">${statusText}</span></td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function createTopTransactions() {
+            const tbody = document.getElementById('topTransactionsBody');
+            let html = '';
+
+            financialData.topTransactions.forEach(tx => {
+                html += `
+                    <tr>
+                        <td>${new Date(tx.date).toLocaleDateString()}</td>
+                        <td>${tx.description}</td>
+                        <td><span class="badge badge-custom" style="background: #f0f2ff; color: #667eea;">${tx.category}</span></td>
+                        <td><strong class="text-danger">-€${tx.amount.toLocaleString()}</strong></td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function generateAIInsights() {
+            const container = document.getElementById('aiInsights');
+            const insights = [
+                {
+                    title: 'Spending Pattern Analysis',
+                    text: 'Your largest expense category is Rent/Mortgage at €1,200 (29.1% of total expenses). This is within the recommended 30% housing cost ratio. However, combining Restaurants (€480) and Groceries (€650) totals €1,130 for food - consider meal planning to reduce restaurant spending.'
+                },
+                {
+                    title: 'Cash Flow Optimization',
+                    text: 'You maintain a healthy 22% savings rate, which is above the recommended 20% minimum. Your current trajectory will allow you to build an emergency fund of 6 months expenses (€24,720) within 21 months at current savings rate.'
+                },
+                {
+                    title: 'Expense Trend Alert',
+                    text: 'Restaurant spending increased by 35% compared to last month. This category shows the highest volatility. Setting a monthly budget of €350 for dining out could save you €1,560 annually.'
+                },
+                {
+                    title: 'Income Growth Opportunity',
+                    text: 'Your income increased by 8.5% this period. Maintaining this growth rate while keeping expenses stable could increase your annual savings by €4,200.'
+                }
+            ];
+
+            let html = '';
+            insights.forEach(insight => {
+                html += `
+                    <div class="insight-card">
+                        <h6><i class="fas fa-robot me-2"></i>${insight.title}</h6>
+                        <p class="mb-0">${insight.text}</p>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function generateAlerts() {
+            const container = document.getElementById('financialAlerts');
+            const alerts = [
+                {
+                    type: 'warning',
+                    icon: 'fa-exclamation-triangle',
+                    title: 'High Restaurant Spending',
+                    text: 'Dining out expenses increased by 35% this month (€480 total). Consider reducing to €350/month to save €1,560 annually.'
+                },
+                {
+                    type: 'info',
+                    icon: 'fa-info-circle',
+                    title: 'Upcoming Payments',
+                    text: 'Rent payment of €1,200 due in 5 days. Insurance renewal of €150 due in 12 days.'
+                },
+                {
+                    type: 'success',
+                    icon: 'fa-check-circle',
+                    title: 'Savings Goal Progress',
+                    text: 'You\'re on track with your savings goals. Current balance: €3,450. Emergency fund target: €24,720 (6 months expenses).'
+                }
+            ];
+
+            let html = '';
+            alerts.forEach(alert => {
+                const bgColor = alert.type === 'warning' ? '#fff3cd' : alert.type === 'success' ? '#d4edda' : '#d1ecf1';
+                const borderColor = alert.type === 'warning' ? '#ff9800' : alert.type === 'success' ? '#2ca02c' : '#2196F3';
+                
+                html += `
+                    <div class="alert-card" style="background: ${bgColor}; border-left-color: ${borderColor};">
+                        <h6><i class="fas ${alert.icon} me-2"></i>${alert.title}</h6>
+                        <p class="mb-0">${alert.text}</p>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function generateSavingsDetails() {
+            const container = document.getElementById('savingsDetails');
+            const avgMonthlySavings = financialData.monthlyData.reduce((sum, m) => sum + m.savings, 0) / financialData.monthlyData.length;
+            const emergencyFundTarget = financialData.totalExpenses * 6;
+            const monthsToTarget = Math.ceil((emergencyFundTarget - financialData.currentBalance) / avgMonthlySavings);
+
+            const html = `
+                <div class="p-4">
+                    <h5 class="mb-4">Savings Metrics</h5>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Current Savings</span>
+                            <strong>€${financialData.currentBalance.toLocaleString()}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Average Monthly Savings</span>
+                            <strong>€${Math.round(avgMonthlySavings).toLocaleString()}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Emergency Fund Goal (6 months)</span>
+                            <strong>€${emergencyFundTarget.toLocaleString()}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Months to Reach Goal</span>
+                            <strong class="text-primary">${monthsToTarget} months</strong>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Progress to Emergency Fund</span>
+                            <span>${((financialData.currentBalance / emergencyFundTarget) * 100).toFixed(1)}%</span>
+                        </div>
+                        <div class="progress-modern" style="height: 12px;">
+                            <div class="progress-bar" style="width: ${(financialData.currentBalance / emergencyFundTarget) * 100}%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <small>At your current savings rate of ${((avgMonthlySavings / financialData.totalIncome) * 100).toFixed(1)}%, you'll reach your emergency fund goal by ${new Date(Date.now() + monthsToTarget * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.</small>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function generateRecommendations() {
+            const container = document.getElementById('recommendations');
+            const recommendations = [
+                {
+                    priority: 'high',
+                    icon: 'fa-utensils',
+                    title: 'Reduce Restaurant Spending',
+                    description: 'Your dining out expenses (€480/month) could be reduced by 30%. Try meal planning and cooking at home 2 extra days per week.',
+                    impact: 'Save €1,728 annually',
+                    actionable: true
+                },
+                {
+                    priority: 'medium',
+                    icon: 'fa-piggy-bank',
+                    title: 'Automate Savings',
+                    description: 'Set up automatic transfers of €1,200/month (current average savings) to a high-yield savings account on payday.',
+                    impact: 'Consistent wealth building',
+                    actionable: true
+                },
+                {
+                    priority: 'high',
+                    icon: 'fa-shield-alt',
+                    title: 'Build Emergency Fund',
+                    description: 'Continue current savings rate to reach 6-month emergency fund target of €24,720 within 21 months.',
+                    impact: 'Financial security',
+                    actionable: false
+                },
+                {
+                    priority: 'low',
+                    icon: 'fa-chart-line',
+                    title: 'Optimize Subscriptions',
+                    description: 'Review entertainment and subscription services. Cancel unused services to potentially save €50-100/month.',
+                    impact: 'Save €600-1,200 annually',
+                    actionable: true
+                },
+                {
+                    priority: 'medium',
+                    icon: 'fa-car',
+                    title: 'Transportation Review',
+                    description: 'Transportation costs (€420/month) could be optimized. Consider carpooling or public transport for 2 days/week.',
+                    impact: 'Save €840 annually',
+                    actionable: true
+                },
+                {
+                    priority: 'high',
+                    icon: 'fa-percentage',
+                    title: 'Increase Income',
+                    description: 'Your 8.5% income growth is excellent. Consider negotiating a raise or exploring side income to accelerate savings.',
+                    impact: 'Accelerate wealth building',
+                    actionable: true
+                }
+            ];
+
+            let html = '';
+            recommendations.forEach((rec, index) => {
+                const priorityColor = rec.priority === 'high' ? '#f44336' : rec.priority === 'medium' ? '#ff9800' : '#2196F3';
+                const priorityBg = rec.priority === 'high' ? '#ffebee' : rec.priority === 'medium' ? '#fff3e0' : '#e3f2fd';
+                
+                html += `
+                    <div class="recommendation-item">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3" style="background: ${priorityBg}; color: ${priorityColor}; width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas ${rec.icon} fa-lg"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="mb-0">${rec.title}</h6>
+                                    <span class="badge badge-custom" style="background: ${priorityBg}; color: ${priorityColor}; text-transform: uppercase;">${rec.priority} Priority</span>
+                                </div>
+                                <p class="text-muted mb-2">${rec.description}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-success"><i class="fas fa-chart-line me-1"></i><strong>${rec.impact}</strong></span>
+                                    ${rec.actionable ? '<button class="btn btn-sm btn-primary">Take Action</button>' : '<span class="badge bg-secondary">In Progress</span>'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function downloadPDF() {
+            const element = document.querySelector('.container');
+            const opt = {
+                margin: 10,
+                filename: `financial-analysis-${new Date().toISOString().split('T')[0]}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Load analysis on page load
+        window.addEventListener('load', loadAnalysis);
+    </script>
+</body>
+</html>
