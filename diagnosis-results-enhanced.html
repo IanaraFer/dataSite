@@ -401,7 +401,8 @@
         let financialData = {};
 
         function loadAnalysis() {
-            const data = JSON.parse(sessionStorage.getItem('diagnosisData')) || {};
+            const raw = sessionStorage.getItem('diagnosisData');
+            const data = raw ? JSON.parse(raw) : {};
             const transactions = data.transactions || [];
             
             // Display user info
@@ -593,57 +594,7 @@
             ]
         };
 
-        function loadAnalysis() {
-            const data = JSON.parse(sessionStorage.getItem('diagnosisData')) || {};
-            
-            // Display user info
-            document.getElementById('displayName').textContent = data.fullName || localStorage.getItem('userName') || 'Ianara Fernandes';
-            document.getElementById('displayEmail').textContent = data.email || localStorage.getItem('userEmail') || 'ianarafer@gmail.com';
-            document.getElementById('displayDate').textContent = new Date().toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
-            // Display summary metrics
-            const netSavings = financialData.totalIncome - financialData.totalExpenses;
-            const savingsRate = ((netSavings / financialData.totalIncome) * 100).toFixed(1);
-
-            document.getElementById('totalIncome').textContent = `€${financialData.totalIncome.toLocaleString()}`;
-            document.getElementById('totalExpenses').textContent = `€${financialData.totalExpenses.toLocaleString()}`;
-            document.getElementById('netSavings').textContent = `€${netSavings.toLocaleString()}`;
-            document.getElementById('currentBalance').textContent = `€${financialData.currentBalance.toLocaleString()}`;
-
-            document.getElementById('incomeChange').innerHTML = `<i class="fas fa-arrow-up"></i> +${financialData.incomeChange}% vs last period`;
-            document.getElementById('expenseChange').innerHTML = `<i class="fas fa-arrow-up"></i> +${financialData.expenseChange}% vs last period`;
-            document.getElementById('savingsChange').innerHTML = `<i class="fas fa-chart-line"></i> ${savingsRate}% savings rate`;
-
-            // Create charts
-            createSpendingPieChart();
-            createTrendLineChart();
-            createSavingsChart();
-
-            // Create category breakdown
-            createCategoryBreakdown();
-
-            // Create monthly table
-            createMonthlyTable();
-
-            // Create top transactions
-            createTopTransactions();
-
-            // Generate AI insights
-            generateAIInsights();
-
-            // Generate alerts
-            generateAlerts();
-
-            // Generate savings details
-            generateSavingsDetails();
-
-            // Generate recommendations
-            generateRecommendations();
-        }
+        
 
         function createSpendingPieChart() {
             const ctx = document.getElementById('spendingPieChart').getContext('2d');
