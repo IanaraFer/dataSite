@@ -334,7 +334,8 @@
             }
 
             const userEmail = localStorage.getItem('userEmail');
-            document.getElementById('userEmail').textContent = userEmail;
+            const userName = localStorage.getItem('userName') || userEmail;
+            document.getElementById('userEmail').textContent = userName;
 
             // Load analysis history (example data)
             loadAnalysisHistory();

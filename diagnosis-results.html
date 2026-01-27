@@ -336,9 +336,9 @@
 
             const data = JSON.parse(diagnosisData);
             
-            // Display user information
-            document.getElementById('displayName').textContent = data.fullName || 'N/A';
-            document.getElementById('displayEmail').textContent = data.email || 'N/A';
+            // Display user information - use stored data or default to Ianara's info
+            document.getElementById('displayName').textContent = data.fullName || localStorage.getItem('userName') || 'Ianara Fernandes';
+            document.getElementById('displayEmail').textContent = data.email || localStorage.getItem('userEmail') || 'ianarafer@gmail.com';
             document.getElementById('displayDate').textContent = new Date(data.timestamp).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
