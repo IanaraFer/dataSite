@@ -451,31 +451,64 @@
             document.getElementById('savingsRate').textContent = `${(data.savings_rate || 0).toFixed(1)}%`;
 
             // Display recommendations
-            const recommendations = data.diagnostics?.recommendations || ['No recommendations available'];
+            const recommendations = data.recommendations || data.diagnostics?.recommendations || ['No recommendations available'];
             document.getElementById('recommendations').innerHTML = recommendations.map(r => 
                 `<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>${r}</div>`
             ).join('');
 
             // Display alerts
-            const alerts = data.diagnostics?.alerts || ['All good!'];
+            const alerts = data.alerts || data.diagnostics?.alerts || ['All good!'];
             document.getElementById('alerts').innerHTML = alerts.map(a => 
                 `<div class="alert alert-warning"><i class="fas fa-exclamation-triangle me-2"></i>${a}</div>`
             ).join('');
 
-            // Display spending breakdown
-            const categories = data.expense_by_category || {};
-            document.getElementById('spendingBreakdown').innerHTML = Object.entries(categories)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 10)
-                .map(([cat, amount]) => `
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span>${cat}</span>
-                        <strong>€${amount.toLocaleString()}</strong>
+            // Display ENHANCED spending breakdown with detailed categories
+            const categoryData = data.expense_by_category || {};
+            
+            if (Object.keys(categoryData).length > 0) {
+                // Build detailed breakdown with amounts and percentages
+                document.getElementById('spendingBreakdown').innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th class="text-end">Amount</th>
+                                    <th class="text-end">%</th>
+                                    <th class="text-end">Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Object.entries(categoryData)
+                                    .map(([cat, info]) => `
+                                        <tr>
+                                            <td><strong>${cat}</strong></td>
+                                            <td class="text-end">€${info.total?.toFixed(2) || info}</td>
+                                            <td class="text-end">${info.percentage?.toFixed(1) || 0}%</td>
+                                            <td class="text-end">${info.count || '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="p-0">
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-info" style="width: ${info.percentage || 0}%"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `)
+                                    .join('')}
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="progress mb-3">
-                        <div class="progress-bar" style="width: ${(amount / data.total_expenses * 100)}%"></div>
+                    <div class="alert alert-info mt-3">
+                        <strong>📊 Categories Identified:</strong> Shopping, Pharmacies, Morgadi, Rent, School, 
+                        Creches, Savings, Investment, Insurance, Loans, Utilities, Transport, Restaurants, 
+                        Entertainment, Clothing, Health, Home, Taxes, and more!
                     </div>
-                `).join('');
+                `;
+            } else {
+                document.getElementById('spendingBreakdown').innerHTML = 
+                    '<div class="alert alert-info">No spending data available</div>';
+            }
         }
 
         async function exportPDF() {

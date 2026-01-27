@@ -10,6 +10,7 @@ from advanced_analytics import (
     analyze_spending_optimization
 )
 from diagnostic_engine import FinancialDiagnostics
+from categorizer import enhance_transaction_categorization
 
 
 def load_sample_data():
@@ -21,6 +22,9 @@ def load_sample_data():
 def analyze_finances(transactions_df: pd.DataFrame, accounts_df: pd.DataFrame):
     # Normalize columns
     df = transactions_df.copy()
+    
+    # ENHANCED CATEGORIZATION - Automatically identify all spending categories
+    df, category_analysis = enhance_transaction_categorization(df)
     
     # Flexible date parsing - handle multiple formats
     try:
@@ -157,14 +161,19 @@ def analyze_finances(transactions_df: pd.DataFrame, accounts_df: pd.DataFrame):
     }
 
     return {
-        'income': float(income),
-        'expenses': float(expenses),
-        'savings_rate': float(savings_rate),
+        'total_income': float(income),
+        'total_expenses': float(expenses),
+        'net_savings': float(income - expenses),
+        'savings_rate': float(savings_rate * 100),  # As percentage
         'alerts': alerts,
         'recommendations': recommendations,
         'benchmarks': benchmarks,
         'overspending': overspending_list,
         'charts': charts,
+        # Enhanced categorization results
+        'category_analysis': category_analysis,
+        'expense_by_category': category_analysis['by_category'],
+        'top_spending_categories': category_analysis['top_categories'],
         # Advanced features
         'monthly_trends': monthly_trends,
         'prediction': prediction,
