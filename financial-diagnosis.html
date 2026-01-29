@@ -417,12 +417,17 @@
         async function processUploadedFiles() {
             const transactions = [];
             
+            console.log('📁 Processing', uploadedFiles.length, 'uploaded files...');
+            
             for (let file of uploadedFiles) {
+                console.log('Processing file:', file.name, 'Type:', file.type);
                 try {
                     if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
                         // Process CSV file
+                        console.log('✅ CSV file detected');
                         const text = await file.text();
                         const lines = text.split('\n');
+                        console.log('CSV has', lines.length, 'lines');
                         for (let i = 1; i < lines.length; i++) {
                             if (lines[i].trim()) {
                                 const parts = lines[i].split(',');
@@ -436,25 +441,32 @@
                                 }
                             }
                         }
+                        console.log('Extracted', transactions.length, 'transactions from CSV');
                     } else if (file.type.includes('spreadsheet') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
                         // For Excel - show message to use CSV export
-                        console.log('Excel file detected. Please export as CSV for best results.');
+                        console.log('⚠️ Excel file detected. Please export as CSV for best results.');
                         // For now, add sample data from excel indicator
                         transactions.push(...generateSampleTransactions());
                     } else if (file.type === 'application/pdf') {
                         // PDF files would need PDF parsing library
-                        console.log('PDF detected. Using analysis based on file metadata.');
+                        console.log('⚠️ PDF detected. Using sample data (PDF parsing not yet implemented).');
                         transactions.push(...generateSampleTransactions());
                     } else if (file.type.includes('image')) {
                         // Image files - would need OCR
-                        console.log('Image detected. Using analysis based on file metadata.');
+                        console.log('⚠️ Image detected. Using sample data (OCR not yet implemented).');
+                        transactions.push(...generateSampleTransactions());
+                    } else {
+                        console.log('⚠️ Unknown file type:', file.type);
                         transactions.push(...generateSampleTransactions());
                     }
                 } catch (error) {
-                    console.error('Error processing file:', error);
+                    console.error('❌ Error processing file:', error);
                     transactions.push(...generateSampleTransactions());
                 }
             }
+            
+            console.log('📊 Total transactions extracted:', transactions.length);
+            console.log('First 3 transactions:', transactions.slice(0, 3));
             
             return transactions.length > 0 ? transactions : generateSampleTransactions();
         }
@@ -493,6 +505,8 @@
             try {
                 // Process uploaded files to extract transactions
                 const transactions = await processUploadedFiles();
+                
+                console.log('💾 Saving form data with', transactions.length, 'transactions');
 
                 // Collect form data
                 const formData = {
@@ -507,12 +521,23 @@
                     timestamp: new Date().toISOString(),
                     transactions: transactions
                 };
+                
+                console.log('Form data to save:', formData);
 
                 // Simulate processing
                 await new Promise(resolve => setTimeout(resolve, 2000));
 
                 // Store form data with transactions in session
                 sessionStorage.setItem('diagnosisData', JSON.stringify(formData));
+                console.log('✅ Data saved to sessionStorage');
+                
+                // Verify it was saved
+                const verify = sessionStorage.getItem('diagnosisData');
+                console.log('Verification - data in storage:', verify ? 'YES' : 'NO');
+                if (verify) {
+                    const parsed = JSON.parse(verify);
+                    console.log('Verification - transactions count:', parsed.transactions?.length || 0);
+                }
 
                 // Check if user is already logged in (subscriber)
                 const isLoggedIn = localStorage.getItem('isLoggedIn');

@@ -405,6 +405,13 @@
             const data = raw ? JSON.parse(raw) : {};
             const transactions = data.transactions || [];
             
+            // Debug logging
+            console.log('📊 Loading Analysis...');
+            console.log('Raw sessionStorage data:', raw);
+            console.log('Parsed data:', data);
+            console.log('Transactions found:', transactions.length);
+            console.log('Transactions:', transactions);
+            
             // Display user info
             document.getElementById('displayName').textContent = data.fullName || localStorage.getItem('userName') || 'Ianara Fernandes';
             document.getElementById('displayEmail').textContent = data.email || localStorage.getItem('userEmail') || 'ianarafer@gmail.com';
@@ -416,8 +423,10 @@
 
             // Analyze transactions or use default data
             if (transactions && transactions.length > 0) {
+                console.log('✅ Using real uploaded transactions');
                 financialData = analyzeTransactions(transactions, data);
             } else {
+                console.log('⚠️ No transactions found, using default sample data');
                 financialData = getDefaultFinancialData();
             }
 
