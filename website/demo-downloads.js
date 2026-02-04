@@ -260,6 +260,52 @@ function showDownloadMessage(type) {
     }, 3000);
 }
 
+// Enhanced download function with proper file types
+function downloadReportEnhanced(type) {
+    let content, filename, mimeType;
+
+    if (type === 'full-report') {
+        content = generateFullReport();
+        filename = 'AnalyticaCore_Business_Analysis_Report.txt';
+        mimeType = 'text/plain';
+    } else if (type === 'forecast') {
+        content = generateForecastCSV();
+        filename = 'AnalyticaCore_Forecast_Data.csv';
+        mimeType = 'text/csv';
+    } else if (type === 'insights') {
+        content = generateInsights();
+        filename = 'AnalyticaCore_AI_Insights.json';
+        mimeType = 'application/json';
+    }
+
+    // Create proper blob with correct MIME type
+    const blob = new Blob([content], { type: mimeType });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+
+    // Show download message
+    showDownloadMessage(type);
+}
+
+// Generate proper CSV format for forecast data
+function generateForecastCSV() {
+    return `Date,Revenue_Forecast,Customers_Forecast,Orders_Forecast,Confidence
+2024-09-01,284000,2340,5850,0.95
+2024-10-01,312000,2580,6420,0.93
+2024-11-01,445000,3680,9200,0.91
+2024-12-01,520000,4320,10800,0.89
+2025-01-01,298000,2450,6125,0.87
+2025-02-01,315000,2590,6475,0.85
+2025-03-01,338000,2780,6950,0.83`;
+}
+
 // Add CSS animations
 const style = document.createElement('style');
 style.textContent = `
