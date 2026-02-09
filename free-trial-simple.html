@@ -103,14 +103,9 @@
                     <div class="upload-area" onclick="console.log('Upload area clicked'); document.getElementById('businessData').click()">
                         <i class="fas fa-cloud-upload-alt fs-3 text-primary mb-2"></i>
                         <h6>Upload CSV, Excel, or Data File</h6>
-<<<<<<< HEAD
-                        <input type="file" id="businessData" name="businessData" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
-                        <div id="uploadedFile" class="mt-2 text-success">
-=======
                         <p class="text-muted mb-0 small">We'll analyze this data and include insights in your free report</p>
-                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="console.log('File input changed'); handleFileUpload(this)">
+                        <input type="file" id="businessData" name="businessData" style="display: none;" accept=".csv,.xlsx,.xls,.json" onchange="handleFileUpload(this)">
                         <div id="uploadedFile" class="mt-2 text-success" style="display: none;">
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
                             <i class="fas fa-check-circle me-1"></i>
                             <span id="fileName"></span>
                         </div>
@@ -172,11 +167,6 @@
                 }
                 
                 console.log('✅ File uploaded:', file.name);
-<<<<<<< HEAD
-                // Store file reference for submission
-                window.uploadedDataset = file;
-=======
-                
                 // Process file client-side
                 processFileClientSide(file);
             } else {
@@ -299,7 +289,6 @@
                     summary: `${data.totalItems} items`,
                     sampleData: data.data
                 };
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
             }
             return null;
         }
@@ -328,11 +317,6 @@
                 try {
                     // Get form data
                     const formData = new FormData(this);
-<<<<<<< HEAD
-                    // Attach file if uploaded
-                    if (window.uploadedDataset) {
-                        formData.append('businessData', window.uploadedDataset);
-=======
                     const data = Object.fromEntries(formData);
                     
                     // Check if file was actually selected
@@ -361,7 +345,6 @@
                             formData.append('businessData', actualFile);
                             console.log('✅ File added to FormData:', actualFile.name);
                         }
->>>>>>> 3a98e9729a50088f85adee2c30f3575fc7a7132d
                     }
                     console.log('📊 FormData keys:', Array.from(formData.keys()));
                     // Track trial form submission attempt
